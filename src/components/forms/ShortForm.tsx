@@ -32,7 +32,7 @@ export const ShortForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-4xl justify-center m-auto">
+        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] justify-center m-auto">
 
             <input
                 type="text"

@@ -1,8 +1,11 @@
-import { getAllLinks } from "@/action"
+import { getUserLinks } from "@/action"
 
 
-export const AllLinks = async() => {
-    const { links = [] } = await getAllLinks()
+
+export const UserLinks = async() => {
+    //TODO modificar el usuario
+    const user = '7693c179-a16d-4ade-bc3c-42b6840a0c99'
+    const { links = [] } = await getUserLinks(user)
   
 
     if (!links) {
@@ -61,3 +64,4 @@ return (
     
 )
 }
+

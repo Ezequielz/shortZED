@@ -9,7 +9,7 @@ export default function ShortLayout( { children }: {
       <TopMenu />
       <Sidebar />
 
-      <div className="px-0 sm:px-10">
+      <div className="px-0 ">
         { children }
 
       </div>
