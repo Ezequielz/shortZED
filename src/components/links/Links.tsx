@@ -65,7 +65,7 @@ export const Links = async ({ links }: Props) => {
 
 
                                 <td className=" text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                    {link.url}
+                                    {link.url.length > 60 ? link.url.slice(0,60) + '...' : link.url}
                                 </td>
                                 <td className=" text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                     <a href={process.env.URL_DEV + link.shortUrl}>
