@@ -13,14 +13,9 @@ export default async function LinkPage({ params }: Props) {
 
     const link = await getLink(slug)
     
-    if (link.ok) {
-        redirect(link.link!.url)
+    if (!link.ok) {
+        notFound()
     }
-    return (
-        <div>
-            {
-                JSON.stringify(link)
-            }
-        </div>
-    );
+    
+    redirect(link.link!.url)
 }
