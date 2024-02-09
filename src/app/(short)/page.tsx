@@ -1,9 +1,11 @@
 
-import { AllLinks, ShortForm } from "@/components";
+import { getAllLinks } from "@/action";
+import { Links, ShortForm } from "@/components";
 import { titleFont } from "@/config/fonts";
 
 export default async function Home() {
  
+  const { links = [] } = await getAllLinks()
 
   return (
       <main className="m-auto">
@@ -11,7 +13,7 @@ export default async function Home() {
 
         <ShortForm />
 
-        <AllLinks />
+        <Links links={links} />
 
     
       </main>

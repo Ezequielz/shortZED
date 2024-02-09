@@ -3,7 +3,7 @@
 
 export * from './forms/ShortForm';
 
-export * from './links/AllLinks';
+export * from './links/Links';
 
 export * from './ui/footer/Footer';
 export * from './ui/not-found/NotFoundPage';
