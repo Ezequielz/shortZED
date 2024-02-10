@@ -1,4 +1,3 @@
-'use client'
 import { FaRegCopy, FaRegEdit } from "react-icons/fa";
 
 
@@ -35,10 +34,10 @@ export const Links = async ({ links }: Props) => {
                 <thead className="bg-gray-200 border-b">
                     <tr>
                         <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            url
+                            Url
                         </th>
                         <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            shortUrl
+                            Short url
                         </th>
                         <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             Clicks
@@ -65,21 +64,21 @@ export const Links = async ({ links }: Props) => {
 
 
                                 <td className=" text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                    {link.url.length > 60 ? link.url.slice(0,60) + '...' : link.url}
+                                    {link.url.length > 60 ? link.url.slice(0, 60) + '...' : link.url}
                                 </td>
                                 <td className=" text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                    <a href={process.env.URL_DEV + link.shortUrl}>
+                                    <a className="hover:underline" href={process.env.URL_DEV + link.shortUrl}>
                                         {process.env.URL_DEV + link.shortUrl}
                                     </a>
                                 </td>
                                 <td className=" text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                   { link.clicks }
+                                    {link.clicks}
                                 </td>
                                 <td className=" text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                    <FaRegCopy size={20}/>
+                                    <FaRegCopy size={20} />
                                 </td>
                                 <td className=" text-sm text-gray-900 font-bold px-6 py-4 whitespace-nowrap">
-                                    <FaRegEdit size={20}/>
+                                    <FaRegEdit size={20} />
                                 </td>
 
                             </tr>

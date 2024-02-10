@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { AiOutlineGithub } from "react-icons/ai";
 import { TbWorld } from "react-icons/tb";
-import { logoFont } from '@/config/fonts';
+import { logoFont } from '@/components/config/fonts';
 
 export const Footer = () => {
   return (

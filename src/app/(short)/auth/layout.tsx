@@ -1,14 +1,12 @@
 // import { auth } from "@/auth.config";
+import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
 
 export default async function ShopLayout( { children }: {
   children: React.ReactNode;
 } ) {
 //TODO session
-//   const session = await auth();
-  const session = {
-    user: ''
-  }
+  const session = await auth();
 
   if ( session?.user ) {
     redirect('/')

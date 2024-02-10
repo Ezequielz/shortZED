@@ -1,7 +1,7 @@
 
 import { getAllLinks } from "@/action";
 import { Links, ShortForm } from "@/components";
-import { titleFont } from "@/config/fonts";
+import { titleFont } from "@/components/config/fonts";
 
 export default async function Home() {
  

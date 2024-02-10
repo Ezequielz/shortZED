@@ -1,5 +1,5 @@
 import { RegisterForm } from '@/components';
-import { titleFont } from '@/config/fonts';
+import { titleFont } from '@/components/config/fonts';
 
 
 export default function () {

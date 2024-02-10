@@ -18,7 +18,7 @@ const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
 
 
 export const RegisterForm = () => {
-  
+
     const [errorMessage, setErrorMessage] = useState('')
     const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
 
@@ -97,7 +97,7 @@ export const RegisterForm = () => {
                 {...register('password', { required: true, minLength: 6 })}
             />
 
-            <span className="text-red-500">{ errorMessage }</span>
+            <span className="text-red-500">{errorMessage}</span>
 
             <button
 
@@ -108,9 +108,9 @@ export const RegisterForm = () => {
 
             {/* divisor l ine */}
             <div className="flex items-center my-5">
-                <div className="flex-1 border-t border-gray-500"></div>
-                <div className="px-2 text-gray-800">O</div>
-                <div className="flex-1 border-t border-gray-500"></div>
+                <div className="flex-1 border-t border-slate-300"></div>
+                <div className="px-2 text-slate-100">O </div>
+                <div className="flex-1 border-t border-slate-300"></div>
             </div>
 
             <Link
