@@ -1,12 +1,11 @@
 'use client'
 
 import { useState } from 'react';
-
+import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form";
 import clsx from "clsx";
-import Link from "next/link"
+import { login, registerUser } from '@/action';
 
-// import { login, registerUser } from "@/actions";
 
 type FormInputs = {
     name: string;
@@ -19,38 +18,38 @@ const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
 
 export const RegisterForm = () => {
 
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
     const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-        // setErrorMessage('')
-        // const { name, email, password } = data;
+        setErrorMessage('');
+        const { name, email, password } = data;
 
-        // // Server action
-        // const resp = await registerUser(name, email, password)
-        // if (!resp.ok) {
-        //     setErrorMessage(resp.message)
-        //     return;
-        // }
+        // Server action
+        const resp = await registerUser(name, email, password)
+        if (!resp.ok) {
+            setErrorMessage(resp.message)
+            return;
+        };
 
-        // await login( email.toLowerCase(), password );
+        await login( email.toLowerCase(), password );
 
-        // window.location.replace('/')
+        window.location.replace('/');
 
-    }
+    };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col ">
 
 
-            <label htmlFor="email">Nombre completo</label>
+            <label htmlFor="name">Nombre completo</label>
             {errors.name?.type === 'required' && (
                 <span className="text-red-500">*El nombre es obligatorio</span>
             )}
             <input
                 className={
                     clsx(
-                        "px-5 py-2 border bg-gray-200 rounded mb-5",
+                        "px-5 py-2 border bg-gray-200 rounded mb-5 text-slate-800",
                         {
                             'border-red-500': errors.name
                         }
@@ -69,7 +68,7 @@ export const RegisterForm = () => {
             <input
                 className={
                     clsx(
-                        "px-5 py-2 border bg-gray-200 rounded mb-5",
+                        "px-5 py-2 border bg-gray-200 rounded mb-5 text-slate-800",
                         {
                             'border-red-500': errors.email
                         }
@@ -80,19 +79,20 @@ export const RegisterForm = () => {
             />
 
 
-            <label htmlFor="email">Contraseña</label>
+            <label htmlFor="password">Contraseña</label>
             {errors.password?.type === 'required' && (
                 <span className="text-red-500">*La contraseña es obligatoria</span>
             )}
             <input
                 className={
                     clsx(
-                        "px-5 py-2 border bg-gray-200 rounded mb-5",
+                        "px-5 py-2 border bg-gray-200 rounded mb-5 text-slate-800",
                         {
                             'border-red-500': errors.password
                         }
                     )
                 }
+                autoComplete='off'
                 type="password"
                 {...register('password', { required: true, minLength: 6 })}
             />
@@ -100,7 +100,7 @@ export const RegisterForm = () => {
             <span className="text-red-500">{errorMessage}</span>
 
             <button
-
+                
                 className="btn-primary">
                 Crear cuenta
             </button>

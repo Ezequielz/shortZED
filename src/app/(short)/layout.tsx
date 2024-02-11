@@ -1,11 +1,11 @@
-import { Footer, TopMenu } from '@/components';
+import { Footer, Sidebar, TopMenu } from '@/components';
 
 export default function ShortLayout( { children }: {
   children: React.ReactNode;
 } ) {
   return (
     <main className="min-h-screen">
-
+      <Sidebar />
       <TopMenu />
   
       <div className="px-0 ">

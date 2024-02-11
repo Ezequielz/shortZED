@@ -16,26 +16,25 @@ type FormInputs = {
 
 export const LoginForm = () => {
 
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('');
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormInputs>();
 
     const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-        setErrorMessage('')
+        setErrorMessage('');
         const { email, password } = data;
 
         // Server action
         const resp = await login(email.toLowerCase(), password)
         if (!resp.ok) {
-            console.log('NOOOP')
-            setErrorMessage(resp.message)
+            setErrorMessage(resp.message);
             return;
-        }
+        };
 
         await login(email.toLowerCase(), password);
      
-        window.location.replace('/')
+        window.location.replace('/');
 
     }
 
@@ -46,7 +45,7 @@ export const LoginForm = () => {
             <input
                 className={
                     clsx(
-                        "px-5 py-2 border bg-gray-200 rounded mb-5",
+                        "px-5 py-2 border bg-gray-200 rounded mb-5 text-slate-800",
                         { 'border-red-500': errors.password }
                     )
                 }
@@ -63,10 +62,11 @@ export const LoginForm = () => {
             <input
                 className={
                     clsx(
-                        "px-5 py-2 border bg-gray-200 rounded mb-5",
+                        "px-5 py-2 border bg-gray-200 rounded mb-5 text-slate-800",
                         { 'border-red-500': errors.password }
                     )
                 }
+                autoComplete='off'
                 type="password"
                 {...register('password', { required: true, minLength: 6 })}
             />

@@ -17,7 +17,7 @@ model User {
   emailVerified Boolean? @default(false)
   password      String
   image         String?
-  shortener     String   @unique 
+  shortener     String?   @unique 
 
   links     Link[]
   createdAt DateTime @default(now())

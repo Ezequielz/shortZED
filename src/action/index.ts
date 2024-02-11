@@ -1,7 +1,8 @@
 
 
 export * from './auth/login';
-export * from './auth/logout';
+export * from './auth/logout'; 
+export * from './auth/register'; 
 
 export * from './url/get-all-links';
 export * from './url/get-user-links';

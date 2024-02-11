@@ -15,7 +15,7 @@ export interface SeedUser {
     emailVerified?: boolean;
     password: string;
     image?: string;
-    shortener: string
+    shortener?: string
 }
 
 
@@ -43,10 +43,22 @@ export const initialData: SeedData = {
             shortener: 'qpw'
         },
         {
+            name: 'Usuario Prueba',
+            email: 'user@gmail.com',
+            emailVerified: true,
+            password: bcryptjs.hashSync('123456'),
+            shortener: 'qwe'
+        },
+        {
             name: 'Bayron',
             email: 'bay@gmail.com',
             password: bcryptjs.hashSync('123456'),
             shortener: 'wpo'
+        },
+        {
+            name: 'Kathy',
+            email: 'kat@gmail.com',
+            password: bcryptjs.hashSync('123456')
         },
     ]
 }
