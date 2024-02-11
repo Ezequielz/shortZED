@@ -1,9 +1,12 @@
 
+
 import { LoginForm } from '@/components';
 import { titleFont } from '@/components/config/fonts';
 
 
-export default function () {
+export default async function () {
+
+
   return (
     <div className="flex flex-col min-h-[88.5vh] pt-32 ">
 

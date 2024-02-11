@@ -8,11 +8,16 @@ export interface SeedLink {
     user?: string;
     userId?: string;
 }
+enum Role {
+    admin,
+    user
+}
 
 export interface SeedUser {
     name: string;
     email: string;
     emailVerified?: boolean;
+    roles?: Role;
     password: string;
     image?: string;
     shortener?: string

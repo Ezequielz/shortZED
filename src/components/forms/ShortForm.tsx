@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useSession } from 'next-auth/react';
 import clsx from "clsx";
 import { setUrl } from '@/action';
 
@@ -14,7 +15,8 @@ export const ShortForm = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormInputs>();
 
     //TODO especificar si es usuario o no , 
-    const user = 'db988207-9d08-4600-b183-0a651b2e1d7b'
+    const session = useSession()
+    const userId = session.data?.user?.id
 
     const regexURL = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
@@ -23,7 +25,7 @@ export const ShortForm = () => {
         const { url } = data;
 
         // server action
-        const resp = await setUrl(url, user)
+        const resp = await setUrl(url, userId)
         if (!resp.ok) {
             setErrorMessage(resp.message)
             return;

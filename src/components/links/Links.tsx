@@ -4,8 +4,8 @@ import { FaRegCopy, FaRegEdit } from "react-icons/fa";
 interface Props {
     links: ({
         user?: {
-            name: string;
-            email: string;
+            name: string | null;
+            email: string | null;
             image: string | null;
         } | null;
     } & {
@@ -17,6 +17,7 @@ interface Props {
         userId: string | null;
     })[]
 }
+
 
 export const Links = async ({ links }: Props) => {
 
