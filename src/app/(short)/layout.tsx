@@ -1,4 +1,4 @@
-import { Footer, Sidebar, TopMenu } from '@/components';
+import { Footer, ShortForm, Sidebar, TopMenu } from '@/components';
 
 export default function ShortLayout( { children }: {
   children: React.ReactNode;
@@ -12,6 +12,7 @@ export default function ShortLayout( { children }: {
         { children }
 
       </div>
+      
 
       <Footer />
     </main>

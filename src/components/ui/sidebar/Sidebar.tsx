@@ -5,23 +5,19 @@ import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from 'react-icons/io5';
 import { logout } from '@/action';
+import { useUIStore } from '@/store';
 
-// import { useUIStore } from '@/store';
 
 
 
 export const Sidebar = () => {
 
-    // const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
-    // const closeMenu = useUIStore(state => state.closeSideMenu);
-    const isSideMenuOpen = false
     const { data: session } = useSession();
     const isAuthenticated = !!session?.user
-    // const isAdmin = (session?.user.role === 'admin')
+    // const isAdmin = (session?.user?.roles === 'admin')
 
-    const closeMenu = () => {
-
-    }
+    const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
+    const closeMenu = useUIStore(state => state.closeSideMenu);
 
     return (
         <div>

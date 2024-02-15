@@ -26,6 +26,12 @@ export const Links = async ({ links }: Props) => {
         return <div>Loading...</div>
     }
 
+    if (links.length === 0) {
+        return (
+            <div>No tiene ningún acortador creado</div>
+        )
+    }
+
 
     return (
 
