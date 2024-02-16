@@ -52,6 +52,17 @@ export const authConfig: NextAuthConfig = {
       if (dbUser?.isActive === false) {
         return '/auth/login?error=unauthorized'
       }
+      if ( !dbUser?.image ){
+        await prisma.user.update({
+          where: {
+            id: dbUser?.id
+          },
+          data: {
+            image: user.image
+          }
+        })
+      
+      }
 
       return true
     },
