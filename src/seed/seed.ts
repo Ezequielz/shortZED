@@ -8,15 +8,12 @@ export interface SeedLink {
     user?: string;
     userId?: string;
 }
-enum Role {
-    admin,
-    user
-}
+type Role = 'user' | 'admin';
 
 export interface SeedUser {
     name: string;
     email: string;
-    emailVerified?: boolean;
+    emailVerified?: Date;
     roles?: Role;
     password: string;
     image?: string;
@@ -43,27 +40,25 @@ export const initialData: SeedData = {
         {
             name: 'Ezequiel',
             email: 'eze@gmail.com',
-            emailVerified: true,
             password: bcryptjs.hashSync('123456'),
-            shortener: 'qpw'
+            shortener: 'qpw',
         },
         {
             name: 'Usuario Prueba',
             email: 'user@gmail.com',
-            emailVerified: true,
             password: bcryptjs.hashSync('123456'),
-            shortener: 'qwe'
+            shortener: 'qwe',
         },
         {
             name: 'Bayron',
             email: 'bay@gmail.com',
             password: bcryptjs.hashSync('123456'),
-            shortener: 'wpo'
+            shortener: 'wpo',
         },
         {
             name: 'Kathy',
             email: 'kat@gmail.com',
-            password: bcryptjs.hashSync('123456')
+            password: bcryptjs.hashSync('123456'),
         },
     ]
 }
