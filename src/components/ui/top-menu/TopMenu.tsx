@@ -40,7 +40,7 @@ export const TopMenu = () => {
               {
                 session.user.image ? (
                   <Image
-                    src={session.user.image!}
+                    src={session.user.image}
                     alt={`imagen del usuario ${session.user.name}`}
                     width={100}
                     height={100}
