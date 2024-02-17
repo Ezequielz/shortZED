@@ -1,21 +1,24 @@
 'use server'
 import prisma from '@/lib/prisma';
 
-export const getUserLinks = async( userId: string ) => {
+export const getUserLinks = async( userId: string, isActive?: boolean | 'all' ) => {
 
     try {
 
 
         const links = await prisma.link.findMany({
             where: {
-                userId: userId
+                userId: userId,
+                isActive: typeof(isActive) === 'boolean' ? isActive : undefined
             },
             include: {
+
                 user: {
+                    
                     select: {
                         name: true,
                         email: true,
-                        image: true,                    
+                        image: true,                 
                     }
                 }
             }

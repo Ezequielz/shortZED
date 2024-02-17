@@ -8,7 +8,7 @@ export default async function Home() {
   const { links = [] } = await getAllLinks()
 
   return (
-      <main className="m-auto">
+      <>
         <h1 className={`${titleFont.className}  flex justify-center text-2xl `}> Acortador de URL</h1>
 
         <ShortForm />
@@ -16,6 +16,6 @@ export default async function Home() {
         <Links links={links} />
 
     
-      </main>
+      </>
   );
 }

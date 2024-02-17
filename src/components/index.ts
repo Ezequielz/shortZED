@@ -6,7 +6,7 @@ export * from './auth/register/register-form/RegisterForm';
 
 export * from './forms/ShortForm';
 
-export * from './links/user-links/UserLinks';
+
 export * from './links/Links';
 
 export * from './providers/Providers';

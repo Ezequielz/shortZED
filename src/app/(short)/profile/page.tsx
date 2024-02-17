@@ -20,8 +20,8 @@ export default async function ProfilePage() {
 
 
     return (
-      <div>
+      <>
         <Profile user={ rest } />
-      </div>
+      </>
     );
   }

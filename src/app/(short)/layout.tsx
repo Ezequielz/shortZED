@@ -8,10 +8,10 @@ export default function ShortLayout( { children }: {
       <Sidebar />
       <TopMenu />
   
-      <div className="px-0 ">
+      <section className="flex-1 overflow-x-hidden overflow-y-hidden m-auto max-w-[1200px]">
         { children }
 
-      </div>
+      </section>
       
 
       <Footer />
