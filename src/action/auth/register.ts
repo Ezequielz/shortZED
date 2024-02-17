@@ -4,7 +4,6 @@ import bcryptjs from 'bcryptjs';
 
 export const registerUser = async( name:string, email:string, password:string ) => {
 
-    const shortener = Math.random().toString(36).substring(2, 5);
 
     try {
         const user = await prisma.user.create({
@@ -12,7 +11,6 @@ export const registerUser = async( name:string, email:string, password:string ) 
                 name: name,
                 email: email.toLowerCase(),
                 password: bcryptjs.hashSync( password ),
-                shortener: shortener,
             },
             select: {
                 id: true,

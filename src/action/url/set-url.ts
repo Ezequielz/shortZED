@@ -7,40 +7,17 @@ import { revalidatePath } from 'next/cache';
 export const setUrl = async (url: string, userId?: string) => {
 
     try {
-    
+
         // Buscar si existe el url en la base de datos
         const urlExists = await prisma.link.findFirst({
             where: {
                 url: url
             },
             include: {
-                user: {
-                    select: {
-                        shortener: true
-                    }
-                }
+                user: true
             }
         });
-     
 
-        // si viene userId y existe el url, agreagar el usuario al url
-        if (userId && urlExists) {
-            await prisma.link.update({
-                where: {
-                    id: urlExists.id
-                },
-                data: {
-                    userId: userId,
-                    shortUrl: `${urlExists.user?.shortener}.${urlExists.shortUrl}` ,
-                }
-            });
-
-            return {
-                ok: true,
-                shortUrl: urlExists.shortUrl,
-                message: 'Url actualizado con el shortcut de tu usuario'
-            }
-        };
 
         // si no viene userId y existe el url, devolver el url
         if (!userId && urlExists) {
@@ -51,43 +28,55 @@ export const setUrl = async (url: string, userId?: string) => {
             }
         }
 
+        // si viene userId y existe el url, agreagar el usuario al url si no existe el usuario
+        if (userId && urlExists && !urlExists.userId) {
+            await prisma.link.update({
+                where: {
+                    id: urlExists.id
+                },
+                data: {
+                    userId: userId,
+                }
+            });
+
+            return {
+                ok: true,
+                shortUrl: urlExists.shortUrl,
+                message: 'Url actualizado con el usuario'
+            }
+        };
+
         // si no existe la url en base de datos, verificar que la url es válida
-        if ( !url.startsWith('http://') && !url.startsWith('https://') ) {
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
             return {
                 ok: false,
                 message: 'La url no es válida'
             }
-        } 
+        }
 
-        // si no existe el url, crear el url y agregar el usuario si viene userId
         const shortUrl = Math.random().toString(36).substring(2, 5);
 
-        const userShortener = await prisma.user.findUnique({
-            where: {
-                id: userId
-            },
-            select: {
-                shortener: true
+        // si no existe el url, crear el url y agregar el usuario si viene userId
+        if (!urlExists) {
+
+            if ( userId ){
+                await prisma.link.create({
+                    data: {
+                        url: url,
+                        shortUrl: shortUrl,
+                        userId: userId
+                    }
+                });
+                
+            } else {
+                await prisma.link.create({
+                    data: {
+                        url: url,
+                        shortUrl: shortUrl,
+                    }
+                });
+
             }
-        })
-    
-        if (userShortener) {
-          
-            await prisma.link.create({
-                data: {
-                    url: url,
-                    shortUrl: `${userShortener?.shortener}.${shortUrl}`,
-                    userId: userId
-                }
-            })
-        } else {
-           
-            await prisma.link.create({
-                data: {
-                    url: url,
-                    shortUrl: shortUrl
-                }
-            })
         }
 
         //Revalidate Path
@@ -100,7 +89,7 @@ export const setUrl = async (url: string, userId?: string) => {
             url: url,
             shortUrl: shortUrl,
         }
-   
+
 
     } catch (error) {
         console.log(error)

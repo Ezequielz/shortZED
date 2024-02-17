@@ -21,6 +21,8 @@ model Link {
   createdAt DateTime @default(now())
   shortUrl  String   @unique
   clicks    Int      @default(0)
+  limit     Int      @default(10)
+  isActive  Boolean  @default(false)
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
 }
@@ -64,7 +66,7 @@ model User {
   isActive      Boolean   @default(true)
   emailVerified DateTime?
   image         String?
-  shortener     String?   @unique
+  // shortener     String?   @unique
   accounts      Account[]
   sessions      Session[]
   Link          Link[]

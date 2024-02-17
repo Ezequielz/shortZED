@@ -17,7 +17,6 @@ export interface SeedUser {
     roles?: Role;
     password: string;
     image?: string;
-    shortener?: string
 }
 
 
@@ -41,19 +40,16 @@ export const initialData: SeedData = {
             name: 'Ezequiel',
             email: 'eze@gmail.com',
             password: bcryptjs.hashSync('123456'),
-            shortener: 'qpw',
         },
         {
             name: 'Usuario Prueba',
             email: 'user@gmail.com',
             password: bcryptjs.hashSync('123456'),
-            shortener: 'qwe',
         },
         {
             name: 'Bayron',
             email: 'bay@gmail.com',
             password: bcryptjs.hashSync('123456'),
-            shortener: 'wpo',
         },
         {
             name: 'Kathy',
