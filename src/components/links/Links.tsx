@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from "react";
 import { getUserLinks } from "@/action";
 import { Link } from "@prisma/client";
+import { useSnackbar } from "notistack";
 
 interface Props {
     userId: string
@@ -18,6 +19,7 @@ export const Links =  ({userId}: Props) => {
 
     const [active, setActive] = useState(undefined)
     const [links, setLinks] = useState<Link[] | undefined>([]);
+    const { enqueueSnackbar } = useSnackbar()
 
     useEffect(() => {
        const getLinks = async () =>{
@@ -27,6 +29,21 @@ export const Links =  ({userId}: Props) => {
         }
         getLinks()
     }, [userId, active])
+
+
+    const copyToClipboard = (e: React.MouseEvent<HTMLElement>, link: {
+        id: string;
+        url: string;
+        createdAt: Date;
+        shortUrl: string;
+        clicks: number;
+        limit: number;
+        isActive: boolean;
+        userId: string | null;
+    }) => {
+        navigator.clipboard.writeText( process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl )
+        enqueueSnackbar('Copiado en el portapapeles', { variant: "success" })
+    }
 
     if (!links) {
         return <div>Loading...</div>
@@ -119,7 +136,7 @@ export const Links =  ({userId}: Props) => {
                                             className="px-10 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                                             {link.limit}</td>
                                         <td
-                                            onClick={ () => navigator.clipboard.writeText( process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl )}
+                                            onClick={(e) => copyToClipboard(e,link)}
                                             className=" px-16 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                                             <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-105" />
                                         </td>
