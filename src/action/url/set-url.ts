@@ -21,11 +21,11 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
 
         // si no viene userId y existe el url, devolver el url
         if (!userId && urlExists) {
-           
+           console.log('first')
             return {
-                ok: true,
-                url: urlExists.url,
-                message: 'Url existente',
+                ok: false,
+                url: urlExists.shortUrl,
+                message: 'El url ya se encuentra guardado',
             }
         }
 
@@ -41,11 +41,21 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
             });
             
             return {
-                ok: true,
+                ok: false,
                 shortUrl: urlExists.shortUrl,
                 message: 'Url actualizado con el usuario'
             }
         };
+
+        // si el usuario ya tiene un link guardado, devolver el link y un mensaje de error
+        if (userId && urlExists && urlExists.userId) {
+            return {
+                ok: false,
+                message: 'Ya tienes ese url guardado',
+                url: urlExists.url,
+                shortUrl: urlExists.shortUrl,
+            }
+        }
 
         // si no existe la url en base de datos, verificar que la url es válida
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -56,11 +66,11 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
             }
         }
 
-        const shortUrl = Math.random().toString(36).substring(2, 5);
+        const shortUrl = hash ? hash : Math.random().toString(36).substring(2, 5);
 
         // si no existe el url, crear el url y agregar el usuario si viene userId
         if (!urlExists) {   
-          console.log('first')
+        
             if ( userId ){
                 await prisma.link.create({
                     data: {
@@ -84,7 +94,9 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
 
         //Revalidate Path
       
-        revalidatePath('')
+        revalidatePath('/')
+        revalidatePath('/links')
+        revalidatePath(`/links${shortUrl}`)
 
         return {
             ok: true,
@@ -94,11 +106,17 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
         }
 
 
-    } catch (error) {
+    } catch (error: any  ) {
         console.log(error)
+        let message = 'No se pudo guardar el url, '
+
+        if (error?.code === 'P2002') {
+            message = 'El hash ya existe, prueba con otro'
+        }
+        
         return {
             ok: false,
-            message: 'No se pudo guardar el url'
+            message: message
         }
     }
 }

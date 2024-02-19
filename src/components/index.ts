@@ -8,6 +8,7 @@ export * from './forms/ShortForm';
 
 
 export * from './links/UserLinks';
+export * from './links/SingleLink';
 
 export * from './providers/Providers';
 

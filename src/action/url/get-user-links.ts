@@ -18,17 +18,23 @@ export const getUserLinks = async( userId: string, isActive?: boolean | 'all' ) 
                 userId: userId ,
                 isActive: typeof(isActive) === 'boolean' ? isActive : undefined
             },
+            orderBy: {
+                createdAt: 'desc'
+            },
             include: {
-
+                
                 user: {
                     
                     select: {
                         name: true,
                         email: true,
-                        image: true,                 
+                        image: true,         
+                                
                     }
                 }
-            }
+            },
+            
+            
         })
 
 

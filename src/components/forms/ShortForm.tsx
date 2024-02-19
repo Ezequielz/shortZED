@@ -7,7 +7,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 
 import { setUrl } from '@/action';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface FormInputs {
     url: string;
@@ -18,7 +18,8 @@ export const ShortForm = () => {
 
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
-    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormInputs>();
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset} = useForm<FormInputs>();
+    const path = usePathname();
 
 
     const session = useSession();
@@ -35,9 +36,14 @@ export const ShortForm = () => {
         
         if (!resp.ok) {
             setErrorMessage(resp.message)
+            if( resp.shortUrl ) {
+                router.replace(`${path}?short=${resp.shortUrl}`)
+            
+            }
             return;
         };
-        window.location.reload();
+        reset()
+        router.replace(`${path}?short=${resp.shortUrl}`)
 
     };
 

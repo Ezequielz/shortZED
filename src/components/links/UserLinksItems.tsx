@@ -10,11 +10,12 @@ import { RiDeleteBin2Line } from 'react-icons/ri'
 import { LinkSkeleton } from "..";
 
 interface Props {
-    userLinks?: Link[] | undefined
+    userLinks?: Link[] | undefined, 
+    
 }
-export const LinksItems = ({ userLinks }: Props) => {
+export const UserLinksItems = ({ userLinks }: Props) => {
 
-    const [active, setActive] = useState(undefined)
+    // const [active, setActive] = useState(undefined)
     const [isLoadingLinks, setIsLoadingLinks] = useState(false)
     const [links, setLinks] = useState<Link[] | undefined>([]);
     const { enqueueSnackbar } = useSnackbar();

@@ -6,10 +6,22 @@ export const getLink = async( slug: string ) => {
 
     try {
 
-        const link = await prisma.link.findFirst({
+        const link = await prisma.link.findUnique({
             where: {
                 shortUrl: slug
-            }
+            },
+            include: {
+                
+                user: {
+                    
+                    select: {
+                        name: true,
+                        email: true,
+                        image: true,         
+                                
+                    }
+                }
+            },
         })
 
         if(!link) {
@@ -21,7 +33,7 @@ export const getLink = async( slug: string ) => {
 
         return {
             ok: true,
-            link: link
+            link: [link]
         }
         
     } catch (error) {

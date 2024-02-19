@@ -1,11 +1,19 @@
 
-import { getAllLinks } from "@/action";
-import {  ShortForm } from "@/components";
+import { getLink } from "@/action";
+import {  LinkSkeleton, ShortForm, SingleLink } from "@/components";
 import { titleFont } from "@/components/config/fonts";
+import { Suspense } from "react";
 
-export default async function Home() {
+
+interface Props {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}
+export default async function Home({searchParams}: Props) {
  
-  const { links = [] } = await getAllLinks()
+ 
+  const short = searchParams?.short as string
+
+ 
 
   return (
       <>
@@ -13,8 +21,13 @@ export default async function Home() {
 
         <ShortForm />
 
-        {/* <Links /> */}
-
+        {
+          short && (
+            <Suspense fallback={ <LinkSkeleton quantity={1} /> }>
+              <SingleLink short={short}/>
+            </Suspense>
+          )
+        }
     
       </>
   );

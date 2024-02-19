@@ -1,6 +1,6 @@
 
 import { getUserLinks } from "@/action";
-import { LinksItems } from "./LinksItems";
+import { UserLinksItems } from "./UserLinksItems";
 import { IoCheckmarkOutline, IoWarningOutline, IoLinkOutline } from "react-icons/io5";
 import { auth } from "@/auth.config";
 import { redirect } from "next/navigation";
@@ -105,7 +105,7 @@ export const UserLinks = async () => {
                                 </tr>
                             </thead>
 
-                            <LinksItems userLinks={links} />
+                            <UserLinksItems userLinks={links} />
                         </table>
                     </div>
                 </div>
