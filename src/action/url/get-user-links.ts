@@ -4,11 +4,18 @@ import prisma from '@/lib/prisma';
 export const getUserLinks = async( userId: string, isActive?: boolean | 'all' ) => {
 
     try {
+        // const sleep = () => {
+        //     return new Promise((resolve) => {
+        //         setTimeout(() => {
+        //             resolve(true)
+        //         }, 6000)
+        //     })
+        // }
 
-
+        // await sleep()
         const links = await prisma.link.findMany({
             where: {
-                userId: userId,
+                userId: userId ,
                 isActive: typeof(isActive) === 'boolean' ? isActive : undefined
             },
             include: {

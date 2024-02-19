@@ -1,6 +1,6 @@
 
 import { getAllLinks } from "@/action";
-import { Links, ShortForm } from "@/components";
+import {  ShortForm } from "@/components";
 import { titleFont } from "@/components/config/fonts";
 
 export default async function Home() {
@@ -13,7 +13,7 @@ export default async function Home() {
 
         <ShortForm />
 
-        <Links links={links} />
+        {/* <Links /> */}
 
     
       </>

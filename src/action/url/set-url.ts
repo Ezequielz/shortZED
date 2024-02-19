@@ -4,10 +4,10 @@ import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
 
-export const setUrl = async (url: string, userId?: string) => {
+export const setUrl = async (url: string, hash?:string, userId?: string) => {
 
     try {
-
+       
         // Buscar si existe el url en la base de datos
         const urlExists = await prisma.link.findFirst({
             where: {
@@ -21,6 +21,7 @@ export const setUrl = async (url: string, userId?: string) => {
 
         // si no viene userId y existe el url, devolver el url
         if (!userId && urlExists) {
+           
             return {
                 ok: true,
                 url: urlExists.url,
@@ -38,7 +39,7 @@ export const setUrl = async (url: string, userId?: string) => {
                     userId: userId,
                 }
             });
-
+            
             return {
                 ok: true,
                 shortUrl: urlExists.shortUrl,
@@ -48,6 +49,7 @@ export const setUrl = async (url: string, userId?: string) => {
 
         // si no existe la url en base de datos, verificar que la url es válida
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          
             return {
                 ok: false,
                 message: 'La url no es válida'
@@ -57,8 +59,8 @@ export const setUrl = async (url: string, userId?: string) => {
         const shortUrl = Math.random().toString(36).substring(2, 5);
 
         // si no existe el url, crear el url y agregar el usuario si viene userId
-        if (!urlExists) {
-
+        if (!urlExists) {   
+          console.log('first')
             if ( userId ){
                 await prisma.link.create({
                     data: {
@@ -67,21 +69,22 @@ export const setUrl = async (url: string, userId?: string) => {
                         userId: userId
                     }
                 });
-                
+                revalidatePath('/')
             } else {
+             
                 await prisma.link.create({
                     data: {
                         url: url,
                         shortUrl: shortUrl,
                     }
                 });
-
+                
             }
         }
 
         //Revalidate Path
-
-        revalidatePath('/')
+      
+        revalidatePath('')
 
         return {
             ok: true,
