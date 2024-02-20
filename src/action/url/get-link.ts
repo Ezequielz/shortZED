@@ -33,14 +33,14 @@ export const getLink = async( slug: string ) => {
 
         return {
             ok: true,
-            link: [link]
+            link: link
         }
         
     } catch (error) {
         console.log(error)
         return {
             ok:false,
-            message: 'No se pudo obtener el link'
+            message: 'No se pudo obtener el link',
         }
     }
 

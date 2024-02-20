@@ -1,5 +1,6 @@
 import { getLink } from "@/action"
-import { UserLinksItems } from "./UserLinksItems"
+
+import { SingleLinkItem } from "./SingleLinkItem"
 
 interface Props {
     short: string
@@ -7,6 +8,7 @@ interface Props {
 export const SingleLink = async({ short }: Props) => {
 
     const link = await getLink(short)
+
 
     return (
         <section className="flex flex-col mt-8">
@@ -43,8 +45,8 @@ export const SingleLink = async({ short }: Props) => {
 
                             </tr>
                         </thead>
-
-                       <UserLinksItems userLinks={ link.link }/>
+                      
+                       <SingleLinkItem  link={ link.link }/>
                     </table>
                 </div>
             </div>

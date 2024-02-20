@@ -51,7 +51,7 @@ export const setUrl = async (url: string, hash?:string, userId?: string) => {
         if (userId && urlExists && urlExists.userId) {
             return {
                 ok: false,
-                message: 'Ya tienes ese url guardado',
+                message: 'El url ya se encuentra guardado',
                 url: urlExists.url,
                 shortUrl: urlExists.shortUrl,
             }

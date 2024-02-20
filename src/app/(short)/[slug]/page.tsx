@@ -12,10 +12,11 @@ export default async function LinkPage({ params }: Props) {
     const { slug } = params;
 
     const link = await getLink(slug)
-    
+
+
     if (!link.ok) {
         notFound()
     }
     
-    redirect(link.link!.url)
+    redirect(link.link![0].url)
 }

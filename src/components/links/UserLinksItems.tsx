@@ -1,24 +1,40 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { Link } from '@prisma/client'
 import { clsx } from 'clsx'
 import { useSnackbar } from 'notistack'
 import { IoCopyOutline } from 'react-icons/io5'
 import { MdOutlineEditCalendar } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import { LinkSkeleton } from "..";
+import { LinkSkeleton } from '..';
+import { useLinksStore } from '@/store';
+import { getUserLinks } from '@/action';
+import { useUIStore } from '../../store/ui/ui-store';
+import { usePathname, useRouter } from 'next/navigation';
 
-interface Props {
-    userLinks?: Link[] | undefined, 
-    
-}
-export const UserLinksItems = ({ userLinks }: Props) => {
 
-    // const [active, setActive] = useState(undefined)
-    const [isLoadingLinks, setIsLoadingLinks] = useState(false)
-    const [links, setLinks] = useState<Link[] | undefined>([]);
+
+
+export const UserLinksItems = () => {
+
+
+    const router = useRouter();
+    const path = usePathname();
+    const { data: session } = useSession();
     const { enqueueSnackbar } = useSnackbar();
+
+    const status = useLinksStore(state => state.status);
+    const openDialog = useUIStore( state => state.openDialog )
+    const closeDialog = useUIStore( state => state.closeDialog )
+
+    const [isLoadingLinks, setIsLoadingLinks] = useState(false);
+    const [links, setLinks] = useState<Link[] | undefined>([]);
+
+
+
+
 
     // const handleActive = (e: React.MouseEvent<HTMLElement>, link: Link) => {
     //     setActive(link.id)
@@ -37,19 +53,34 @@ export const UserLinksItems = ({ userLinks }: Props) => {
     //     }
     // }
 
-
+    useEffect(() => {
+        closeDialog()
+    }, [closeDialog])
+    
 
     useEffect(() => {
+        const getLinks = async () => {
+
+            const res = await getUserLinks(session?.user?.id!, status)
+            return res;
+        }
+        getLinks().then(res => {
+            setLinks(res.links)
+            setIsLoadingLinks(true)
+        })
         // console.log(userLinks)
-        setLinks(userLinks)
-        setIsLoadingLinks(true)
-    }, [userLinks])
+    }, [session, status])
 
 
 
     const copyToClipboard = (e: React.MouseEvent<HTMLElement>, link: Link) => {
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl)
         enqueueSnackbar('Copiado en el portapapeles', { variant: "success" })
+    }
+
+    const handleOpenDialog = (e: React.MouseEvent<HTMLElement>, link: Link) => {
+        openDialog()
+        router.replace(`${path}?sl=${link.shortUrl}`)
     }
 
     if (!isLoadingLinks) {
@@ -64,6 +95,7 @@ export const UserLinksItems = ({ userLinks }: Props) => {
 
 
     return (
+
         <tbody className="bg-white">
             {
                 links.map(link => (
@@ -71,8 +103,8 @@ export const UserLinksItems = ({ userLinks }: Props) => {
                         clsx(
 
                             {
-                                'bg-gray-100 hover:bg-gray-200': link.isActive,
-                                'bg-red-100 hover:bg-red-200': !link.isActive,
+                                'bg-gray-50 hover:bg-gray-100': link.isActive,
+                                'bg-red-50 hover:bg-red-100': !link.isActive,
                             }
                         )
                     }>
@@ -84,7 +116,12 @@ export const UserLinksItems = ({ userLinks }: Props) => {
                         </td>
 
                         <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-4 whitespace-nowrap">
-                            <a className="hover:underline" href={process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}>
+                            <a
+                                className="hover:underline"
+                                href={process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 {process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
                             </a>
                         </td>
@@ -115,15 +152,16 @@ export const UserLinksItems = ({ userLinks }: Props) => {
                         <td
                             onClick={(e) => copyToClipboard(e, link)}
                             className=" px-16 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-                            <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-105" />
+                            <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-125" />
                         </td>
                         <td
-                            className="px-10 py-4 text-sm leading-5 text-blue-500 whitespace-no-wrap border-b border-gray-200">
-                            <MdOutlineEditCalendar size={20} />
+                            onClick={(e) => handleOpenDialog(e, link) }
+                            className="px-10 py-4 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
+                            <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
                         </td>
                         <td
-                            className="px-12 py-4 text-sm leading-5 text-red-500 whitespace-no-wrap border-b border-gray-200">
-                            <RiDeleteBin2Line size={20} />
+                            className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
+                            <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                         </td>
 
 
@@ -133,5 +171,6 @@ export const UserLinksItems = ({ userLinks }: Props) => {
             }
 
         </tbody>
+
     )
 }

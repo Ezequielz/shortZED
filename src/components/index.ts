@@ -4,11 +4,14 @@
 export * from './auth/login/login-form/LoginForm';
 export * from './auth/register/register-form/RegisterForm';
 
+export * from './dialog/Dialog';
+
 export * from './forms/ShortForm';
 
 
 export * from './links/UserLinks';
 export * from './links/SingleLink';
+export * from './links/ModalLink';
 
 export * from './providers/Providers';
 
