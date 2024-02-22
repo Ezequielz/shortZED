@@ -10,14 +10,18 @@ import { MdOutlineEditCalendar } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { LinkSkeleton } from '..';
 import { useLinksStore } from '@/store';
-import { getUserLinks } from '@/action';
+import { getLink, getUserLinks } from '@/action';
 import { useUIStore } from '../../store/ui/ui-store';
 import { usePathname, useRouter } from 'next/navigation';
 
 
+interface Props {
+    slug?: string;
+    singleShow?: boolean
 
+}
 
-export const UserLinksItems = () => {
+export const LinksItems = ({ slug, singleShow }: Props) => {
 
 
     const router = useRouter();
@@ -26,14 +30,11 @@ export const UserLinksItems = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const status = useLinksStore(state => state.status);
-    const openDialog = useUIStore( state => state.openDialog )
-    const closeDialog = useUIStore( state => state.closeDialog )
+    const openDialog = useUIStore(state => state.openDialog)
+    const closeDialog = useUIStore(state => state.closeDialog)
 
     const [isLoadingLinks, setIsLoadingLinks] = useState(false);
     const [links, setLinks] = useState<Link[] | undefined>([]);
-
-
-
 
 
     // const handleActive = (e: React.MouseEvent<HTMLElement>, link: Link) => {
@@ -56,20 +57,25 @@ export const UserLinksItems = () => {
     useEffect(() => {
         closeDialog()
     }, [closeDialog])
-    
+
 
     useEffect(() => {
         const getLinks = async () => {
-
+            if (singleShow) {
+                const res = await getLink(slug!, session?.user?.id!)
+                return res;
+            }
             const res = await getUserLinks(session?.user?.id!, status)
             return res;
         }
+
+
         getLinks().then(res => {
             setLinks(res.links)
             setIsLoadingLinks(true)
         })
         // console.log(userLinks)
-    }, [session, status])
+    }, [session, status, slug, singleShow])
 
 
 
@@ -154,15 +160,22 @@ export const UserLinksItems = () => {
                             className=" px-16 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                             <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-125" />
                         </td>
-                        <td
-                            onClick={(e) => handleOpenDialog(e, link) }
-                            className="px-10 py-4 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
-                            <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
-                        </td>
-                        <td
-                            className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
-                            <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
-                        </td>
+                        {
+                            session?.user?.id && (
+                                <>
+                                    <td
+                                        onClick={(e) => handleOpenDialog(e, link)}
+                                        className="px-10 py-4 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
+                                        <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
+                                    </td>
+                                    <td
+                                        className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
+                                        <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
+                                    </td>
+                                </>
+
+                            )
+                        }
 
 
                     </tr>

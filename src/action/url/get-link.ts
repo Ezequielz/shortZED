@@ -2,13 +2,14 @@
 
 import prisma from '@/lib/prisma';
 
-export const getLink = async( slug: string ) => {
+export const getLink = async( slug: string, userId?: string ) => {
 
     try {
 
         const link = await prisma.link.findUnique({
             where: {
-                shortUrl: slug
+                shortUrl: slug,
+                userId: userId ? userId : null
             },
             include: {
                 
@@ -33,7 +34,7 @@ export const getLink = async( slug: string ) => {
 
         return {
             ok: true,
-            link: link
+            links: [link]
         }
         
     } catch (error) {

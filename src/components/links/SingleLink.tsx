@@ -1,13 +1,12 @@
 import { getLink } from "@/action"
 
-import { SingleLinkItem } from "./SingleLinkItem"
+import { LinksItems } from "./LinksItems"
 
 interface Props {
     short: string
 }
 export const SingleLink = async({ short }: Props) => {
 
-    const link = await getLink(short)
 
 
     return (
@@ -46,7 +45,7 @@ export const SingleLink = async({ short }: Props) => {
                             </tr>
                         </thead>
                       
-                       <SingleLinkItem  link={ link.link }/>
+                       <LinksItems  slug={ short } singleShow />
                     </table>
                 </div>
             </div>

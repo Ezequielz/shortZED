@@ -17,7 +17,7 @@ enum Role {
 
 model Link {
   id        String   @id @default(uuid())
-  url       String   @unique
+  url       String   
   createdAt DateTime @default(now())
   shortUrl  String   @unique
   clicks    Int      @default(0)

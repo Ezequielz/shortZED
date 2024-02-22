@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
 import { getUserLinks } from '@/action';
-import { UserLinksItems } from './UserLinksItems';
+import { LinksItems } from './LinksItems';
 import { StatusLinks } from './StatusLinks';
 
 export const UserLinks = async () => {
@@ -67,7 +67,7 @@ export const UserLinks = async () => {
                                 </tr>
                             </thead>
 
-                            <UserLinksItems />
+                            <LinksItems />
                         </table>
                         
                     </div>

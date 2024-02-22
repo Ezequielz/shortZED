@@ -18,5 +18,5 @@ export default async function LinkPage({ params }: Props) {
         notFound()
     }
     
-    redirect(link.link![0].url)
+    redirect(link.links![0].url)
 }
