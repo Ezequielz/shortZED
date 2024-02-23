@@ -15,7 +15,7 @@ export default async function LinksPage({ searchParams }: Props) {
     redirect('/');
   }
 
-  const modalSlug = searchParams?.sl as string;
+  const modalSlug = searchParams?.short as string;
   
   return (
 

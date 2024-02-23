@@ -25,10 +25,9 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
 
     const router = useRouter();
-    const path = usePathname();
+    const path = usePathname();    
     const { data: session } = useSession();
     const { enqueueSnackbar } = useSnackbar();
-
     const status = useLinksStore(state => state.status);
     const openDialog = useUIStore(state => state.openDialog)
     const closeDialog = useUIStore(state => state.closeDialog)
@@ -86,7 +85,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLElement>, link: Link) => {
         openDialog()
-        router.replace(`${path}?sl=${link.shortUrl}`)
+        router.replace(`${path}?short=${link.shortUrl}`)
     }
 
     if (!isLoadingLinks) {

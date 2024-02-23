@@ -1,6 +1,6 @@
 
 import { getLink } from "@/action";
-import {  LinkSkeleton, ShortForm, SingleLink } from "@/components";
+import {  LinkSkeleton, ModalLink, ShortForm, SingleLink } from "@/components";
 import { titleFont } from "@/components/config/fonts";
 import { Suspense } from "react";
 
@@ -24,6 +24,7 @@ export default async function Home({searchParams}: Props) {
         {
           short && (
             <Suspense fallback={ <LinkSkeleton quantity={1} /> }>
+              <ModalLink modalSlug={ short }/>
               <SingleLink short={short}/>
             </Suspense>
           )
