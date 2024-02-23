@@ -1,13 +1,14 @@
+import React from 'react'
 
 interface Props {
-    quantity: number
-
+    row: number
 }
 
-export const LinkSkeleton = ( { quantity }: Props ) => {
-    const links = Array(quantity).fill(0)
+export const LinksSkeleton = ({row = 1}: Props) => {
+    const links = Array(row).fill(0)
+    
     return (
-        <tbody className="animate-pulse">
+        <>
             {links.map((link, i) => (
                 <tr key={i}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 ">
@@ -37,6 +38,6 @@ export const LinkSkeleton = ( { quantity }: Props ) => {
                 </tr>
             ))}
 
-        </tbody>
+        </>
     )
 }

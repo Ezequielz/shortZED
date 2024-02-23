@@ -1,16 +1,20 @@
 import { getLink } from "@/action"
 
 import { LinksItems } from "./LinksItems"
+import { ModalLink } from ".."
+import { auth } from "@/auth.config"
 
 interface Props {
     short: string
 }
-export const SingleLink = async({ short }: Props) => {
+export const SingleLink = async ({ short }: Props) => {
 
+    const session = await auth();
 
 
     return (
         <section className="flex flex-col mt-8">
+            <ModalLink short={short} />
             <div className="py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div
                     className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
@@ -35,17 +39,26 @@ export const SingleLink = async({ short }: Props) => {
                                 <th
                                     className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
                                     Copiar Short</th>
-                                <th
-                                    className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                                    Editar</th>
-                                <th
-                                    className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                                    Eliminar</th>
+                                {
+                                    session && (
+                                        <>
+                                            <th
+                                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                                Editar</th>
+                                            <th
+                                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                                Eliminar</th>
+                                        </>
+
+                                    )
+                                }
 
                             </tr>
                         </thead>
-                      
-                       <LinksItems  slug={ short } singleShow />
+                        <tbody className="bg-white">
+                            <LinksItems slug={short} singleShow />
+
+                        </tbody>
                     </table>
                 </div>
             </div>

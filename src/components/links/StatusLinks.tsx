@@ -2,33 +2,47 @@
 
 import { useLinksStore } from "@/store";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 import { IoCheckmarkOutline, IoWarningOutline, IoLinkOutline } from "react-icons/io5"
+import { LinksItems } from './LinksItems';
+import { Link } from "@prisma/client";
+import prisma from '@/lib/prisma';
+import { getUserLinks } from "@/action";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { StatusLinksSeleton } from "..";
 
 
-interface Props {
-    links: ({
-        user: {
-            image: string | null;
-            name: string | null;
-            email: string | null;
-        } | null;
-    } & {
-        id: string;
-        url: string;
-        createdAt: Date;
-        shortUrl: string;
-        clicks: number;
-        limit: number;
-        isActive: boolean;
-        userId: string | null;
-    })[]
-}
 
 
-export const StatusLinks = ({ links }: Props) => {
+
+export const StatusLinks = () => {
 
     const changeStatus = useLinksStore(state => state.changeStatus);
     const status = useLinksStore(state => state.status);
+    const [isLoading, setIsLoading] = useState(true)
+    const [links, setLinks] = useState<Link[]>([])
+    const { data: session } = useSession()
+
+   
+    useEffect(() => {
+        const getLinks = async () => {
+            const links = await getUserLinks(session?.user!.id!);
+           
+            setLinks(links.links!)
+            setIsLoading(false)
+        }
+        getLinks()
+
+      
+    }, [session?.user])
+
+    if (isLoading) {
+        return (
+            <StatusLinksSeleton />
+        )
+    }
+    
 
     return (
         <section className="flex flex-wrap -mx-6">

@@ -6,15 +6,18 @@ import clsx from 'clsx';
 import { IoIosArrowForward } from "react-icons/io";
 
 
-import { setUrl } from '@/action';
+import { updateUrl } from '@/action';
 import { usePathname, useRouter } from 'next/navigation';
 
 interface FormInputs {
-    url: string;
     hash?: string
 };
 
-export const ShortForm = () => {
+interface Props {
+    url: string
+}
+
+export const UpdateForm = ({url}: Props) => {
 
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
@@ -25,14 +28,13 @@ export const ShortForm = () => {
     const session = useSession();
     const userId = session.data?.user?.id;
 
-    const regexURL = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         setErrorMessage('');
-        const { url, hash } = data;
+        const { hash } = data;
 
         // server action
-        const resp = await setUrl(url, hash, userId);
+        const resp = await updateUrl( url, hash, userId);
         
         if (!resp.ok) {
             setErrorMessage(resp.message)
@@ -50,32 +52,11 @@ export const ShortForm = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] ">
 
+            <h3>Actualizar url {url}</h3>
+
             <div className='flex flex-col justify-center gap-1'>
                 {/* URL */}
-                <div className='w-3/4 m-auto'>
-                    <input
-                        type="text"
-                        autoFocus
-                        placeholder="Inerte URL que quiera acortar ej: https://mipaginaweb.com/prod?q=asfasdfdfsdf"
-                        className={
-                            clsx(
-                                "w-full p-2 border rounded-md bg-gray-200 text-slate-800",
-                                {
-                                    'border-red-500': errors.url,
-                                }
-                            )
-                        }
-                        {...register("url", { required: true, pattern: regexURL })}
-                    />
-
-                    {errors.url?.type === 'required' && (
-                        <span className="text-red-500">El url es obligatorio</span>
-                    )}
-                    {errors.url?.type === 'pattern' && (
-                        <span className="text-red-500">Debe ser un url válido</span>
-                    )}
-
-                </div>
+               
                 {/* HASH y BUTTON */}
                 <div className='w-3/4  m-auto flex gap-2 justify-center'>
                     {/* HASH */}
@@ -87,7 +68,7 @@ export const ShortForm = () => {
                             clsx(
                                 "mt-2 p-2 border rounded-md bg-gray-200 text-slate-800",
                                 {
-                                    'border-red-500': errors.url,
+                                    'border-red-500': errors.hash,
                                 }
                             )
                         }
@@ -100,7 +81,7 @@ export const ShortForm = () => {
                             disabled={isSubmitting}
                             className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1`}>
 
-                            <span className="z-10">Acortar url</span>
+                            <span className="z-40">Acortar url</span>
                             <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
 
                             <div

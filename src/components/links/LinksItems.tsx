@@ -8,11 +8,11 @@ import { useSnackbar } from 'notistack'
 import { IoCopyOutline } from 'react-icons/io5'
 import { MdOutlineEditCalendar } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import { LinkSkeleton } from '..';
 import { useLinksStore } from '@/store';
 import { getLink, getUserLinks } from '@/action';
 import { useUIStore } from '../../store/ui/ui-store';
 import { usePathname, useRouter } from 'next/navigation';
+import { LinksSkeleton } from '..';
 
 
 interface Props {
@@ -25,7 +25,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
 
     const router = useRouter();
-    const path = usePathname();    
+    const path = usePathname();
     const { data: session } = useSession();
     const { enqueueSnackbar } = useSnackbar();
     const status = useLinksStore(state => state.status);
@@ -89,8 +89,9 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
     }
 
     if (!isLoadingLinks) {
+      
         return (
-            <LinkSkeleton quantity={7} />
+            <LinksSkeleton row={ singleShow ? 1 : 7} />
         )
     }
 
@@ -100,8 +101,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
 
     return (
-
-        <tbody className="bg-white">
+        <>
             {
                 links.map(link => (
                     <tr key={link.id} className={
@@ -181,8 +181,9 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
                 ))
             }
+        </>
 
-        </tbody>
+
 
     )
 }

@@ -1,35 +1,53 @@
 
+
 import { getLink } from "@/action";
-import {  LinkSkeleton, ModalLink, ShortForm, SingleLink } from "@/components";
+import { auth } from "@/auth.config";
+import { ShortForm, SingleLink } from "@/components";
 import { titleFont } from "@/components/config/fonts";
-import { Suspense } from "react";
+import { redirect } from "next/navigation";
 
 
 interface Props {
   searchParams?: { [key: string]: string | string[] | undefined }
 }
-export default async function Home({searchParams}: Props) {
- 
- 
-  const short = searchParams?.short as string
+export default async function Home({ searchParams }: Props) {
 
- 
+  const short = searchParams?.short as string
+  const session = await auth()
+
+  if (short && session?.user?.id) {
+    console.log('first')
+    const { ok } = await getLink(short, session?.user?.id)
+
+    if (!ok) {
+      redirect('/')
+    }
+  }
+
+  if (short && !session?.user?.id) {
+
+    const { ok } = await getLink(short)
+    if (!ok) {
+      redirect('/')
+    }
+  }
+
+
 
   return (
-      <>
-        <h1 className={`${titleFont.className}  flex justify-center text-2xl `}> Acortador de URL</h1>
+    <>
+      <h1 className={`${titleFont.className}  flex justify-center text-2xl `}> Acortador de URL</h1>
 
-        <ShortForm />
+      <ShortForm />
 
-        {
-          short && (
-            <Suspense fallback={ <LinkSkeleton quantity={1} /> }>
-              <ModalLink modalSlug={ short }/>
-              <SingleLink short={short}/>
-            </Suspense>
-          )
-        }
-    
-      </>
+      {
+        short && (
+       
+            <SingleLink short={short} />
+      
+        )
+      }
+
+    </>
   );
 }
