@@ -52,13 +52,11 @@ export const UpdateForm = ({url}: Props) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] ">
 
-            <h3>Actualizar url {url}</h3>
-
             <div className='flex flex-col justify-center gap-1'>
                 {/* URL */}
                
                 {/* HASH y BUTTON */}
-                <div className='w-3/4  m-auto flex gap-2 justify-center'>
+                <div className='  m-auto flex gap-2 justify-center'>
                     {/* HASH */}
                     <input
                         type="text"
@@ -66,7 +64,7 @@ export const UpdateForm = ({url}: Props) => {
                         placeholder="hash personalizado"
                         className={
                             clsx(
-                                "mt-2 p-2 border rounded-md bg-gray-200 text-slate-800",
+                                "mt-2 p-1 border rounded-md bg-gray-200 text-slate-800",
                                 {
                                     'border-red-500': errors.hash,
                                 }
@@ -81,7 +79,7 @@ export const UpdateForm = ({url}: Props) => {
                             disabled={isSubmitting}
                             className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1`}>
 
-                            <span className="z-40">Acortar url</span>
+                            <span className="z-40">Actualizar hash</span>
                             <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
 
                             <div
