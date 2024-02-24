@@ -8,9 +8,10 @@ import { IoIosArrowForward } from "react-icons/io";
 
 import { updateUrl } from '@/action';
 import { usePathname, useRouter } from 'next/navigation';
+import { enqueueSnackbar } from 'notistack';
 
 interface FormInputs {
-    hash?: string
+    hash: string
 };
 
 interface Props {
@@ -21,12 +22,14 @@ export const UpdateForm = ({url}: Props) => {
 
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset} = useForm<FormInputs>();
+    const { register, handleSubmit, formState: { errors, isSubmitting,isSubmitSuccessful }, reset} = useForm<FormInputs>();
     const path = usePathname();
 
 
     const session = useSession();
     const userId = session.data?.user?.id;
+
+    if (!userId) return null
 
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -34,7 +37,7 @@ export const UpdateForm = ({url}: Props) => {
         const { hash } = data;
 
         // server action
-        const resp = await updateUrl( url, hash, userId);
+        const resp = await updateUrl( url, userId, hash);
         
         if (!resp.ok) {
             setErrorMessage(resp.message)
@@ -44,13 +47,18 @@ export const UpdateForm = ({url}: Props) => {
             }
             return;
         };
-        reset()
-        router.replace(`${path}?short=${resp.shortUrl}`)
+   
+        
+        if (isSubmitSuccessful) {
+            reset()
+            router.replace(`${path}?short=${resp.shortUrl}`)
+            enqueueSnackbar('Hash actualizado', { variant: "success" })
+        }
 
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] ">
+        <form onSubmit={handleSubmit(onSubmit)} className=" w-fit ">
 
             <div className='flex flex-col justify-center gap-1'>
                 {/* URL */}
@@ -89,8 +97,8 @@ export const UpdateForm = ({url}: Props) => {
 
                     </div>
 
-                    <span className="text-red-500 flex items-center ">{errorMessage}</span>
                 </div>
+                    <span className="text-red-500 flex items-center ">{errorMessage}</span>
 
             </div>
 

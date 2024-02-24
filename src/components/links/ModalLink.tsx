@@ -1,7 +1,7 @@
 
 
 import { getLink } from "@/action"
-import { Dialog, UpdateForm } from ".."
+import { Dialog, Pricing, UpdateForm } from ".."
 import { auth } from "@/auth.config"
 
 
@@ -18,8 +18,15 @@ export const ModalLink = async ({ short }: Props) => {
 
     if (!ok) return null
 
-    const { id, userId, user,createdAt, ...rest } = links![0]
-    console.log(rest)
+    const { url, clicks, shortUrl, limit} = links![0]
+
+    const object = {
+        Url: url,
+        Hash: shortUrl,
+        Clicks: clicks,
+        Limite: limit <= 10 ? limit + ' ' + 'Gratis!' : limit,
+    }
+   
 
     return (
 
@@ -27,11 +34,11 @@ export const ModalLink = async ({ short }: Props) => {
             <div className="flex flex-col justify-center items-center p-2 rounded-lg">
                 <h1 className="text-2xl font-bold">Editar Link</h1>
 
-                <ul className="w-full">
+                <ul className="w-full ">
                     {
-                      Object.entries(rest).map(([prop, value]) => (
-                        <li key={prop} className="flex justify-between">
-                            <span>{prop}</span>
+                      Object.entries(object).map(([prop, value]) => (
+                        <li key={prop} className="p-2 flex justify-between odd:bg-neutral-600 even:bg-neutral-500">
+                            <span>{prop}:</span>
                             <span>{value}</span>
                         </li>
                       ))
@@ -40,7 +47,8 @@ export const ModalLink = async ({ short }: Props) => {
                 </ul>
 
                 <UpdateForm url={links![0].url} />
-
+                <h1 className="text-2xl font-bold p-4">Precios</h1>
+                <Pricing />
             </div>
         </Dialog>
     )

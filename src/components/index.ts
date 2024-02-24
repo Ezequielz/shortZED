@@ -15,6 +15,8 @@ export * from './links/SingleLink';
 export * from './links/ModalLink';
 export * from './links/TableLinks';
 
+export * from './payment/Pricing';
+
 export * from './providers/Providers';
 
 export * from './profile/Profile';
