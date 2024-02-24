@@ -1,11 +1,13 @@
 'use server'
 
+import { sleep } from '@/helpers';
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+
 
 
 export const updateUrl = async (url: string, userId: string, hash: string) => {
 
+    // await sleep(2)
     if (!hash) {
         return {
             ok: false,
@@ -36,6 +38,7 @@ export const updateUrl = async (url: string, userId: string, hash: string) => {
             userId: userId
         }
     });
+    console.log(urlExists)
 
     if (!urlExists) {
         return {
@@ -55,9 +58,9 @@ export const updateUrl = async (url: string, userId: string, hash: string) => {
             }
         })
 
-        revalidatePath('/')
-        revalidatePath('/links')
-        revalidatePath(`/links${hash}`)
+        // revalidatePath('/')
+        // revalidatePath('/links')
+        // revalidatePath(`/links${hash}`)
 
         return {
             url: url,

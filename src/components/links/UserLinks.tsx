@@ -4,6 +4,7 @@ import { auth } from '@/auth.config';
 
 import { StatusLinks } from './StatusLinks';
 import { TableLinks } from '..';
+import { getUserLinks } from '@/action';
 
 
 
@@ -19,7 +20,9 @@ export const UserLinks = async () => {
     };
    
 
-    // const { links, ok } = await getUserLinks(session.user.id);
+    const { links, ok } = await getUserLinks(session.user.id);
+
+    const row = links?.length ?? 7
 
     // if (!ok || !links) {
     //     return <div>Loading...</div>;
@@ -43,7 +46,7 @@ export const UserLinks = async () => {
                         className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg">
                         
 
-                        <TableLinks />
+                        <TableLinks row={row}/>
 
 
                     </div>

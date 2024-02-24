@@ -3,7 +3,7 @@
 import { getLink } from "@/action"
 import { Dialog, Pricing, UpdateForm } from ".."
 import { auth } from "@/auth.config"
-
+import { ModalCloseBtn } from "./ModalCloseBtn"
 
 interface Props {
     short: string
@@ -12,13 +12,12 @@ interface Props {
 
 export const ModalLink = async ({ short }: Props) => {
 
-    const session = await auth()
-    const { ok, links } = await getLink(short, session?.user?.id)
-
-
+ 
+    const { ok, links } = await getLink(short)
+  
     if (!ok) return null
 
-    const { url, clicks, shortUrl, limit} = links![0]
+    const { url, clicks, shortUrl, limit } = links![0]
 
     const object = {
         Url: url,
@@ -26,22 +25,23 @@ export const ModalLink = async ({ short }: Props) => {
         Clicks: clicks,
         Limite: limit <= 10 ? limit + ' ' + 'Gratis!' : limit,
     }
-   
+
 
     return (
 
         <Dialog >
             <div className="flex flex-col justify-center items-center p-2 rounded-lg">
-                <h1 className="text-2xl font-bold">Editar Link</h1>
+                <h3 className="text-2xl font-bold">Editar Link</h3>
+                <ModalCloseBtn />
 
                 <ul className="w-full ">
                     {
-                      Object.entries(object).map(([prop, value]) => (
-                        <li key={prop} className="p-2 flex justify-between odd:bg-neutral-600 even:bg-neutral-500">
-                            <span>{prop}:</span>
-                            <span>{value}</span>
-                        </li>
-                      ))
+                        Object.entries(object).map(([prop, value]) => (
+                            <li key={prop} className="p-2 flex justify-between odd:bg-neutral-600 even:bg-neutral-500">
+                                <span>{prop}:</span>
+                                <span>{value}</span>
+                            </li>
+                        ))
                     }
 
                 </ul>

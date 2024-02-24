@@ -1,8 +1,11 @@
 
 import { LinksItems } from './LinksItems'
 
+interface Props {
+    row?: number
+}
 
-export const TableLinks = () => {
+export const TableLinks = ({row}: Props) => {
    
     return (
         <table className="min-w-full">
@@ -38,7 +41,7 @@ export const TableLinks = () => {
             <tbody className="bg-white">
 
             
-                <LinksItems />
+                <LinksItems row={row}/>
             </tbody>
         </table>
     )

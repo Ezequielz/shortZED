@@ -9,7 +9,7 @@ import { IoCopyOutline } from 'react-icons/io5'
 import { MdOutlineEditCalendar } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { useLinksStore } from '@/store';
-import { getLink, getUserLinks } from '@/action';
+import { deleteUrl, getLink, getUserLinks } from '@/action';
 import { useUIStore } from '../../store/ui/ui-store';
 import { usePathname, useRouter } from 'next/navigation';
 import { LinksSkeleton } from '..';
@@ -17,41 +17,29 @@ import { LinksSkeleton } from '..';
 
 interface Props {
     slug?: string;
-    singleShow?: boolean
+    singleShow?: boolean,
+    row?: number
 
 }
 
-export const LinksItems = ({ slug, singleShow }: Props) => {
+export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
 
 
     const router = useRouter();
     const path = usePathname();
     const { data: session } = useSession();
     const { enqueueSnackbar } = useSnackbar();
+
     const status = useLinksStore(state => state.status);
+    const refresh = useLinksStore(state => state.refreshLinks);
+    const changeRefresh = useLinksStore(state => state.changeRefresh);
+
     const openDialog = useUIStore(state => state.openDialog)
     const closeDialog = useUIStore(state => state.closeDialog)
 
     const [isLoadingLinks, setIsLoadingLinks] = useState(false);
     const [links, setLinks] = useState<Link[] | undefined>([]);
-
-
-    // const handleActive = (e: React.MouseEvent<HTMLElement>, link: Link) => {
-    //     setActive(link.id)
-    //     link.isActive = !link.isActive
-    //     setLinks([...links])
-    // }
-
-    // const handleDelete = async (e: React.MouseEvent<HTMLElement>, link: Link) => {
-    //     const res = await fetch(`/api/links/${link.id}`, {
-    //         method: 'DELETE'
-    //     })
-
-    //     if (res.status === 200) {
-    //         setLinks(links.filter(l => l.id !== link.id))
-    //         enqueueSnackbar('Eliminado', { variant: "success" })
-    //     }
-    // }
+    
 
     useEffect(() => {
         closeDialog()
@@ -61,7 +49,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
     useEffect(() => {
         const getLinks = async () => {
             if (singleShow) {
-                const res = await getLink(slug!, session?.user?.id!)
+                const res = await getLink(slug!)
                 return res;
             }
             const res = await getUserLinks(session?.user?.id!, status)
@@ -74,7 +62,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
             setIsLoadingLinks(true)
         })
         // console.log(userLinks)
-    }, [session, status, slug, singleShow])
+    }, [session, status, slug, singleShow, refresh])
 
 
 
@@ -85,13 +73,22 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLElement>, link: Link) => {
         openDialog()
+        changeRefresh()
         router.replace(`${path}?short=${link.shortUrl}`)
+    }
+
+    const handleDeleteUrl = async (e: React.MouseEvent<HTMLElement>, link: Link) => {
+        await deleteUrl(link.shortUrl, session?.user?.id!)
+        // window.location.reload()
+        changeRefresh()
+        // router.refresh()
+
     }
 
     if (!isLoadingLinks) {
       
         return (
-            <LinksSkeleton row={ singleShow ? 1 : 7} />
+            <LinksSkeleton row={ singleShow ? 1 : row} />
         )
     }
 
@@ -168,6 +165,7 @@ export const LinksItems = ({ slug, singleShow }: Props) => {
                                         <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
                                     </td>
                                     <td
+                                        onClick={(e) => handleDeleteUrl(e, link)}
                                         className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                                         <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                                     </td>

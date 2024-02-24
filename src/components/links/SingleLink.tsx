@@ -1,4 +1,3 @@
-import { getLink } from "@/action"
 
 import { LinksItems } from "./LinksItems"
 import { ModalLink } from ".."

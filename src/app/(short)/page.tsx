@@ -17,7 +17,7 @@ export default async function Home({ searchParams }: Props) {
 
   if (short && session?.user?.id) {
     console.log('first')
-    const { ok } = await getLink(short, session?.user?.id)
+    const { ok } = await getLink(short)
 
     if (!ok) {
       redirect('/')

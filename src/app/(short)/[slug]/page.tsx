@@ -1,4 +1,4 @@
-import { getLink } from "@/action";
+import { getLink, updateClicks } from "@/action";
 import { notFound, redirect } from "next/navigation";
 
 interface Props {
@@ -10,12 +10,19 @@ interface Props {
 
 export default async function LinkPage({ params }: Props) {
     const { slug } = params;
-
-    const link = await getLink(slug)
-
-
+    
+    const [ link ] = await Promise.all([
+        getLink(slug),
+        updateClicks(slug)
+    ])
+    
+    
     if (!link.ok) {
         notFound()
+    }
+   
+    if (link?.links && !link.links[0].isActive) {
+        redirect(`/inactive-link/${link.links[0].shortUrl}`)
     }
     
     redirect(link.links![0].url)
