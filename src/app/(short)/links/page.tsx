@@ -11,7 +11,7 @@ export default async function LinksPage({searchParams}: Props) {
   const short = searchParams?.short as string;
 
   if (!session || !session.user?.id) {
-    redirect('/');
+    redirect('/auth/login');
   }
 
   
