@@ -39,7 +39,7 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
 
     const [isLoadingLinks, setIsLoadingLinks] = useState(false);
     const [links, setLinks] = useState<Link[] | undefined>([]);
-    
+
 
     useEffect(() => {
         closeDialog();
@@ -86,9 +86,9 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
     };
 
     if (!isLoadingLinks) {
-      
+
         return (
-            <LinksSkeleton row={ singleShow ? 1 : row} />
+            <LinksSkeleton row={singleShow ? 1 : row} />
         );
     };
 
@@ -110,10 +110,19 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                             }
                         )
                     }>
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-                            <div className="text-sm leading-5 text-gray-500">
-                                {link.url.length > 20 ? link.url.slice(0, 20) + '...' : link.url}
+                        <td className=" px-6 py-4  border-b border-gray-200">
+                            <div className='group relative'>
 
+                                <a href={link.url} className="text-sm leading-5 text-gray-500">
+                                    {link.url.length > 30 ? link.url.slice(0, 30) + '...' : link.url}
+
+                                </a>
+                                <div className="[transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute bottom-5 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
+                                    <div className="flex max-w-xs flex-col items-center">
+                                        <div style={{ textWrap: 'balance' }} className="rounded bg-violet-500 p-2 text-xs text-center shadow-lg">{link.url}</div>
+                                        {/* <div className="clip-bottom h-2 w-4 bg-gray-900"></div> */}
+                                    </div>
+                                </div>
                             </div>
                         </td>
 
