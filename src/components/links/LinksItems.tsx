@@ -6,7 +6,7 @@ import { Link } from '@prisma/client'
 import { clsx } from 'clsx'
 import { useSnackbar } from 'notistack'
 import { IoCopyOutline } from 'react-icons/io5'
-import { MdOutlineEditCalendar } from 'react-icons/md'
+import { MdOutlineEditCalendar, MdOutlineQrCode2 } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { useLinksStore } from '@/store';
 import { deleteUrl, getLink, getUserLinks } from '@/action';
@@ -110,19 +110,24 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                             }
                         )
                     }>
-                        <td className=" px-6 py-4  border-b border-gray-200">
-                            <div className='group relative'>
+                        <td className=" px-6 border-b border-gray-200">
+                            <div className='py-5 '>
 
-                                <a href={link.url} className="text-sm leading-5 text-gray-500">
+                                <a href={link.url} target='_blank' rel='noreferrer' className="relative group text-sm  text-gray-500">
                                     {link.url.length > 30 ? link.url.slice(0, 30) + '...' : link.url}
 
+                                    {
+                                        link.url.length > 30 && (
+
+                                            <div className="w-fit [transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute  bottom-5 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
+                                                <div className="flex max-w-xs flex-col items-center">
+                                                    <div className="rounded bg-violet-500 p-2 text-xs text-center shadow-lg">{link.url}</div>
+                                                    {/* <div className="clip-bottom h-2 w-4 bg-gray-900"></div> */}
+                                                </div>
+                                            </div>
+                                        )
+                                    }
                                 </a>
-                                <div className="[transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute bottom-5 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
-                                    <div className="flex max-w-xs flex-col items-center">
-                                        <div style={{ textWrap: 'balance' }} className="rounded bg-violet-500 p-2 text-xs text-center shadow-lg">{link.url}</div>
-                                        {/* <div className="clip-bottom h-2 w-4 bg-gray-900"></div> */}
-                                    </div>
-                                </div>
                             </div>
                         </td>
 
@@ -162,12 +167,19 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                             {link.limit}</td>
                         <td
                             onClick={(e) => copyToClipboard(e, link)}
-                            className=" px-16 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
+                            className=" px-8 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                             <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-125" />
                         </td>
                         {
                             session?.user?.id && (
                                 <>
+                                    <td
+                                        className="px-6 py-4 text-sm leading-5 text-violet-400 whitespace-no-wrap border-b border-gray-200">
+                                        <a href={link.qr} download={link.qr}>
+
+                                            <MdOutlineQrCode2 size={20} className="cursor-pointer hover:text-violet-600 hover:scale-125" />
+                                        </a>
+                                    </td>
                                     <td
                                         onClick={(e) => handleOpenDialog(e, link)}
                                         className="px-10 py-4 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
@@ -178,6 +190,7 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                                         className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                                         <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                                     </td>
+
                                 </>
 
                             )
