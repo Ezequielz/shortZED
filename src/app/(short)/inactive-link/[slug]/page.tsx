@@ -1,7 +1,7 @@
-import { getLink } from "@/action";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { getLink } from '@/action';
 
 
 interface Props {
@@ -12,13 +12,13 @@ interface Props {
 
 export default async function ({ params }: Props) {
 
-    const { slug } = params
+    const { slug } = params;
 
-    const link = await getLink(slug)
+    const link = await getLink(slug);
 
     if (!link.ok) {
-        notFound()
-    }
+        notFound();
+    };
 
 
     return (

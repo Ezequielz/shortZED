@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import QRCode from 'qrcode';
 
 
 export const setUrl = async (url: string, hash?: string, userId?: string) => {
@@ -82,20 +83,7 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
             }
         };
 
-
-        // // si el url existe y viene el usuario, devolver el url si coincide el usuario
-        // if (urlExists && userId === urlExists?.userId ) {
-        //    console.log('first')
-        //         return {
-        //             ok: false,
-        //             message: 'El url ya se encuentra guardado',
-        //             url: urlExists.url,
-        //             shortUrl: urlExists.shortUrl,
-        //         }
-            
-        // }
-
-       
+      
 
         //  verificar que la url es válida
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -106,38 +94,20 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
             }
         }
 
-      
-
-        // si el url existe y viene el usuario, pero no coincide  el usuario crear el url con otro id
-        // if (userId && urlExists) {
-        //     if (userId !== urlExists.userId) {
-        //         await prisma.link.create({
-        //             data: {
-        //                 url: url,
-        //                 shortUrl: shortUrl,
-        //                 userId: userId
-        //             }
-        //         });
-        //     }
-
-        //     return {
-        //         ok: true,
-        //         message: 'Url creado exitosamente',
-        //         url: url,
-        //         shortUrl: shortUrl,
-        //     }
-
-        // }
+    
 
         // si no existe el url, crear el url y agregar el usuario si viene userId
         if (!urlExists ) {
+
+            const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL_DEV + shortUrl);
 
             if (userId) {
                 await prisma.link.create({
                     data: {
                         url: url,
                         shortUrl: shortUrl,
-                        userId: userId
+                        userId: userId,
+                        qr
                     }
                 });
                 revalidatePath('/')
@@ -147,6 +117,7 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
                     data: {
                         url: url,
                         shortUrl: shortUrl,
+                        qr
                     }
                 });
 

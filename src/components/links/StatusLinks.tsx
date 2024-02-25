@@ -1,16 +1,13 @@
 'use client'
 
-import { useLinksStore } from "@/store";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { IoCheckmarkOutline, IoWarningOutline, IoLinkOutline } from "react-icons/io5"
-import { LinksItems } from './LinksItems';
-import { Link } from "@prisma/client";
-import prisma from '@/lib/prisma';
-import { getUserLinks } from "@/action";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { StatusLinksSeleton } from "..";
+import { useLinksStore } from '@/store';
+import clsx from 'clsx';
+import { useEffect, useState } from 'react';
+import { IoCheckmarkOutline, IoWarningOutline, IoLinkOutline } from 'react-icons/io5'
+import { Link } from '@prisma/client';
+import { getUserLinks } from '@/action';
+import { useSession } from 'next-auth/react';
+import { StatusLinksSeleton } from '..';
 
 
 
@@ -20,28 +17,28 @@ export const StatusLinks = () => {
 
     const changeStatus = useLinksStore(state => state.changeStatus);
     const status = useLinksStore(state => state.status);
-    const [isLoading, setIsLoading] = useState(true)
-    const [links, setLinks] = useState<Link[]>([])
-    const { data: session } = useSession()
+    const [isLoading, setIsLoading] = useState(true);
+    const [links, setLinks] = useState<Link[]>([]);
+    const { data: session } = useSession();
 
    
     useEffect(() => {
         const getLinks = async () => {
             const links = await getUserLinks(session?.user!.id!);
            
-            setLinks(links.links!)
-            setIsLoading(false)
+            setLinks(links.links!);
+            setIsLoading(false);
         }
-        getLinks()
+        getLinks();
 
       
-    }, [session?.user])
+    }, [session?.user]);
 
     if (isLoading) {
         return (
             <StatusLinksSeleton />
-        )
-    }
+        );
+    };
     
 
     return (

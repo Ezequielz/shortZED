@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/auth.config";
-import { ModalLink, UserLinks } from "@/components";
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth.config';
+import { ModalLink, UserLinks } from '@/components';
 
 interface Props {
   searchParams?: { [key: string]: string | string[] | undefined }
@@ -11,8 +11,8 @@ export default async function LinksPage({searchParams}: Props) {
   const short = searchParams?.short as string;
 
   if (!session || !session.user?.id) {
-    redirect('/auth/login');
-  }
+    redirect('/');
+  };
 
   
   return (

@@ -20,7 +20,7 @@ interface Props {
     singleShow?: boolean,
     row?: number
 
-}
+};
 
 export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
 
@@ -34,67 +34,67 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
     const refresh = useLinksStore(state => state.refreshLinks);
     const changeRefresh = useLinksStore(state => state.changeRefresh);
 
-    const openDialog = useUIStore(state => state.openDialog)
-    const closeDialog = useUIStore(state => state.closeDialog)
+    const openDialog = useUIStore(state => state.openDialog);
+    const closeDialog = useUIStore(state => state.closeDialog);
 
     const [isLoadingLinks, setIsLoadingLinks] = useState(false);
     const [links, setLinks] = useState<Link[] | undefined>([]);
     
 
     useEffect(() => {
-        closeDialog()
-    }, [closeDialog])
+        closeDialog();
+    }, [closeDialog]);
 
 
     useEffect(() => {
         const getLinks = async () => {
             if (singleShow) {
-                const res = await getLink(slug!)
+                const res = await getLink(slug!);
                 return res;
-            }
-            const res = await getUserLinks(session?.user?.id!, status)
+            };
+            const res = await getUserLinks(session?.user?.id!, status);
             return res;
-        }
+        };
 
 
         getLinks().then(res => {
-            setLinks(res.links)
-            setIsLoadingLinks(true)
-        })
+            setLinks(res.links);
+            setIsLoadingLinks(true);
+        });
         // console.log(userLinks)
-    }, [session, status, slug, singleShow, refresh])
+    }, [session, status, slug, singleShow, refresh]);
 
 
 
     const copyToClipboard = (e: React.MouseEvent<HTMLElement>, link: Link) => {
-        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl)
-        enqueueSnackbar('Copiado en el portapapeles', { variant: "success" })
-    }
+        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl);
+        enqueueSnackbar('Copiado en el portapapeles', { variant: "success" });
+    };
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLElement>, link: Link) => {
-        openDialog()
-        changeRefresh()
-        router.replace(`${path}?short=${link.shortUrl}`)
-    }
+        openDialog();
+        changeRefresh();
+        router.replace(`${path}?short=${link.shortUrl}`);
+    };
 
     const handleDeleteUrl = async (e: React.MouseEvent<HTMLElement>, link: Link) => {
-        await deleteUrl(link.shortUrl, session?.user?.id!)
-        // window.location.reload()
-        changeRefresh()
-        // router.refresh()
+        await deleteUrl(link.shortUrl, session?.user?.id!);
+        // window.location.reload();
+        changeRefresh();
+        // router.refresh();
 
-    }
+    };
 
     if (!isLoadingLinks) {
       
         return (
             <LinksSkeleton row={ singleShow ? 1 : row} />
-        )
-    }
+        );
+    };
 
     if (!links) {
-        return null
-    }
+        return null;
+    };
 
 
     return (

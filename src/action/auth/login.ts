@@ -12,15 +12,15 @@ export const login = async (email: string, password: string) => {
     return {
       ok: true,
       message: 'Login exitoso, redirigiendo a la página principal'
-    }
+    };
 
   } catch (error) {
     console.log(error);
     return {
       ok: false,
       message: 'Email o contraseña incorrectas'
-    }
-  }
+    };
+  };
 
 }
 

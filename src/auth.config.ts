@@ -6,7 +6,7 @@ import { z } from 'zod';
 import bcryptjs from 'bcryptjs';
 import prisma from '@/lib/prisma';
 import { Adapter } from 'next-auth/adapters';
-import { redirect } from 'next/navigation';
+
 
 export const authConfig: NextAuthConfig = {
   pages: {

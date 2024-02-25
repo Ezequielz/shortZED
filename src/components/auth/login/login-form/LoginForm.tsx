@@ -18,8 +18,8 @@ type FormInputs = {
 
 export const LoginForm = () => {
 
-    const searchParams = useSearchParams()
-    const error = searchParams.get('error')
+    const searchParams = useSearchParams();
+    const error = searchParams.get('error');
     const [errorMessage, setErrorMessage] = useState('');
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<FormInputs>();
 
@@ -40,7 +40,7 @@ export const LoginForm = () => {
 
         window.location.replace('/');
 
-    }
+    };
 
     const oauthLogin = async () => {
         setErrorMessage('');
@@ -55,13 +55,13 @@ export const LoginForm = () => {
             await providerLogin('google', options);
 
         } catch (error) {
-            console.log(error)
+            console.log(error);
             setErrorMessage('error');
             throw error;
-        }
+        };
 
 
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">

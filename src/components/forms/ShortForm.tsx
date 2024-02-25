@@ -100,7 +100,7 @@ export const ShortForm = () => {
                             disabled={isSubmitting}
                             className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1`}>
 
-                            <span className="z-10">Acortar url</span>
+                            <span className="z-5">Acortar url</span>
                             <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
 
                             <div

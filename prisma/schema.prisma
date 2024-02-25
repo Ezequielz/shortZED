@@ -17,12 +17,13 @@ enum Role {
 
 model Link {
   id        String   @id @default(uuid())
-  url       String   
+  url       String
   createdAt DateTime @default(now())
   shortUrl  String   @unique
   clicks    Int      @default(0)
   limit     Int      @default(10)
   isActive  Boolean  @default(true)
+  qr        String
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
 }
