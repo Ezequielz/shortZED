@@ -12,7 +12,7 @@ interface Props {
 
 export const ModalLink = async ({ short }: Props) => {
 
- 
+    if (!short) return null
     const { ok, links } = await getLink(short)
   
     if (!ok) return null

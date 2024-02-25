@@ -6,6 +6,8 @@ export const getLink = async( slug: string, userId?: string ) => {
     
     try {
 
+        if (!slug) throw new Error('No hay slug')
+
         const link = await prisma.link.findUnique({
             where: {
                 shortUrl: slug,

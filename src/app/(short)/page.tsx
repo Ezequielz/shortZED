@@ -2,7 +2,7 @@
 
 import { getLink } from "@/action";
 import { auth } from "@/auth.config";
-import { ShortForm, SingleLink } from "@/components";
+import { ShortForm, SingleLink, ViewLink } from "@/components";
 import { titleFont } from "@/components/config/fonts";
 import { redirect } from "next/navigation";
 
@@ -13,26 +13,6 @@ interface Props {
 export default async function Home({ searchParams }: Props) {
 
   const short = searchParams?.short as string
-  const session = await auth()
-
-  if (short && session?.user?.id) {
-    console.log('first')
-    const { ok } = await getLink(short)
-
-    if (!ok) {
-      redirect('/')
-    }
-  }
-
-  if (short && !session?.user?.id) {
-
-    const { ok } = await getLink(short)
-    if (!ok) {
-      redirect('/')
-    }
-  }
-
-
 
   return (
     <>
@@ -43,7 +23,7 @@ export default async function Home({ searchParams }: Props) {
       {
         short && (
        
-            <SingleLink short={short} />
+            <ViewLink short={short} />
       
         )
       }

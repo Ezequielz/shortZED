@@ -14,12 +14,15 @@ export * from './links/UserLinks';
 export * from './links/SingleLink';
 export * from './links/ModalLink';
 export * from './links/TableLinks';
+export * from './links/ViewLink';
 
 export * from './payment/Pricing';
 
 export * from './providers/Providers';
 
 export * from './profile/Profile';
+
+export * from './qr/QRCodeView';
 
 export * from './skeletons/UserLinksSkeleton';
 export * from './skeletons/TableSkeleton';
