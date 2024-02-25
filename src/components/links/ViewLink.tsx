@@ -16,10 +16,13 @@ export const ViewLink = async ({ short }: Props) => {
         redirect('/')
     }
 
+    const url = process.env.NEXT_PUBLIC_URL_DEV + links[0].shortUrl
+    
+
     return (
         <>
             <SingleLink short={short} />
-            <QRCodeView value={links[0].url} />
+            <QRCodeView value={url} />
         </>
     )
 }

@@ -21,6 +21,12 @@ export const updateClicks = async (hash: string) => {
     }
 
     try {
+        if (urlExists.clicks >= urlExists.limit) {
+            return {
+                ok: false,
+                message: 'No puedes actualizar mas clicks'
+            }
+        }
 
         await prisma.link.update({
             where: {
