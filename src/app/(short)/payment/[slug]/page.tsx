@@ -23,7 +23,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
     let plan: Plan = 'basico';
 
     if (!session) {
-        redirect('/login')
+        redirect('/auth/login')
     }
 
     const { ok, links } = await getLink(slug);
@@ -34,6 +34,21 @@ export default async function LinkPage({ params, searchParams }: Props) {
 
     const link = links![0]
 
+    let url = ''
+    for (let i = 0; i < link.url.length; i++) {
+        url += link.url[i];
+
+        if (url.length === 50 && link.url[i + 1] !== '/') {
+            const lastSlashIndex = url.lastIndexOf('/');
+            if (lastSlashIndex !== -1) {
+
+                if (url.length >= 50) {
+                    url += '\n';
+                }
+                url = url.substring(0, lastSlashIndex + 1) + '\n' + url.substring(lastSlashIndex + 1);
+            }
+        }
+    }
 
 
     if (searchParams?.plan && Plans.includes(searchParams?.plan as Plan)) {
@@ -51,7 +66,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
             <div className="px-5">
 
                 <div className="mb-2">
-                    <h1 className="text-3xl md:text-5xl font-bold ">Activación </h1>
+                    <h1 className="text-3xl sm:text-5xl font-bold ">Activación </h1>
                 </div>
 
             </div>
@@ -60,32 +75,58 @@ export default async function LinkPage({ params, searchParams }: Props) {
             <div className="w-full  border-t border-b border-gray-200 px-5 py-10 ">
 
                 <div className="w-full">
-                    <div className="-mx-3 md:flex items-start">
+                    <div className="-mx-3 lg:flex  items-start gap-2">
                         {/* PLAN A ELEGIR */}
-                        <div className="px-3 md:w-7/12 lg:pr-10">
-                            <div className="w-full mx-auto  font-light mb-6 border-b border-gray-200 pb-6">
-                                <div className="w-full flex items-center">
-                                    <div className="overflow-hidden rounded-lg w-16 h-16 bg-gray-50 border border-gray-200">
-                                        <Image
-                                            src={link.qr}
-                                            alt='QR del link'
-                                            height={100}
-                                            width={100}
-                                        />
+                        <div className="px-3 lg:w-2/3 ">
+                            <div className="mx-auto  font-light mb-6 border-b border-gray-200 pb-6">
+                                <div className="flex flex-col-reverse md:flex-row md:justify-between item-center">
+
+
+                                    {/* Details */}
+                                    <div className=" pl-3 flex items-center ">
+
+                                        <div className="w-full relative flex flex-col gap-3">
+
+                                            <a href={link.shortUrl} download className="w-12 h-12 absolute right-0 sm:right-5 overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50 border border-gray-200">
+                                                
+                                                <Image
+                                                    src={link.qr}
+                                                    alt='QR del link'
+                                                    height={150}
+                                                    width={150}
+                                                />
+                                            </a>
+
+                                            <p className="font-semibold text-violet-400">Limite clicks actual: <span className="font-semibold uppercase text-white"> {link.limit}</span> </p>
+
+                                            <p className="-mb-4 text-gray-400">Link corto</p>
+                                            <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL_DEV}{link.shortUrl} </h6>
+
+                                            <p className="-mb-4 text-gray-400">Link original</p>
+
+                                            <a href={link.url} target="_blank"   className="w-[320px] sm:w-[460px] hover:text-violet-300 ">
+                                                <span className=" font-light text-xs break-words " >
+                                                    {url}
+                                                </span>
+                                            </a>
+                                        </div>
+
+
+
                                     </div>
-                                    <div className="flex-grow pl-3">
-                                        <p className="font-semibold text-violet-400">Limite clicks actual: <span className="font-semibold uppercase text-white"> {link.limit}</span> </p>
-                                        <p className="text-gray-400">Link original</p>
-                                        <h6 className="font-semibold uppercase "> {link.url} </h6>
-                                        <p className="text-gray-400">Link corto</p>
-                                        <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL_DEV}{link.shortUrl} </h6>
-                                    </div>
-                                    <div className="flex flex-col border-2 border-violet-600 p-5 rounded-lg">
-                                        {/* <p className="text-gray-400">estado: {link.isActive ? 'Activo' : 'Inactivo'} </p> */}
-                                        {/* <p className="text-gray-400">clicks: {link.clicks} </p> */}
-                                        <p className="text-green-400 text-xl font-semibold">Plan Popular</p>
-                                        <p className="text-green-400">Limite 300 clicks</p>
-                                        <span className="font-semibold  text-4xl mx-auto mt-2">$50.00</span>
+
+                                    {/* Plan marco */}
+                                    <div className="w-[300px] sm:w-fit  p-2 m-auto">
+                                 
+                                        <div className="h-fit flex md:flex-col border-2 border-violet-600  rounded-lg p-4">
+                                            <div>
+
+                                            <p className="text-green-400 text-lg md:text-xl font-semibold">Plan Popular</p>
+                                            <p className="text-green-400">Limite 300 clicks</p>
+                                            </div>
+                                            <span className="font-semibold text-xl md:text-4xl mx-auto mt-2">$50.00</span>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -95,7 +136,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                     <div className="flex-grow px-2 lg:max-w-xs">
                                         <label className=" font-semibold text-sm mb-2 ml-1">Código de descuento</label>
                                         <div>
-                                            <input className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="XXXXXX" type="text" />
+                                            <input className="w-full px-3 py-2 border text-slate-900 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="XXXXXX" type="text" />
                                         </div>
                                     </div>
                                     <div className="px-2">
@@ -103,6 +144,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="mb-6 pb-6 border-b border-gray-200 ">
                                 <div className="w-full flex mb-3 items-center">
                                     <div className="flex-grow">
@@ -121,7 +163,8 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="mb-6 pb-6 border-b border-gray-200 md:border-none  text-xl">
+
+                            <div className="mb-6 pb-6 border-b border-gray-200 sm:border-none  text-xl">
                                 <div className="w-full flex items-center">
                                     <div className="flex-grow">
                                         <span className="">Total</span>
@@ -134,10 +177,10 @@ export default async function LinkPage({ params, searchParams }: Props) {
                         </div>
 
                         {/* PAGO */}
-                        <div className="px-3 md:w-5/12">
+                        <div className="px-3  lg:w-1/3">
                             {/* DATOS */}
                             <div className="w-full mx-auto rounded-lg  border border-gray-200 p-3  font-light mb-6">
-                                
+
                                 <div className="w-full flex mb-3 items-center">
                                     <div className="w-32">
                                         <span className=" font-semibold">Usuario</span>
@@ -151,7 +194,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                         <span className=" font-semibold">Email</span>
                                     </div>
                                     <div className="flex-grow pl-3">
-                                        <span> {session.user?.name} </span>
+                                        <span> {session.user?.email} </span>
                                     </div>
                                 </div>
                             </div>

@@ -5,8 +5,8 @@ export interface SeedLink {
     url: string;
     shortUrl: string;
     clicks: number;
-    user?: string;
-    userId?: string;
+    user?: string | undefined;
+    userId?: string | undefined;
     qr: string
 }
 type Role = 'user' | 'admin';
@@ -20,10 +20,17 @@ export interface SeedUser {
     image?: string;
 }
 
+export interface SeedPlan {
+    name: string;
+    price: number;
+    limit: number | undefined;
+}
+
 
 interface SeedData {
     links: SeedLink[];
     users: SeedUser[];
+    plans: SeedPlan[];
 }
 
 
@@ -58,5 +65,27 @@ export const initialData: SeedData = {
             email: 'kat@gmail.com',
             password: bcryptjs.hashSync('123456'),
         },
+    ],
+    plans: [
+        {
+            name: 'Free',
+            price: 0,
+            limit: 10,
+        },
+        {
+            name: 'Basico',
+            price: 10,
+            limit: 100,
+        },
+        {
+            name: 'Popular',
+            price: 20,
+            limit: 300
+        },
+        {
+            name: 'Empresarial',
+            price: 50,
+            limit: undefined
+        }
     ]
 }

@@ -24,8 +24,12 @@ model Link {
   limit     Int      @default(10)
   isActive  Boolean  @default(true)
   qr        String
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    String?
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  plan     Plan       @relation(fields: [planId], references: [id])
+  planId   String
 }
 
 // Auth.js
@@ -79,4 +83,12 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Plan {
+  id    String  @id @default(uuid())
+  name  String
+  price Int
+  limit Int?     
+  Link  Link[]
 }
