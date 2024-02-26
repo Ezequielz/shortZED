@@ -15,6 +15,13 @@ enum Role {
   user
 }
 
+enum PlanName {
+  free
+  basico
+  popular
+  empresarial
+}
+
 model Link {
   id        String   @id @default(uuid())
   url       String
@@ -28,8 +35,8 @@ model Link {
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
-  plan     Plan       @relation(fields: [planId], references: [id])
-  planId   String
+  plan   Plan   @relation(fields: [planId], references: [id])
+  planId String
 }
 
 // Auth.js
@@ -86,9 +93,9 @@ model VerificationToken {
 }
 
 model Plan {
-  id    String  @id @default(uuid())
-  name  String
+  id    String   @id @default(uuid())
+  name  PlanName
   price Int
-  limit Int?     
+  limit Int?
   Link  Link[]
 }

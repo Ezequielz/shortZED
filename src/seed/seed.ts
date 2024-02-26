@@ -21,11 +21,12 @@ export interface SeedUser {
 }
 
 export interface SeedPlan {
-    name: string;
+    name: Plan;
     price: number;
     limit: number | undefined;
 }
 
+type Plan = 'free' | 'basico' | 'popular' | 'empresarial';
 
 interface SeedData {
     links: SeedLink[];
@@ -68,22 +69,22 @@ export const initialData: SeedData = {
     ],
     plans: [
         {
-            name: 'Free',
+            name: 'free',
             price: 0,
             limit: 10,
         },
         {
-            name: 'Basico',
+            name: 'basico',
             price: 10,
             limit: 100,
         },
         {
-            name: 'Popular',
+            name: 'popular',
             price: 20,
             limit: 300
         },
         {
-            name: 'Empresarial',
+            name: 'empresarial',
             price: 50,
             limit: undefined
         }

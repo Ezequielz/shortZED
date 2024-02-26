@@ -20,7 +20,7 @@ async function main() {
 
     const freePlan = await prisma.plan.findFirst({
         where: {
-            name: 'Free'
+            name: 'free'
         }
     });
 

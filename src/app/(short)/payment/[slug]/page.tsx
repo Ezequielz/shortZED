@@ -1,4 +1,4 @@
-import { getLink } from "@/action";
+import { getLink, getPlan } from "@/action";
 import { auth } from "@/auth.config";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
@@ -12,15 +12,12 @@ interface Props {
     };
 }
 
-const Plans = ['basico', 'popular', 'empresarial'] as const;
-type Plan = typeof Plans[number];
-
 export default async function LinkPage({ params, searchParams }: Props) {
     const { slug } = params;
 
 
     const session = await auth();
-    let plan: Plan = 'basico';
+    const plan = await getPlan(slug)
 
     if (!session) {
         redirect('/auth/login')
@@ -49,15 +46,6 @@ export default async function LinkPage({ params, searchParams }: Props) {
             }
         }
     }
-
-
-    if (searchParams?.plan && Plans.includes(searchParams?.plan as Plan)) {
-        plan = searchParams.plan as Plan
-    }
-
-
-
-
 
     return (
 
