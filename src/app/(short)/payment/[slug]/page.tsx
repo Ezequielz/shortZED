@@ -2,7 +2,7 @@ import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { getLink } from "@/action";
-import { PaymentForm } from "@/components";
+import { PaymentForm, PaypalButton } from "@/components";
 import { getVencimientoDelPlan } from "@/helpers";
 
 interface Props {
@@ -89,7 +89,7 @@ export default async function ({ params }: Props) {
                                             width={150}
                                         />
                                     </a>
-                                 
+
                                 </div>
                             </div>
                             {/* PAGO FORM */}
@@ -122,24 +122,14 @@ export default async function ({ params }: Props) {
                             {/* PAYPAL */}
                             <div className="w-full mx-auto rounded-lg border border-gray-200  font-light mb-6">
 
-                                <div className="w-full p-3 border-b border-gray-200">
+                                <PaypalButton 
+                                    amount={1}
+                                    orderId=""
+                                />
 
 
 
-                                    <div className="w-full p-3">
-                                        <label className="flex items-center cursor-pointer">
 
-                                            <input type="radio" className="form-radio h-5 w-5 text-indigo-500" name="type" id="type2" />
-                                            {/* <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="80" className="ml-3" /> */}
-                                        </label>
-
-                                    </div>
-                                </div>
-
-
-                                <div>
-                                    <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-2 font-semibold"><i className="mdi mdi-lock-outline mr-1"></i> PAY NOW</button>
-                                </div>
                             </div>
                         </div>
                     </div>

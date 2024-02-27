@@ -18,6 +18,7 @@ export * from './links/TableLinks';
 export * from './links/ViewLink';
 
 export * from './payment/Pricing';
+export * from './paypal/PaypalButton';
 
 export * from './providers/Providers';
 
