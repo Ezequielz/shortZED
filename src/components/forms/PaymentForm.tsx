@@ -7,6 +7,7 @@ import { Plan } from '@prisma/client';
 import { getAllPlans, getCode, getPlan } from '@/action';
 import clsx from 'clsx';
 import { usePlanStore } from '@/store';
+import { currencyFormat } from '@/helpers';
 
 interface FormInputs {
     codeName: string;
@@ -26,7 +27,7 @@ export const PaymentForm = () => {
     const changePlan = usePlanStore(state => state.changePlan);
 
     const [plan, setPlan] = useState<Plan>();
-    const [plans, setPlans] = useState<Plan[]>()
+    const [plans, setPlans] = useState<Plan[]>();
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
@@ -40,12 +41,12 @@ export const PaymentForm = () => {
     useEffect(() => {
         const allPlans = async () => {
             return await getAllPlans();
-        }
+        };
 
         allPlans().then(res => {
-            setPlans(res.plans)
-        })
-    }, [])
+            setPlans(res.plans);
+        });
+    }, []);
 
 
     useEffect(() => {
@@ -97,7 +98,7 @@ export const PaymentForm = () => {
                             <p className="text-green-400 text-lg md:text-xl font-semibold">Plan {plan!.name} </p>
                             <p className="text-green-400 ">{plan!.limit ? `+${plan!.limit} clicks` : 'Sin limite de clicks'}</p>
                         </div>
-                        <span className="font-semibold text-3xl md:text-4xl mx-auto mt-2">${plan!.price}</span>
+                        <span className="font-semibold text-3xl md:text-4xl mx-auto mt-2">{currencyFormat(plan!.price)}</span>
 
                     </div>
                 </div>
@@ -192,7 +193,7 @@ export const PaymentForm = () => {
                         <span className="">Subtotal</span>
                     </div>
                     <div className="pl-3">
-                        <span className="font-semibold">${plan!.price}</span>
+                        <span className="font-semibold">{currencyFormat(plan!.price)}</span>
                     </div>
                 </div>
                 <div className="w-full flex mb-3 items-center">
@@ -200,7 +201,7 @@ export const PaymentForm = () => {
                         <span className="">impuestos (5%)</span>
                     </div>
                     <div className="pl-3">
-                        <span className="font-semibold">${plan!.price * 0.05}  </span>
+                        <span className="font-semibold">{currencyFormat(plan!.price * 0.05)}  </span>
                     </div>
                 </div>
                 {
@@ -210,7 +211,7 @@ export const PaymentForm = () => {
                                 <span className="">decuento: ({code.discount}%)</span>
                             </div>
                             <div className="pl-3">
-                                <span className="font-semibold">-${plan!.price * (code.discount / 100)}  </span>
+                                <span className="font-semibold">-{currencyFormat(plan!.price * (code.discount / 100))}  </span>
                             </div>
                         </div>
 
@@ -224,7 +225,7 @@ export const PaymentForm = () => {
                         <span className="">Total</span>
                     </div>
                     <div className="pl-3">
-                        <span className="font-semibold text-gray-400 text-sm">USD</span> <span className="font-semibold">${plan!.price + (plan!.price * 0.05) - (code.discount * plan!.price / 100)} </span>
+                        <span className="font-semibold text-gray-400 text-sm">USD</span> <span className="font-semibold">{currencyFormat(plan!.price + (plan!.price * 0.05) - (code.discount * plan!.price / 100))} </span>
                     </div>
                 </div>
             </div>

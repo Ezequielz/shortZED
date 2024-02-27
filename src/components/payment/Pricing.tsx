@@ -2,6 +2,7 @@ import Link from 'next/link'
 import prisma from '@/lib/prisma';
 import clsx from 'clsx';
 import { PricingButton } from './PricingButton';
+import { currencyFormat } from '@/helpers';
 
 interface Props {
     short: string
@@ -49,7 +50,7 @@ export const Pricing = async ({ short }: Props) => {
 
                                 )
                             }
-                            >${plan.price}</h1>
+                            >{currencyFormat(plan.price)}</h1>
                             <p className={
                                 clsx(
                                     " mt-2",
