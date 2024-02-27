@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { IoIosArrowForward } from "react-icons/io";
 
 
-import { updateUrl } from '@/action';
 import { usePathname, useRouter } from 'next/navigation';
 import { enqueueSnackbar } from 'notistack';
 import { useLinksStore } from '@/store';
+import { updateLinkHash } from '@/action';
 
 interface FormInputs {
     hash: string
@@ -38,7 +38,7 @@ export const UpdateForm = ({ url }: Props) => {
         const { hash } = data;
 
         // server action
-        const resp = await updateUrl(url, userId, hash);
+        const resp = await updateLinkHash(url, userId, hash);
         
         if (!resp.ok) {
             setErrorMessage(resp.message)

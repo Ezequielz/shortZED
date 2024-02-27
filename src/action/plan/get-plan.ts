@@ -1,8 +1,9 @@
 'use server'
 
 import prisma from '@/lib/prisma';
+import { PlanName } from '@prisma/client';
 
-export const getPlan = async ( name: string ) => {
+export const getPlan = async ( name: PlanName ) => {
 
     try {
        const plan = await prisma.plan.findFirst({

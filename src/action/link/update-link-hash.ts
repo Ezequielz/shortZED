@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 
 
 
-export const updateUrl = async (url: string, userId: string, hash: string) => {
+export const updateLinkHash = async (url: string, userId: string, hash: string) => {
 
     // await sleep(2);
     if (!hash) {

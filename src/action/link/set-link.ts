@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import QRCode from 'qrcode';
 
 
-export const setUrl = async (url: string, hash?: string, userId?: string) => {
+export const setLink = async (url: string, hash?: string, userId?: string) => {
 
     try {
 
@@ -101,15 +101,15 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
 
             const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL_DEV + shortUrl);
 
-            const freePlan = await prisma.plan.findFirst({
-                where: {
-                    name: 'free'
-                }
-            }) 
+            // const freePlan = await prisma.plan.findFirst({
+            //     where: {
+            //         name: 'free'
+            //     }
+            // }) 
 
-            if (!freePlan) {
-                throw new Error('No se encontró el plan free')
-            }
+            // if (!freePlan) {
+            //     throw new Error('No se encontró el plan free')
+            // }
 
             if (userId) {
                 await prisma.link.create({
@@ -117,7 +117,7 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
                         url: url,
                         shortUrl: shortUrl,
                         userId: userId,
-                        planId: freePlan.id,
+                        // planId: freePlan.id,
                         qr
                     }
                 });
@@ -128,7 +128,7 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
                     data: {
                         url: url,
                         shortUrl: shortUrl,
-                        planId: freePlan.id,
+                        // planId: freePlan.id,
                         qr
                     }
                 });

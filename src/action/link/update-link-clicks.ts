@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 
 
 
-export const updateClicks = async (hash: string) => {
+export const updateLinkClicks = async (hash: string) => {
 
     // Buscar si existe el url en la base de datos
     const urlExists = await prisma.link.findFirst({
@@ -21,7 +21,7 @@ export const updateClicks = async (hash: string) => {
     }
 
     try {
-        if (urlExists.clicks >= urlExists.limit) {
+        if (!urlExists.limit) {
             return {
                 ok: false,
                 message: 'No puedes actualizar mas clicks'

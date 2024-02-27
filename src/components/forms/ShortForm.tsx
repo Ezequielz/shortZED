@@ -6,8 +6,8 @@ import clsx from 'clsx';
 import { IoIosArrowForward } from "react-icons/io";
 
 
-import { setUrl } from '@/action';
 import { usePathname, useRouter } from 'next/navigation';
+import { setLink } from '@/action';
 
 interface FormInputs {
     url: string;
@@ -32,7 +32,7 @@ export const ShortForm = () => {
         const { url, hash } = data;
 
         // server action
-        const resp = await setUrl(url, hash, userId);
+        const resp = await setLink(url, hash, userId);
         
         if (!resp.ok) {
             setErrorMessage(resp.message)

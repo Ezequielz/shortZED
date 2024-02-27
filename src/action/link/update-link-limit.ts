@@ -22,6 +22,11 @@ export const updateLinkPlan = async ( userId: string, hash: string, plan: Plan) 
         where: {
             shortUrl: hash,
             userId: userId
+        },
+        select: {
+            id: true,
+            updatedAt: true,
+            limit: true
         }
     });
     // console.log(urlExists)
@@ -37,19 +42,26 @@ export const updateLinkPlan = async ( userId: string, hash: string, plan: Plan) 
 
     try {
 
-        const planId = await prisma.plan.findFirst({
+        const planLimit = await prisma.plan.findFirst({
             where: {
                 name: plan.name
             },
             select: {
-                id: true
+                limit: true
             }
         })
 
-        if (!planId) {
+        if (!planLimit) {
             return {
                 ok: false,
-                message: 'El plan no existe'
+                message: 'No se encontró el plan'
+            };
+        }
+
+        if (!urlExists.limit) {
+            return {
+                ok: false,
+                message: 'Tienes el plan super, con clicks ilimitados'
             };
         }
 
@@ -59,7 +71,7 @@ export const updateLinkPlan = async ( userId: string, hash: string, plan: Plan) 
             },
             data: {
                 // shortUrl: hash,
-                planId: planId.id,
+                limit: !planLimit.limit ? null : urlExists.limit + planLimit.limit,
                 updatedAt:  new Date( Date.now() )
             }
         });

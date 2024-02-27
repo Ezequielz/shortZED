@@ -6,13 +6,14 @@ export * from './auth/register';
 
 export * from './plan/get-plan';
 
-export * from './url/delete-link';
-export * from './url/get-all-links';
-export * from './url/get-link';
-export * from './url/get-user-links';
-export * from './url/set-url';
-export * from './url/update-url';
-export * from './url/update-clicks';
+export * from './link/delete-link';
+export * from './link/get-all-links';
+export * from './link/get-link';
+export * from './link/get-user-links';
+export * from './link/set-link';
+export * from './link/update-link-hash';
+export * from './link/update-link-clicks';
+export * from './link/update-link-limit';
 
 
 

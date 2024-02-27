@@ -36,8 +36,8 @@ model Link {
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
-  plan   Plan   @relation(fields: [planId], references: [id])
-  planId String
+  // plan   Plan   @relation(fields: [planId], references: [id])
+  // planId String
 }
 
 // Auth.js
@@ -98,5 +98,12 @@ model Plan {
   name  PlanName
   price Int
   limit Int?
-  Link  Link[]
+  // Link  Link[]
+}
+
+model Code {
+  id    String   @id @default(uuid())
+  name  String
+  discount Int
+  isActive Boolean @default(true)
 }

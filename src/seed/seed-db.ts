@@ -6,10 +6,11 @@ import { initialData } from './seed';
 async function main() {
 
     await prisma.link.deleteMany();
+    await prisma.code.deleteMany();
     await prisma.plan.deleteMany();
     await prisma.user.deleteMany();
 
-    const { users, links, plans } = initialData;
+    const { users, links, plans, codes } = initialData;
 
     await prisma.user.createMany({
         data: users
@@ -17,25 +18,31 @@ async function main() {
     await prisma.plan.createMany({
         data: plans
     });
-
-    const freePlan = await prisma.plan.findFirst({
-        where: {
-            name: 'free'
-        }
+    await prisma.link.createMany({
+        data: links
+    });
+    await prisma.code.createMany({
+        data: codes
     });
 
-    links.forEach(async (link) => {
+    // const freePlan = await prisma.plan.findFirst({
+    //     where: {
+    //         name: 'free'
+    //     }
+    // });
+
+    // links.forEach(async (link) => {
        
-        await prisma.link.create({
-            data: {
-                ...link,
-                user: undefined,
-                planId: freePlan!.id!,
+    //     await prisma.link.create({
+    //         data: {
+    //             ...link,
+    //             user: undefined,
+    //             planId: freePlan!.id!,
 
-            }
-        });
+    //         }
+    //     });
 
-    })
+    // })
 
 
 
