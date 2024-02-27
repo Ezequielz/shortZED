@@ -101,12 +101,23 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
 
             const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL_DEV + shortUrl);
 
+            const freePlan = await prisma.plan.findFirst({
+                where: {
+                    name: 'free'
+                }
+            }) 
+
+            if (!freePlan) {
+                throw new Error('No se encontró el plan free')
+            }
+
             if (userId) {
                 await prisma.link.create({
                     data: {
                         url: url,
                         shortUrl: shortUrl,
                         userId: userId,
+                        planId: freePlan.id,
                         qr
                     }
                 });
@@ -117,6 +128,7 @@ export const setUrl = async (url: string, hash?: string, userId?: string) => {
                     data: {
                         url: url,
                         shortUrl: shortUrl,
+                        planId: freePlan.id,
                         qr
                     }
                 });

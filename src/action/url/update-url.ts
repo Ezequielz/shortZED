@@ -53,7 +53,8 @@ export const updateUrl = async (url: string, userId: string, hash: string) => {
                 id: urlExists.id
             },
             data: {
-                shortUrl: hash
+                shortUrl: hash,
+                // updatedAt:  new Date( Date.now() )
             }
         });
 

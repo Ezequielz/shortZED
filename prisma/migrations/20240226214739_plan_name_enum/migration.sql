@@ -5,7 +5,7 @@
 
 */
 -- CreateEnum
-CREATE TYPE "PlanName" AS ENUM ('free', 'basico', 'popular', 'empresarial');
+CREATE TYPE "PlanName" AS ENUM ('free', 'basico', 'popular', 'super');
 
 -- AlterTable
 ALTER TABLE "Plan" DROP COLUMN "name",

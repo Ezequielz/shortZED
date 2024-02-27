@@ -23,7 +23,8 @@ export const ModalLink = async ({ short }: Props) => {
         Url: url,
         Hash: shortUrl,
         Clicks: clicks,
-        Limite: limit <= 10 ? limit + ' ' + 'Gratis!' : limit,
+        Limite: limit === 10 ? limit + ' Gratis'  : '∞',
+      
     }
 
 
@@ -48,7 +49,7 @@ export const ModalLink = async ({ short }: Props) => {
 
                 <UpdateForm url={links![0].url} />
                 <h1 className="text-2xl font-bold p-4">Precios</h1>
-                <Pricing />
+                <Pricing short={short}/>
             </div>
         </Dialog>
     )

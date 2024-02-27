@@ -164,7 +164,7 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                             {link.clicks}</td>
                         <td
                             className="px-10 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
-                            {link.limit}</td>
+                            {link.limit ?? '∞'}</td>
                         <td
                             onClick={(e) => copyToClipboard(e, link)}
                             className=" px-8 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">

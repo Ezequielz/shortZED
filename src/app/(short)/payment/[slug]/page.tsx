@@ -12,12 +12,12 @@ interface Props {
     };
 }
 
-export default async function LinkPage({ params, searchParams }: Props) {
+export default async function ({ params, searchParams }: Props) {
     const { slug } = params;
-
+    
 
     const session = await auth();
-    const plan = await getPlan(slug)
+    const {ok: planOk ,plan} = await getPlan(searchParams?.plan ?? 'basico')
 
     if (!session) {
         redirect('/auth/login')
@@ -25,7 +25,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
 
     const { ok, links } = await getLink(slug);
 
-    if (!ok) {
+    if (!ok || !planOk) {
         notFound();
     }
 
@@ -47,6 +47,18 @@ export default async function LinkPage({ params, searchParams }: Props) {
         }
     }
 
+    function calcularFechaDespuesDeDias(fechaInicial: Date, diasAgregados: number): string {
+        const fechaFinal = new Date(fechaInicial);
+        fechaFinal.setDate(fechaInicial.getDate() + diasAgregados);
+      
+        // Formatea la fecha y devuelve el resultado
+        const opciones: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return fechaFinal.toLocaleDateString('es-ES', opciones);
+      }
+
+      const vencimiento = calcularFechaDespuesDeDias( link.updatedAt , 30)
+      
+
     return (
 
         <div className="min-w-screen min-h-screen  py-5">
@@ -65,7 +77,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                 <div className="w-full">
                     <div className="-mx-3 lg:flex  items-start gap-2">
                         {/* PLAN A ELEGIR */}
-                        <div className="px-3 lg:w-2/3 ">
+                        <div className="px-3 lg:w-3/5 ">
                             <div className="mx-auto  font-light mb-6 border-b border-gray-200 pb-6">
                                 <div className="flex flex-col-reverse md:flex-row md:justify-between item-center">
 
@@ -85,7 +97,8 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                                 />
                                             </a>
 
-                                            <p className="font-semibold text-violet-400">Limite clicks actual: <span className="font-semibold uppercase text-white"> {link.limit}</span> </p>
+                                            <p className="font-semibold text-violet-400">Limite clicks actual: <span className="font-semibold uppercase text-white"> {link.limit ?? '∞'}</span> </p>
+                                            <p className="-mt-4 text-gray-400 font-light text-xs">Vencimiento: {vencimiento }</p>
 
                                             <p className="-mb-4 text-gray-400">Link corto</p>
                                             <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL_DEV}{link.shortUrl} </h6>
@@ -104,15 +117,15 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                     </div>
 
                                     {/* Plan marco */}
-                                    <div className="w-[300px] sm:w-fit  p-2 m-auto">
+                                    <div className="w-[300px] sm:w-fit  p-2 ">
                                  
-                                        <div className="h-fit flex md:flex-col border-2 border-violet-600  rounded-lg p-4">
-                                            <div>
+                                        <div className="h-fit flex md:flex-col justify-center items-center border-2 border-violet-600  rounded-lg p-4">
+                                            <div className="flex flex-col justify-center">
 
-                                            <p className="text-green-400 text-lg md:text-xl font-semibold">Plan Popular</p>
-                                            <p className="text-green-400">Limite 300 clicks</p>
+                                            <p className="text-green-400 text-lg md:text-xl font-semibold">Plan {plan!.name} </p>
+                                            <p className="text-green-400 ">{ plan!.limit ? `+${plan!.limit} clicks` : 'Sin limite de clicks' }</p>
                                             </div>
-                                            <span className="font-semibold text-xl md:text-4xl mx-auto mt-2">$50.00</span>
+                                            <span className="font-semibold text-3xl md:text-4xl mx-auto mt-2">${ plan!.price }</span>
 
                                         </div>
                                     </div>
@@ -139,7 +152,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                         <span className="">Subtotal</span>
                                     </div>
                                     <div className="pl-3">
-                                        <span className="font-semibold">$50.00</span>
+                                        <span className="font-semibold">${plan!.price}</span>
                                     </div>
                                 </div>
                                 <div className="w-full flex items-center">
@@ -147,7 +160,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                         <span className="">impuestos (5%)</span>
                                     </div>
                                     <div className="pl-3">
-                                        <span className="font-semibold">${50 * 0.05}  </span>
+                                        <span className="font-semibold">${plan!.price * 0.05}  </span>
                                     </div>
                                 </div>
                             </div>
@@ -158,14 +171,14 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                         <span className="">Total</span>
                                     </div>
                                     <div className="pl-3">
-                                        <span className="font-semibold text-gray-400 text-sm">USD</span> <span className="font-semibold">${50 * 1.05} </span>
+                                        <span className="font-semibold text-gray-400 text-sm">USD</span> <span className="font-semibold">${plan!.price * 1.05} </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* PAGO */}
-                        <div className="px-3  lg:w-1/3">
+                        <div className="px-3  lg:w-2/5">
                             {/* DATOS */}
                             <div className="w-full mx-auto rounded-lg  border border-gray-200 p-3  font-light mb-6">
 
@@ -197,7 +210,7 @@ export default async function LinkPage({ params, searchParams }: Props) {
                                         <label className="flex items-center cursor-pointer">
 
                                             <input type="radio" className="form-radio h-5 w-5 text-indigo-500" name="type" id="type2" />
-                                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="80" className="ml-3" />
+                                            {/* <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" width="80" className="ml-3" /> */}
                                         </label>
 
                                     </div>

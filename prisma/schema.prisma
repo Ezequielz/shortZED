@@ -19,16 +19,17 @@ enum PlanName {
   free
   basico
   popular
-  empresarial
+  super
 }
 
 model Link {
   id        String   @id @default(uuid())
   url       String
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
   shortUrl  String   @unique
   clicks    Int      @default(0)
-  limit     Int      @default(10)
+  limit     Int?     @default(10)
   isActive  Boolean  @default(true)
   qr        String
 
