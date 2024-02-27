@@ -6,6 +6,7 @@ export * from './auth/register/register-form/RegisterForm';
 
 export * from './dialog/Dialog';
 
+export * from './forms/PaymentForm';
 export * from './forms/ShortForm';
 export * from './forms/UpdateForm';
 

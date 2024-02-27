@@ -18,6 +18,6 @@ export const getPlan = async ( name: PlanName ) => {
         }
     } catch (error: any) {
         console.log(error)
-        return { ok: false, error: error.message ?? 'Error al eliminar url' }
+        return { ok: false, error: error.message }
     }
 }

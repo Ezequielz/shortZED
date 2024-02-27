@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import React from 'react'
 import prisma from '@/lib/prisma';
 import clsx from 'clsx';
+import { PricingButton } from './PricingButton';
 
 interface Props {
     short: string
@@ -85,20 +85,7 @@ export const Pricing = async ({ short }: Props) => {
 
                         <div className='flex justify-center'>
 
-                            <Link
-                                href={`/payment/${short}?plan=${plan.name}`}
-                                className={
-                                    clsx(
-                                        " px-4 mt-6  py-2 text-white font-semibold  hover:shadow-xl duration-200 ",
-                                        { "bg-purple-400  hover:bg-purple-800": plan.name === resaltPlan },
-
-                                        { "bg-gray-700 hover:bg-gray-800": plan.name !== resaltPlan },
-
-                                    )
-                                }
-                            >
-                                Activar
-                            </Link>
+                            <PricingButton planNAme={plan.name} short={short} resaltPlan={resaltPlan} />
                         </div>
                     </div>
 

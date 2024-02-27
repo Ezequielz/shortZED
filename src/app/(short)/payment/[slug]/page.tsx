@@ -1,63 +1,33 @@
-import { getLink, getPlan } from "@/action";
-import { auth } from "@/auth.config";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
+import { auth } from "@/auth.config";
+import { getLink } from "@/action";
+import { PaymentForm } from "@/components";
+import { getVencimientoDelPlan } from "@/helpers";
 
 interface Props {
-    searchParams?: {
-        [key: string]: string | undefined,
-    };
     params: {
         slug: string;
     };
 }
 
-export default async function ({ params, searchParams }: Props) {
+export default async function ({ params }: Props) {
     const { slug } = params;
-    
 
     const session = await auth();
-    const {ok: planOk ,plan} = await getPlan(searchParams?.plan ?? 'basico')
-
     if (!session) {
         redirect('/auth/login')
     }
 
-    const { ok, links } = await getLink(slug);
+    const { ok: linkOk, links } = await getLink(slug);
 
-    if (!ok || !planOk) {
+    if (!linkOk) {
         notFound();
     }
 
     const link = links![0]
+    const vencimiento = getVencimientoDelPlan(link.updatedAt)
 
-    let url = ''
-    for (let i = 0; i < link.url.length; i++) {
-        url += link.url[i];
-
-        if (url.length === 50 && link.url[i + 1] !== '/') {
-            const lastSlashIndex = url.lastIndexOf('/');
-            if (lastSlashIndex !== -1) {
-
-                if (url.length >= 50) {
-                    url += '\n';
-                }
-                url = url.substring(0, lastSlashIndex + 1) + '\n' + url.substring(lastSlashIndex + 1);
-            }
-        }
-    }
-
-    function calcularFechaDespuesDeDias(fechaInicial: Date, diasAgregados: number): string {
-        const fechaFinal = new Date(fechaInicial);
-        fechaFinal.setDate(fechaInicial.getDate() + diasAgregados);
-      
-        // Formatea la fecha y devuelve el resultado
-        const opciones: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: 'numeric' };
-        return fechaFinal.toLocaleDateString('es-ES', opciones);
-      }
-
-      const vencimiento = calcularFechaDespuesDeDias( link.updatedAt , 30)
-      
 
     return (
 
@@ -87,27 +57,19 @@ export default async function ({ params, searchParams }: Props) {
 
                                         <div className="w-full relative flex flex-col gap-3">
 
-                                            <a href={link.shortUrl} download className="w-12 h-12 absolute right-0 sm:right-5 overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50 border border-gray-200">
-                                                
-                                                <Image
-                                                    src={link.qr}
-                                                    alt='QR del link'
-                                                    height={150}
-                                                    width={150}
-                                                />
-                                            </a>
+
 
                                             <p className="font-semibold text-violet-400">Limite clicks actual: <span className="font-semibold uppercase text-white"> {link.limit ?? '∞'}</span> </p>
-                                            <p className="-mt-4 text-gray-400 font-light text-xs">Vencimiento: {vencimiento }</p>
+                                            <p className="-mt-4 text-gray-400 font-light text-xs">Vencimiento: {vencimiento}</p>
 
                                             <p className="-mb-4 text-gray-400">Link corto</p>
                                             <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL_DEV}{link.shortUrl} </h6>
 
                                             <p className="-mb-4 text-gray-400">Link original</p>
 
-                                            <a href={link.url} target="_blank"   className="w-[320px] sm:w-[460px] hover:text-violet-300 ">
+                                            <a href={link.url} target="_blank" className="w-[320px] sm:w-[460px] hover:text-violet-300 ">
                                                 <span className=" font-light text-xs break-words " >
-                                                    {url}
+                                                    {link.url}
                                                 </span>
                                             </a>
                                         </div>
@@ -117,64 +79,22 @@ export default async function ({ params, searchParams }: Props) {
                                     </div>
 
                                     {/* Plan marco */}
-                                    <div className="w-[300px] sm:w-fit  p-2 ">
+
+                                    <a href={link.shortUrl} download className="w-12 h-12  overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50 border border-gray-200">
+
+                                        <Image
+                                            src={link.qr}
+                                            alt='QR del link'
+                                            height={150}
+                                            width={150}
+                                        />
+                                    </a>
                                  
-                                        <div className="h-fit flex md:flex-col justify-center items-center border-2 border-violet-600  rounded-lg p-4">
-                                            <div className="flex flex-col justify-center">
-
-                                            <p className="text-green-400 text-lg md:text-xl font-semibold">Plan {plan!.name} </p>
-                                            <p className="text-green-400 ">{ plan!.limit ? `+${plan!.limit} clicks` : 'Sin limite de clicks' }</p>
-                                            </div>
-                                            <span className="font-semibold text-3xl md:text-4xl mx-auto mt-2">${ plan!.price }</span>
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
-                            {/* CODIGO DESCUENTO */}
-                            <div className="mb-6 pb-6 border-b border-gray-200">
-                                <div className="-mx-2 flex items-end justify-end">
-                                    <div className="flex-grow px-2 lg:max-w-xs">
-                                        <label className=" font-semibold text-sm mb-2 ml-1">Código de descuento</label>
-                                        <div>
-                                            <input className="w-full px-3 py-2 border text-slate-900 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="XXXXXX" type="text" />
-                                        </div>
-                                    </div>
-                                    <div className="px-2">
-                                        <button className="block w-full max-w-xs mx-auto border border-transparent bg-gray-400 hover:bg-gray-500 focus:bg-gray-500 text-white rounded-md px-5 py-2 font-semibold">Aplicar</button>
-                                    </div>
-                                </div>
-                            </div>
+                            {/* PAGO FORM */}
+                            <PaymentForm />
 
-                            <div className="mb-6 pb-6 border-b border-gray-200 ">
-                                <div className="w-full flex mb-3 items-center">
-                                    <div className="flex-grow">
-                                        <span className="">Subtotal</span>
-                                    </div>
-                                    <div className="pl-3">
-                                        <span className="font-semibold">${plan!.price}</span>
-                                    </div>
-                                </div>
-                                <div className="w-full flex items-center">
-                                    <div className="flex-grow">
-                                        <span className="">impuestos (5%)</span>
-                                    </div>
-                                    <div className="pl-3">
-                                        <span className="font-semibold">${plan!.price * 0.05}  </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="mb-6 pb-6 border-b border-gray-200 sm:border-none  text-xl">
-                                <div className="w-full flex items-center">
-                                    <div className="flex-grow">
-                                        <span className="">Total</span>
-                                    </div>
-                                    <div className="pl-3">
-                                        <span className="font-semibold text-gray-400 text-sm">USD</span> <span className="font-semibold">${plan!.price * 1.05} </span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         {/* PAGO */}

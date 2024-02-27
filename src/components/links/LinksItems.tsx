@@ -111,23 +111,22 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
                         )
                     }>
                         <td className=" px-6 border-b border-gray-200">
-                            <div className='py-5 '>
+                            <div className='py-5 group relative'>
 
-                                <a href={link.url} target='_blank' rel='noreferrer' className="relative group text-sm  text-gray-500">
+                                <a href={link.url} target='_blank' rel='noreferrer' className="  text-sm  text-gray-500 w-[320px]">
                                     {link.url.length > 30 ? link.url.slice(0, 30) + '...' : link.url}
 
-                                    {
-                                        link.url.length > 30 && (
 
-                                            <div className="w-fit [transform:perspective(50px)_translateZ(0)_rotateX(10deg)] group-hover:[transform:perspective(0px)_translateZ(0)_rotateX(0deg)] absolute  bottom-5 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:opacity-100">
-                                                <div className="flex max-w-xs flex-col items-center">
-                                                    <div className="rounded bg-violet-500 p-2 text-xs text-center shadow-lg">{link.url}</div>
-                                                    {/* <div className="clip-bottom h-2 w-4 bg-gray-900"></div> */}
-                                                </div>
-                                            </div>
-                                        )
-                                    }
                                 </a>
+
+                                <div className="hidden absolute left-32  -bottom-0 origin-bottom  rounded text-white opacity-0 transition-all duration-300 group-hover:block group-hover:opacity-100">
+                                    <div className="flex max-w-xs flex-col items-center">
+                                        <a href={link.url} target='_blank' rel='noreferrer' className="rounded bg-violet-500 p-2 text-xs text-center shadow-lg w-[250px] break-words">{link.url}</a>
+                                        {/* <div className="clip-bottom h-2 w-4 bg-gray-900"></div> */}
+                                    </div>
+                                </div>
+
+
                             </div>
                         </td>
 

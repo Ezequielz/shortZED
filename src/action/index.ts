@@ -2,8 +2,11 @@
 
 export * from './auth/login';
 export * from './auth/logout'; 
-export * from './auth/register'; 
+export * from './auth/register';
 
+export * from './code/get-code'; 
+
+export * from './plan/get-all-plans';
 export * from './plan/get-plan';
 
 export * from './link/delete-link';
