@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlanStore } from "@/store";
+import { useCheckoutStore } from "@/store";
 import { PlanName } from "@prisma/client"
 import clsx from "clsx"
 import Link from "next/link"
@@ -13,11 +13,11 @@ interface Props {
 
 export const PricingButton = ({ short, planNAme, resaltPlan }: Props) => {
 
-    const changePlan = usePlanStore( state => state.changePlan )
+    const changePlan = useCheckoutStore( state => state.changePlan )
     return (
         <Link
             onClick={() => changePlan(planNAme)}
-            href={`/payment/${short}`}
+            href={`/checkout/${short}`}
             className={
                 clsx(
                     " px-4 mt-6  py-2 text-white font-semibold  hover:shadow-xl duration-200 ",

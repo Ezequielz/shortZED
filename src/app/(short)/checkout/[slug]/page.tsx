@@ -2,8 +2,9 @@ import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { getLink } from "@/action";
-import { PaymentForm, PaypalButton } from "@/components";
+import { CheckoutForm, OrdenConfirm, PlaceOrderButton } from "@/components";
 import { getVencimientoDelPlan } from "@/helpers";
+
 
 interface Props {
     params: {
@@ -18,7 +19,7 @@ export default async function ({ params }: Props) {
     if (!session) {
         redirect('/auth/login')
     }
-
+    
     const { ok: linkOk, links } = await getLink(slug);
 
     if (!linkOk) {
@@ -93,45 +94,15 @@ export default async function ({ params }: Props) {
                                 </div>
                             </div>
                             {/* PAGO FORM */}
-                            <PaymentForm />
+                            <CheckoutForm />
 
                         </div>
 
                         {/* PAGO */}
                         <div className="px-3  lg:w-2/5">
-                            {/* DATOS */}
-                            <div className="w-full mx-auto rounded-lg  border border-gray-200 p-3  font-light mb-6">
+                            <OrdenConfirm />      
 
-                                <div className="w-full flex mb-3 items-center">
-                                    <div className="w-32">
-                                        <span className=" font-semibold">Usuario</span>
-                                    </div>
-                                    <div className="flex-grow pl-3">
-                                        <span> {session.user?.name} </span>
-                                    </div>
-                                </div>
-                                <div className="w-full flex items-center">
-                                    <div className="w-32">
-                                        <span className=" font-semibold">Email</span>
-                                    </div>
-                                    <div className="flex-grow pl-3">
-                                        <span> {session.user?.email} </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* PAYPAL */}
-                            <div className="w-full mx-auto rounded-lg border border-gray-200  font-light mb-6">
-
-                                <PaypalButton 
-                                    amount={1}
-                                    orderId=""
-                                />
-
-
-
-
-                            </div>
-                        </div>
+                         </div>
                     </div>
                 </div>
 

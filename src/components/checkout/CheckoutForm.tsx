@@ -6,36 +6,27 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Plan } from '@prisma/client';
 import { getAllPlans, getCode, getPlan } from '@/action';
 import clsx from 'clsx';
-import { usePlanStore } from '@/store';
+import { useCheckoutStore } from '@/store';
 import { currencyFormat } from '@/helpers';
 
 interface FormInputs {
     codeName: string;
 };
 
-type Code = {
-    isActive: boolean
-    discount: number
-    name: string
-};
 
+export const CheckoutForm = () => {
 
-
-export const PaymentForm = () => {
-
-    const planName = usePlanStore(state => state.plan);
-    const changePlan = usePlanStore(state => state.changePlan);
+    const planName = useCheckoutStore(state => state.plan);
+    const changePlan = useCheckoutStore(state => state.changePlan);
+    const code = useCheckoutStore(state => state.code);
+    const setCode = useCheckoutStore(state => state.setCode);
 
     const [plan, setPlan] = useState<Plan>();
     const [plans, setPlans] = useState<Plan[]>();
 
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
-    const [code, setCode] = useState<Code>({
-        isActive: false,
-        discount: 0,
-        name: ''
-    });
+
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormInputs>();
 
     useEffect(() => {

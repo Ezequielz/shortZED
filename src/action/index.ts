@@ -14,9 +14,13 @@ export * from './link/get-all-links';
 export * from './link/get-link';
 export * from './link/get-user-links';
 export * from './link/set-link';
-export * from './link/update-link-hash';
 export * from './link/update-link-clicks';
+export * from './link/update-link-hash';
 export * from './link/update-link-limit';
+
+
+export * from './order/get-order-by-id';
+export * from './order/set-order';
 
 
 

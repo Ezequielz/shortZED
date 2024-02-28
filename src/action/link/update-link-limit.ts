@@ -77,8 +77,8 @@ export const updateLinkPlan = async ( userId: string, hash: string, plan: Plan) 
         });
 
         revalidatePath('/')
-        revalidatePath('/payment')
-        revalidatePath(`/payment/${hash}`)
+        revalidatePath('/checkout')
+        revalidatePath(`/checkout/${hash}`)
 
         return {
             ok: true,

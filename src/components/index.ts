@@ -4,9 +4,12 @@
 export * from './auth/login/login-form/LoginForm';
 export * from './auth/register/register-form/RegisterForm';
 
+export * from './checkout/CheckoutForm';
+export * from './checkout/OrdenConfirm';
+export * from './checkout/PlaceOrderButton';
+
 export * from './dialog/Dialog';
 
-export * from './forms/PaymentForm';
 export * from './forms/ShortForm';
 export * from './forms/UpdateForm';
 
