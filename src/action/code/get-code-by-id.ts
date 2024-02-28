@@ -3,22 +3,22 @@
 import prisma from '@/lib/prisma';
 
 
-export const getCode = async ( name: string ) => {
+export const getCodeById = async ( id: string ) => {
 
     try {
        const codeDB = await prisma.code.findFirst({
             where: {
-                name: name
+                id: id
             }
         });
 
         if(!codeDB) return { ok: false, message: 'No se encontro codigo' };
 
-        const {id, ...rest } = codeDB;
+        
 
         return {
             ok: true,
-            code: rest,
+            code: codeDB,
             message: 'codigo correcto'
         };
     } catch (error: any) {

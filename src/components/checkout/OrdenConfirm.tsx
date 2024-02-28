@@ -6,6 +6,7 @@ import { PlanName } from '@prisma/client';
 import { IoIosArrowForward } from 'react-icons/io';
 import { useCheckoutStore } from '@/store';
 import { placeOrder } from '@/action';
+import Link from 'next/link';
 
 
 export const OrdenConfirm = () => {
@@ -18,6 +19,7 @@ export const OrdenConfirm = () => {
     const router = useRouter();
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
+    const [orderId, setOrderId] = useState('')
 
     if (!session) return null;
 
@@ -34,6 +36,9 @@ export const OrdenConfirm = () => {
         if (!resp.ok) {
             setIsPlacingOrder(false)
             setErrorMessage(resp.message);
+            if (resp.orderId) {
+                setOrderId(resp.orderId);
+            }
             return
         }
 
@@ -99,7 +104,16 @@ export const OrdenConfirm = () => {
                         className="absolute inset-0 h-[200%] w-[200%] rotate-45 translate-x-[-70%] transition-all group-hover:scale-100 bg-white/30 group-hover:translate-x-[50%] z-20 duration-1000">
                     </div>
                 </button>
-                <p className="text-red-500">{ errorMessage }</p>
+                {
+                    errorMessage && (
+                        <>
+                            <p className="text-red-500">{ errorMessage }</p>
+                            <Link href={`/order/${orderId}`}>
+                                Ver orden
+                            </Link>
+                        </>
+                    )
+                }
 
             </div>
         </div>

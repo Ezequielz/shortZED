@@ -42,9 +42,8 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
                 name: code,
                 isActive: true
             }
-        })]);
-
-
+        }),
+    ]);
 
     if (!planDB) throw new Error(`${plan}`)
     if (code && !codeDb) throw new Error(`${code} no existe`)
@@ -52,12 +51,29 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
     if (!link) throw new Error('no hay link')
 
 
+    const prevOrderForLinkWhitoutPaid = await prisma.order.findFirst({
+        where: {
+            userId: userId,
+            linkId: link.id,
+            isPaid: false
+        }
+    });
+
+    if (prevOrderForLinkWhitoutPaid) {
+        return {
+            ok: false,
+            message: 'Ya existe una orden para este link imapaga',
+            orderId: prevOrderForLinkWhitoutPaid.id,
+        }
+    }
+
     // Los totales de tax, subtotal y total
     const subTotal = planDB.price
     const tax = subTotal * 0.05
+    const total = subTotal + tax
+
     // const discount = codeDb?.discount ? subTotal! * (codeDb.discount / 100) : null
     // const total = discount ? subTotal! + tax - discount : subTotal! + tax
-    const total = subTotal + tax
 
 
 
@@ -75,8 +91,8 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
                     linkId: link.id,
                     planId: planDB.id,
                     codeId: codeDb?.id,
-                   
-                    
+
+
 
                 }
             })
