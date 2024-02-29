@@ -11,8 +11,8 @@ export const OrderStatus = ({ isPaid, orderId }: Props) => {
         <div className={
             clsx(
                 " lg:flex justify-between items-center p-2 mb- 2",
-                { 'bg-red-600': !isPaid },
-                { 'bg-green-600': isPaid }
+                { 'bg-red-600 bg-opacity-50': !isPaid },
+                { 'bg-green-600 bg-opacity-50': isPaid }
             )
         }
         >

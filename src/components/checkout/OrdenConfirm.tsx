@@ -44,7 +44,7 @@ export const OrdenConfirm = () => {
 
         //* Todo salio bien
 
-        router.replace('/payment/' + resp.order?.id);
+        router.replace('/order/' + resp.order?.id);
 
     }
 

@@ -22,9 +22,10 @@ export * from './links/ViewLink';
 
 
 export * from './orders/OrderStatus';
+export * from './orders/DeleteOrderButton';
 
 export * from './payment/Pricing';
-export * from './paypal/PaypalButton';
+export * from './payment/paypal/PaypalButton';
 
 export * from './providers/Providers';
 

@@ -1,12 +1,13 @@
-import { getCodeById, getLinkById, getOrderById, getPlanById, getUserById } from "@/action";
-import { auth } from "@/auth.config";
-import { CheckoutForm, OrdenConfirm, OrderStatus, PaypalButton } from "@/components";
-import { currencyFormat, getVencimientoDelPlan } from "@/helpers";
-import { PlanName } from "@prisma/client";
-import clsx from "clsx";
-import Image from "next/image";
-import { notFound, redirect } from "next/navigation";
-import { IoCardOutline } from "react-icons/io5";
+import { getCodeById, getLinkById, getOrderById, getPlanById, getUserById } from '@/action';
+import { auth } from '@/auth.config';
+import { DeleteOrderButton, OrderStatus, PaypalButton } from '@/components';
+import { currencyFormat, getVencimientoDelPlan } from '@/helpers';
+import { PlanName } from '@prisma/client';
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound, redirect } from 'next/navigation';
+import { IoCloseOutline } from 'react-icons/io5';
 
 interface Props {
     params: {
@@ -49,19 +50,26 @@ export default async function ({ params }: Props) {
         plan_elegido: plan?.name as PlanName,
         sub_total: currencyFormat(order!.subTotal),
         impuestos: currencyFormat(order!.tax),
-        descuento: code?.name ? currencyFormat(code.discount) : '-',
+        descuento: code?.name ? `- ${currencyFormat(order!.subTotal * (code.discount / 100))}` : '-',
         total: currencyFormat(order!.total),
         usuario: user?.name,
         email: user?.email,
     }
+
     return (
 
         <div className="min-w-screen h-fit mb-3 ">
             {/* TITULO */}
             <div className="px-5">
 
-                <div className="mb-2">
+                <div className="mb-2 flex justify-between items-center">
                     <h1 className="text-3xl sm:text-5xl font-bold ">Orden </h1>
+                    {
+                        !order!.isPaid && (
+
+                            <DeleteOrderButton orderId={order!.id} />
+                        )
+                    }
                 </div>
 
             </div>
@@ -88,7 +96,7 @@ export default async function ({ params }: Props) {
 
                                             <span className={
                                                 clsx(
-                                                    { 'capitalize' : prop === 'usuario'}
+                                                    { 'capitalize': prop === 'usuario' }
                                                 )
                                             }>{value ? value : '-'}</span>
                                         )
@@ -117,16 +125,33 @@ export default async function ({ params }: Props) {
 
                         </div>
 
-                        <div className="border-2 border-violet-500 p-2 rounded-lg m-3.5">
-                            <h4 className="flex justify-center font-semibold">Resumen</h4>
-                            <p>Te quedan { links![0].limit! - links![0].clicks! } clicks de uso.</p>
-                            <p>Con el plan {plan?.name} Aumentarás el limite de {links![0].limit} a { links![0].limit! + plan!.limit!}. </p>
-            
-                            <p>El valor total de {currencyFormat(order!.total)}</p>
+                        {
+                            order!.isPaid ? (
+                                <div className="flex  flex-col justify-center items-center border-2 border-violet-500 p-2 rounded-lg m-3.5">
+                                    <h4 className="flex justify-center font-semibold">Resumen</h4>
+                                    <p>Actualizaste el limite a {links![0].limit!}</p>
+                                    <Link href={'/links'} className=''>
+                                        Ver links
+                                    </Link>
 
-                        </div>
+                                </div>
+                            ) : (
+                                <>
 
-                        <PaypalButton orderId={""} amount={0} />
+                                    <div className="border-2 border-violet-500 p-2 rounded-lg m-3.5">
+                                        <h4 className="flex justify-center font-semibold">Resumen</h4>
+                                        <p>Te quedan {links![0].limit! - links![0].clicks!} clicks de uso.</p>
+                                        <p>Con el plan {plan?.name} Aumentarás el limite de {links![0].limit} a {plan?.limit ? (links![0].limit! + plan!.limit!) : 'ilimitados'}. </p>
+
+                                        <p>El valor total de {currencyFormat(order!.total)}</p>
+
+                                    </div>
+
+                                    <PaypalButton orderId={order!.id} amount={order!.total} limitUpdate={plan!.limit} linkId={order!.linkId} />
+                                </>
+                            )
+                        }
+
 
                     </div>
                 </div>

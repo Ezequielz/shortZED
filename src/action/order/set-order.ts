@@ -70,10 +70,8 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
     // Los totales de tax, subtotal y total
     const subTotal = planDB.price
     const tax = subTotal * 0.05
-    const total = subTotal + tax
-
-    // const discount = codeDb?.discount ? subTotal! * (codeDb.discount / 100) : null
-    // const total = discount ? subTotal! + tax - discount : subTotal! + tax
+    const discount = codeDb?.discount ? subTotal! * (codeDb.discount / 100) : null
+    const total = discount ? subTotal! + tax - discount : subTotal! + tax
 
 
 
