@@ -26,5 +26,8 @@ export * from './order/get-order-by-id';
 export * from './order/set-order';
 
 
+export * from './user/get-user-by-id';
+
+
 
 

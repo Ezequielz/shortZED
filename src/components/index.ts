@@ -20,6 +20,9 @@ export * from './links/ModalLink';
 export * from './links/TableLinks';
 export * from './links/ViewLink';
 
+
+export * from './orders/OrderStatus';
+
 export * from './payment/Pricing';
 export * from './paypal/PaypalButton';
 

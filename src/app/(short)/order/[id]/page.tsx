@@ -1,11 +1,12 @@
-import { getCodeById, getLinkById, getOrderById, getPlanById } from "@/action";
+import { getCodeById, getLinkById, getOrderById, getPlanById, getUserById } from "@/action";
 import { auth } from "@/auth.config";
-import { CheckoutForm, OrdenConfirm } from "@/components";
-import { getVencimientoDelPlan } from "@/helpers";
+import { CheckoutForm, OrdenConfirm, OrderStatus, PaypalButton } from "@/components";
+import { currencyFormat, getVencimientoDelPlan } from "@/helpers";
 import { PlanName } from "@prisma/client";
 import clsx from "clsx";
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
+import { IoCardOutline } from "react-icons/io5";
 
 interface Props {
     params: {
@@ -26,10 +27,11 @@ export default async function ({ params }: Props) {
         notFound()
     }
 
-    const [{ ok: okLink, links }, { ok: okPlan, plan }, { ok: okCode, code }] = await Promise.all([
+    const [{ ok: okLink, links }, { ok: okPlan, plan }, { ok: okCode, code }, { ok: okUser, user }] = await Promise.all([
         getLinkById(order?.linkId as string),
         getPlanById(order?.planId as string),
-        getCodeById(order?.codeId as string)
+        getCodeById(order?.codeId as string),
+        getUserById(order?.userId as string)
     ])
 
 
@@ -41,19 +43,20 @@ export default async function ({ params }: Props) {
     const ordenShow = {
         link_corto: `${process.env.NEXT_PUBLIC_URL_DEV + links![0].shortUrl}`,
         link_original: links![0].url,
-        clicks_actual: links![0].limit,
+        limite_actual: links![0].limit,
+        clicks_usados: links![0].clicks ? links![0].clicks : '0',
         vencimiento: vencimiento,
         plan_elegido: plan?.name as PlanName,
-        sub_total: order?.subTotal,
-        impuestos: order?.tax,
-        codigo_descuento: code?.name,
-        total: order?.total,
-        userId: order?.userId
-
+        sub_total: currencyFormat(order!.subTotal),
+        impuestos: currencyFormat(order!.tax),
+        descuento: code?.name ? currencyFormat(code.discount) : '-',
+        total: currencyFormat(order!.total),
+        usuario: user?.name,
+        email: user?.email,
     }
     return (
 
-        <div className="min-w-screen min-h-screen  py-5">
+        <div className="min-w-screen h-fit mb-3 ">
             {/* TITULO */}
             <div className="px-5">
 
@@ -64,93 +67,67 @@ export default async function ({ params }: Props) {
             </div>
 
 
-            <div className="w-full  border-t border-b border-gray-200  py-10 ">
-                <div className={
-                    clsx(
-                        " lg:flex justify-between p-2 mb- 2",
-                        { 'bg-red-500': !order?.isPaid },
-                        { 'bg-green-500': order?.isPaid }
-                    )
-                }
-                >
-                    <h2> Número de orden:  {order?.id.split('-').at(-1)} </h2>
+            <div className="w-full  border-t border-b border-gray-200  py-6 ">
 
-                    <span>
-                        {order?.isPaid ? 'Pagada' : 'Pendiente de pago'}
-
-                    </span>
-
-                </div>
+                <OrderStatus orderId={order!.id} isPaid={order!.isPaid} />
 
 
-                <div className="w-full mt-2">
-                    <div className="-mx-3 lg:flex  items-start gap-2">
-                        {/* Detalles de la orden */}
-                        <div className="px-3 lg:w-3/5 ">
-                            <div className="mx-auto  font-light mb-6 pb-6">
+                <div className="w-full mt-2 lg:flex  items-start gap-2">
+                    {/* Detalles de la orden */}
 
-                                <div className="flex flex-col-reverse md:flex-row md:justify-between item-center">
+                    <ul className="w-full px-3 lg:w-3/5 lex flex-col md:flex-row md:justify-between item-center ">
+                        {
+                            Object.entries(ordenShow).map(([prop, value]) => (
+                                <li key={prop} className="p-2 flex text-sm justify-between items-center odd:bg-neutral-700">
+                                    <span className="capitalize">{prop.replace('_', ' ')}:</span>
+                                    {
+                                        typeof (value) === 'string' && value.length > 30 ? (
 
-                                    {/* Details */}
+                                            <span className="w-[350px] break-words text-xs text-right">{value.length > 150 ? value.slice(0, 150) + '...' : value}</span>
+                                        ) : (
 
-                                    <ul className="w-full  ">
-                                        {
-                                            Object.entries(ordenShow).map(([prop, value]) => (
-                                                <li key={prop} className="p-2 flex justify-between items-center odd:bg-neutral-600">
-                                                    <span className="capitalize">{prop.replace('_', ' ')}:</span>
-                                                    {
-                                                        typeof (value) === 'string' && value.length > 30 ? (
+                                            <span className={
+                                                clsx(
+                                                    { 'capitalize' : prop === 'usuario'}
+                                                )
+                                            }>{value ? value : '-'}</span>
+                                        )
+                                    }
 
-                                                            <span className="w-[350px] break-words text-xs text-right">{value.length > 150 ? value.slice(0, 150) + '...' : value}</span>
-                                                        ) : (
+                                </li>
+                            ))
+                        }
+                    </ul>
 
-                                                            <span className="">{value}</span>
-                                                        )
-                                                    }
+                    {/* PAGO */}
+                    <div className="px-3  lg:w-2/5 ">
 
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
+                        <div className="flex flex-col justify-center items-center gap-2 mb-2">
+                            <h3 className=" ">codigo QR del short</h3>
+                            <a href={links![0].shortUrl} download className="w-12 h-12  overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50">
 
-                                    {/* <a href={links![0].shortUrl} download className="mt-2 w-12 h-12  overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50 border border-gray-200">
+                                <Image
 
-                                        <Image
-                                            src={links![0].qr}
-                                            alt='QR del link'
-                                            height={150}
-                                            width={150}
-                                        />
-                                    </a> */}
-
-                                </div>
-                            </div>
-                            {/* PAGO FORM */}
-                            {/* <CheckoutForm /> */}
+                                    src={links![0].qr}
+                                    alt='QR del link'
+                                    height={150}
+                                    width={150}
+                                />
+                            </a>
 
                         </div>
 
-                        {/* PAGO */}
-                        <div className="px-3  lg:w-2/5 ">
-
-                            <div className="flex flex-col justify-center items-center gap-2 mb-2">
-                                <h3 className=" ">codigo QR del short</h3>
-                                <a href={links![0].shortUrl} download className="w-12 h-12  overflow-hidden rounded-lg sm:w-28 sm:h-28 bg-gray-50">
-
-                                    <Image
-
-                                        src={links![0].qr}
-                                        alt='QR del link'
-                                        height={150}
-                                        width={150}
-                                    />
-                                </a>
-
-                            </div>
-
-                            <OrdenConfirm />
+                        <div className="border-2 border-violet-500 p-2 rounded-lg m-3.5">
+                            <h4 className="flex justify-center font-semibold">Resumen</h4>
+                            <p>Te quedan { links![0].limit! - links![0].clicks! } clicks de uso.</p>
+                            <p>Con el plan {plan?.name} Aumentarás el limite de {links![0].limit} a { links![0].limit! + plan!.limit!}. </p>
+            
+                            <p>El valor total de {currencyFormat(order!.total)}</p>
 
                         </div>
+
+                        <PaypalButton orderId={""} amount={0} />
+
                     </div>
                 </div>
 
