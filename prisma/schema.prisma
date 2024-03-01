@@ -30,6 +30,7 @@ model Link {
   shortUrl  String   @unique
   clicks    Int      @default(0)
   limit     Int?     @default(10)
+  expires   DateTime @default(dbgenerated("now() + interval '1 month'"))
   isActive  Boolean  @default(true)
   qr        String
 

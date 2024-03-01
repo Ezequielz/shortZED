@@ -3,18 +3,21 @@
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Plan } from '@prisma/client';
+import { Link, Plan, PlanName } from '@prisma/client';
 import { getAllPlans, getCode, getPlan } from '@/action';
 import clsx from 'clsx';
 import { useCheckoutStore } from '@/store';
-import { currencyFormat } from '@/helpers';
+import { currencyFormat, dateFormat } from '@/helpers';
 
 interface FormInputs {
     codeName: string;
 };
+interface Props {
+    link: Link;
+}
 
+export const CheckoutForm = ({ link }: Props) => {
 
-export const CheckoutForm = () => {
 
     const planName = useCheckoutStore(state => state.plan);
     const changePlan = useCheckoutStore(state => state.changePlan);
@@ -41,10 +44,15 @@ export const CheckoutForm = () => {
 
 
     useEffect(() => {
+        if (!link.limit) {
+            setIsLoading(false);
+            return changePlan(PlanName.super)
+        }
 
         const getPlanDB = async () => {
             return await getPlan(planName);
         };
+
 
         getPlanDB().then(res => {
             if (!res.ok) redirect('/links');
@@ -53,7 +61,7 @@ export const CheckoutForm = () => {
         });
 
 
-    }, [planName]);
+    }, [planName, link, changePlan]);
 
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -72,9 +80,9 @@ export const CheckoutForm = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     };
-
+   
     const plansFiltered = plans?.filter(p => p.name !== planName && p.name !== 'free')
-
+    if (!link.limit) return <p>El link tiene clicks ilimitados hasta el: {dateFormat(link.expires)}, solo puede activar el pack super para externder el uso 1 mes</p>
     return (
         <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] ">
 

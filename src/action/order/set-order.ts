@@ -45,6 +45,9 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
         }),
     ]);
 
+
+  
+
     if (!planDB) throw new Error(`${plan}`)
     if (code && !codeDb) throw new Error(`${code} no existe`)
     // if (link?.orderId) throw new Error('El link ya tiene una orden')
@@ -89,9 +92,6 @@ export const placeOrder = async ({ hash, plan, code = '' }: Order) => {
                     linkId: link.id,
                     planId: planDB.id,
                     codeId: codeDb?.id,
-
-
-
                 }
             })
 

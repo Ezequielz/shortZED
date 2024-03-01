@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { getLink } from "@/action";
 import { CheckoutForm, OrdenConfirm, PlaceOrderButton } from "@/components";
-import { getVencimientoDelPlan } from "@/helpers";
+import { dateFormat } from "@/helpers";
 
 
 interface Props {
@@ -27,7 +27,7 @@ export default async function ({ params }: Props) {
     }
 
     const link = links![0]
-    const vencimiento = getVencimientoDelPlan(link.updatedAt)
+    const vencimiento = dateFormat(link.expires)
 
 
     return (
@@ -94,10 +94,10 @@ export default async function ({ params }: Props) {
                                 </div>
                             </div>
                             {/* PAGO FORM */}
-                            <CheckoutForm />
+                            <CheckoutForm  link={link}/>
 
                         </div>
-
+                        
                         {/* PAGO */}
                         <div className="px-3  lg:w-2/5">
                             <OrdenConfirm />      

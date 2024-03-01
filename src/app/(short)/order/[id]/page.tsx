@@ -1,13 +1,12 @@
 import { getCodeById, getLinkById, getOrderById, getPlanById, getUserById } from '@/action';
 import { auth } from '@/auth.config';
 import { DeleteOrderButton, OrderStatus, PaypalButton } from '@/components';
-import { currencyFormat, getVencimientoDelPlan } from '@/helpers';
+import { currencyFormat, dateFormat } from '@/helpers';
 import { PlanName } from '@prisma/client';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { IoCloseOutline } from 'react-icons/io5';
 
 interface Props {
     params: {
@@ -35,11 +34,11 @@ export default async function ({ params }: Props) {
         getUserById(order?.userId as string)
     ])
 
-
+//2024-03-01 23:07:09.743    // 2024-04-01 22:39:36.692
     if (!okLink || !okPlan) {
         notFound()
     }
-    const vencimiento = getVencimientoDelPlan(links![0].updatedAt)
+    const vencimiento = dateFormat(links![0].expires)
 
     const ordenShow = {
         link_corto: `${process.env.NEXT_PUBLIC_URL_DEV + links![0].shortUrl}`,
@@ -129,7 +128,8 @@ export default async function ({ params }: Props) {
                             order!.isPaid ? (
                                 <div className="flex  flex-col justify-center items-center border-2 border-violet-500 p-2 rounded-lg m-3.5">
                                     <h4 className="flex justify-center font-semibold">Resumen</h4>
-                                    <p>Actualizaste el limite a {links![0].limit!}</p>
+                                    <p>Actualizaste el limite a {links![0].limit ? links![0].limit! : 'clicks ilimitados'}</p>
+                                    <p>con vencimiento el {dateFormat(links![0].expires)}</p>
                                     <Link href={'/links'} className=''>
                                         Ver links
                                     </Link>

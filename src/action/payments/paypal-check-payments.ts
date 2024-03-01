@@ -38,7 +38,7 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
 
     // realizar la actualizacion en nuestra base de datos
     try {
-        console.log({ status, purchase_units });
+        // console.log({ status, purchase_units });
 
         await prisma.order.update({
             where: {
@@ -49,8 +49,7 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
                 paidAt: new Date()
             }
         });
-
-        
+    
         // revalidar un path
         revalidatePath(`/orders/$${ orderId }`)
 
@@ -59,7 +58,6 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
             ok: true
         }
 
-
     } catch (error) {
         console.log(error)
         return {
@@ -67,13 +65,6 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
             message: 'El pago no se realizo - 500'
         }
     }
-
-
-
-
-
-
-
 };
 
 

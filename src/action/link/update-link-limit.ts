@@ -1,5 +1,6 @@
 'use server'
 
+import { addMonthDate } from '@/helpers';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
@@ -21,6 +22,7 @@ export const updateLinkLimit = async (id: string, limitUpdate: number | null) =>
         select: {
             id: true,
             updatedAt: true,
+            expires: true,
             limit: true
         }
     });
@@ -35,11 +37,28 @@ export const updateLinkLimit = async (id: string, limitUpdate: number | null) =>
 
 
     try {
-
+        let expiresCreate = new Date()
         if (!urlExists.limit) {
+            expiresCreate = new Date(urlExists.expires)
+        }
+
+        let newExpires = addMonthDate( expiresCreate , 1)
+      
+        if (!urlExists.limit) {
+            const res = await prisma.link.update({
+                
+                where: {
+                    id: urlExists.id
+                },
+                data: {
+                    limit:  null,
+                    updatedAt: new Date(Date.now()),
+                    expires: newExpires
+                }
+            });
             return {
-                ok: false,
-                message: 'Tienes el plan super, con clicks ilimitados'
+                ok: true,
+                message: 'Tiempo extendido'
             };
         };
 

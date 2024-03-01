@@ -61,6 +61,7 @@ export const PaypalButton = ({orderId, amount, limitUpdate, linkId}: Props) => {
                               // transactionId
         const { ok,message } = await paypalCheckPayment( details.id );
         if ( ok ){  
+            // si e aprueba el pago actualizar el limite del link
             await updateLinkLimit(linkId, limitUpdate);
         };
     }

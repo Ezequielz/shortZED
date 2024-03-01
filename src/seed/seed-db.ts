@@ -5,6 +5,7 @@ import { initialData } from './seed';
 
 async function main() {
 
+    await prisma.order.deleteMany();
     await prisma.link.deleteMany();
     await prisma.code.deleteMany();
     await prisma.plan.deleteMany();
