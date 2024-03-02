@@ -23,6 +23,7 @@ export * from './links/ViewLink';
 
 export * from './orders/OrderStatus';
 export * from './orders/DeleteOrderButton';
+export * from './orders/TableOrders';
 
 export * from './payment/Pricing';
 export * from './payment/paypal/PaypalButton';
@@ -39,12 +40,14 @@ export * from './skeletons/TopMenuButtonSkeleton';
 export * from './skeletons/StatusLinksSeleton';
 export * from './skeletons/LinksSkeleton';
 
+
 export * from './ui/footer/Footer';
 export * from './ui/not-found/NotFoundPage';
 export * from './ui/sidebar/Sidebar';
-export * from './ui/top-menu/TopMenu';
+export * from './ui/status/StatusBoxs';
 export * from './ui/top-menu/LoginButton';
 export * from './ui/top-menu/MenuButton';
+export * from './ui/top-menu/TopMenu';
 
 
 
