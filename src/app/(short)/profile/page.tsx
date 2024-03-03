@@ -1,27 +1,28 @@
 
 
-import { redirect } from "next/navigation";
-import { Profile } from "@/components";
-import { User } from "@prisma/client";
-import { auth } from "@/auth.config";
+import { redirect } from 'next/navigation';
+import { Profile, Title } from '@/components';
+import { User } from '@prisma/client';
+import { auth } from '@/auth.config';
 
 export default async function ProfilePage() {
 
-    const session = await auth();
-
-  
-  
-    if (!session) {
-      // redirect('/auth/login?returnTo=/perfil');
-      redirect('/');
-    }
-
-    const { id, password, ...rest } = session.user as User 
+  const session = await auth();
 
 
-    return (
-      <>
-        <Profile user={ rest } />
-      </>
-    );
-  }
+
+  if (!session) {
+    // redirect('/auth/login?returnTo=/perfil');
+    redirect('/');
+  };
+
+  const { id, password, ...rest } = session.user as User;
+
+
+  return (
+    <>
+      <Title title={'Perfil'} />
+      <Profile user={rest} />
+    </>
+  );
+}

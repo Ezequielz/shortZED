@@ -1,21 +1,22 @@
-import { getOrderByUser } from "@/action";
-import { auth } from "@/auth.config";
-import { StatusBoxs, TableOrders } from "@/components";
-import { notFound, redirect } from "next/navigation";
+import { Suspense } from 'react';
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth.config';
+import { OrdersSkeleton, TableOrders, Title } from '@/components';
 
 export default async function () {
-    
-    const session = await auth();
-    if (!session) {
-        redirect('/auth/login');
-    };
 
- 
+  const session = await auth();
+  if (!session) {
+    redirect('/auth/login');
+  };
+
 
   return (
-    <div>
-    
-      <TableOrders />
-    </div>
+    <section>
+      <Title title={'Ordenes'} />
+      <Suspense fallback={<OrdersSkeleton items={7} />}>
+        <TableOrders />
+      </Suspense>
+    </section>
   );
 }

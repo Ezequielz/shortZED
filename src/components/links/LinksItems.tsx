@@ -1,28 +1,41 @@
 'use client'
 
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { Link } from '@prisma/client'
 import { clsx } from 'clsx'
 import { useSnackbar } from 'notistack'
 import { IoCopyOutline } from 'react-icons/io5'
 import { MdOutlineEditCalendar, MdOutlineQrCode2 } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import { useLinksStore } from '@/store';
-import { deleteUrl, getLink, getUserLinks } from '@/action';
-import { useUIStore } from '../../store/ui/ui-store';
-import { usePathname, useRouter } from 'next/navigation';
-import { LinksSkeleton } from '..';
+import { useLinksStore, useUIStore } from '@/store';
+import { deleteUrl } from '@/action';
 
+type Link = ({
+    user: {
+        name: string | null;
+        email: string | null;
+        image: string | null;
+    } | null;
+} & {
+    id: string;
+    url: string;
+    createdAt: Date;
+    updatedAt: Date;
+    shortUrl: string;
+    isActive: boolean;
+    limit: number | null;
+    qr: string;
+    clicks: number;
+    userId: string | null;
+})
 
 interface Props {
     slug?: string;
-    singleShow?: boolean,
-    row?: number
-
+    links: Link[] | undefined;
 };
 
-export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
+export const LinksItems = ({ slug, links }: Props) => {
 
 
     const router = useRouter();
@@ -31,40 +44,31 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
     const { enqueueSnackbar } = useSnackbar();
 
     const status = useLinksStore(state => state.status);
-    const refresh = useLinksStore(state => state.refreshLinks);
     const changeRefresh = useLinksStore(state => state.changeRefresh);
 
     const openDialog = useUIStore(state => state.openDialog);
     const closeDialog = useUIStore(state => state.closeDialog);
 
-    const [isLoadingLinks, setIsLoadingLinks] = useState(false);
-    const [links, setLinks] = useState<Link[] | undefined>([]);
+    const [linksToShow, setLinksToShow] = useState(links);
+
 
 
     useEffect(() => {
         closeDialog();
     }, [closeDialog]);
 
-
     useEffect(() => {
-        const getLinks = async () => {
-            if (singleShow) {
-                const res = await getLink(slug!);
-                return res;
-            };
-            const res = await getUserLinks(session?.user?.id!, status);
-            return res;
-        };
-
-
-        getLinks().then(res => {
-            setLinks(res.links);
-            setIsLoadingLinks(true);
-        });
-        // console.log(userLinks)
-    }, [session, status, slug, singleShow, refresh]);
-
-
+        if (status && links) {
+            setLinksToShow(links.filter( link => link.isActive ))
+        }
+        if ( status === false && links) {
+            setLinksToShow(links.filter( link => !link.isActive ))
+        }
+        if (status === undefined) {
+            setLinksToShow(links)
+        }
+        
+    }, [status, links])
 
     const copyToClipboard = (e: React.MouseEvent<HTMLElement>, link: Link) => {
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl);
@@ -85,14 +89,9 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
 
     };
 
-    if (!isLoadingLinks) {
+   
 
-        return (
-            <LinksSkeleton row={singleShow ? 1 : row} />
-        );
-    };
-
-    if (!links) {
+    if (!linksToShow) {
         return null;
     };
 
@@ -100,7 +99,7 @@ export const LinksItems = ({ slug, singleShow, row = 7 }: Props) => {
     return (
         <>
             {
-                links.map(link => (
+                linksToShow.map(link => (
                     <tr key={link.id} className={
                         clsx(
 

@@ -1,12 +1,11 @@
 
-import { LinksItems } from "./LinksItems"
-import { ModalLink } from ".."
-import { auth } from "@/auth.config"
+import { ModalLink } from '..';
+import { auth } from '@/auth.config';
 
 interface Props {
-    short: string
+    short: string;
 }
-export const SingleLink = async ({ short }: Props) => {
+;export const SingleLink = async ({ short }: Props) => {
 
     const session = await auth();
 
@@ -58,7 +57,8 @@ export const SingleLink = async ({ short }: Props) => {
                             </tr>
                         </thead>
                         <tbody className="bg-white">
-                            <LinksItems slug={short} singleShow />
+                            {/* //TODO enviar el single link */}
+                            {/* <LinksItems /> */}
 
                         </tbody>
                     </table>

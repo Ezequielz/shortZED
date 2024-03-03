@@ -1,13 +1,13 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
-import { ModalLink, UserLinks } from '@/components';
+import { LinksSkeleton, ModalLink, TableLinks, Title } from '@/components';
 import { Suspense } from 'react';
 
 interface Props {
   searchParams?: { [key: string]: string | string[] | undefined }
 }
 
-export default async function LinksPage({searchParams}: Props) {
+export default async function LinksPage({ searchParams }: Props) {
   const session = await auth();
   const short = searchParams?.short as string;
 
@@ -15,21 +15,17 @@ export default async function LinksPage({searchParams}: Props) {
     redirect('/');
   };
 
-  
+
   return (
 
     <section>
-      
-      <div className="container px-6 py-8 mx-auto">
-        <h3 className="text-3xl font-medium text-gray-700">Links</h3>
 
-          <Suspense fallback={ <div>Loading...</div> }>
-            <ModalLink short={short} />
-          </Suspense>
-        {/* LINKS */}   
-          <UserLinks />
+        <Title title={'Links'} />
 
-      </div>
+        <Suspense fallback={<LinksSkeleton items={7} />}>
+          <TableLinks short={short}/>
+        </Suspense>
+        
     </section>
 
   )

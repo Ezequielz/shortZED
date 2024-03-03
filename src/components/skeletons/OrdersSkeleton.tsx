@@ -5,9 +5,9 @@ interface Props {
 
 }
 
-export const LinksSkeleton = async ({ items = 5 }: Props) => {
+export const OrdersSkeleton = async ({ items = 5 }: Props) => {
   const itemsArray = Array.from({ length: items }, (_, i) => i + 1)
-  const columns = ['Url','Short url','Estado', 'Clicks','Limite','Short','Qr', 'Editar','Eliminiar']
+  const columns = ['Orden','Estado','Link', 'Plan','Limite','Total','Ver', 'Eliminiar']
   return (
     <>
 
