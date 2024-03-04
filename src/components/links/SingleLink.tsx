@@ -1,6 +1,8 @@
 
 import { ModalLink } from '..';
 import { auth } from '@/auth.config';
+import { LinksItems } from './LinksItems';
+import { getLinkBySlug } from '@/action';
 
 interface Props {
     short: string;
@@ -9,9 +11,10 @@ interface Props {
 
     const session = await auth();
 
+    const {ok, links} = await getLinkBySlug(short);
 
     return (
-        <section className="flex flex-col mt-8">
+        <section className="flex flex-col">
             <ModalLink short={short} />
             <div className="py-2 -my-2  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div
@@ -58,7 +61,7 @@ interface Props {
                         </thead>
                         <tbody className="bg-white">
                             {/* //TODO enviar el single link */}
-                            {/* <LinksItems /> */}
+                            <LinksItems links={links} />
 
                         </tbody>
                     </table>

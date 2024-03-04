@@ -1,4 +1,4 @@
-import { getLink, updateLinkClicks } from "@/action";
+import { getLinkBySlug, updateLinkClicks } from "@/action";
 import { notFound, redirect } from "next/navigation";
 
 interface Props {
@@ -12,7 +12,7 @@ export default async function LinkPage({ params }: Props) {
     const { slug } = params;
     
     const [ link ] = await Promise.all([
-        getLink(slug),
+        getLinkBySlug(slug),
         updateLinkClicks(slug)
     ])
     

@@ -10,7 +10,7 @@ export * from './code/get-code-by-id';
 export * from './link/delete-link';
 export * from './link/get-all-links';
 export * from './link/get-link-by-id';
-export * from './link/get-link';
+export * from './link/get-link-by-slug';
 export * from './link/get-user-links';
 export * from './link/set-link';
 export * from './link/update-link-clicks';

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getLink } from '@/action';
+import { getLinkBySlug } from '@/action';
 
 
 interface Props {
@@ -14,7 +14,7 @@ export default async function ({ params }: Props) {
 
     const { slug } = params;
 
-    const link = await getLink(slug);
+    const link = await getLinkBySlug(slug);
 
     if (!link.ok) {
         notFound();

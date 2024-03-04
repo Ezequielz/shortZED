@@ -1,7 +1,7 @@
 import React from 'react'
 import { QRCodeView, SingleLink } from '..'
 import { redirect } from 'next/navigation'
-import { getLink } from '@/action'
+import { getLinkBySlug } from '@/action'
 
 interface Props {
     short: string
@@ -10,7 +10,7 @@ interface Props {
 export const ViewLink = async ({ short }: Props) => {
 
 
-    const { ok, links } = await getLink(short)
+    const { ok, links } = await getLinkBySlug(short)
 
     if (!ok || !links) {
         redirect('/')

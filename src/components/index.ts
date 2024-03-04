@@ -20,6 +20,7 @@ export * from './links/TableLinks';
 export * from './links/ViewLink';
 
 
+
 export * from './orders/OrderStatus';
 export * from './orders/DeleteOrderButton';
 export * from './orders/TableOrders';
@@ -42,6 +43,7 @@ export * from './skeletons/LinksSkeleton';
 
 export * from './ui/footer/Footer';
 export * from './ui/not-found/NotFoundPage';
+export * from './ui/pagination/Pagination';
 export * from './ui/sidebar/Sidebar';
 export * from './ui/status/StatusBoxs';
 export * from './ui/title/Title';

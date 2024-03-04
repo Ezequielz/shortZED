@@ -1,16 +1,17 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
-import { LinksSkeleton, ModalLink, TableLinks, Title } from '@/components';
+import { LinksSkeleton, TableLinks, Title } from '@/components';
 import { Suspense } from 'react';
 
 interface Props {
-  searchParams?: { [key: string]: string | string[] | undefined }
+  searchParams?: { [key: string]: string | undefined }
 }
 
 export default async function LinksPage({ searchParams }: Props) {
   const session = await auth();
   const short = searchParams?.short as string;
-
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const status = searchParams?.status ? searchParams?.status : undefined;
   if (!session || !session.user?.id) {
     redirect('/');
   };
@@ -23,7 +24,7 @@ export default async function LinksPage({ searchParams }: Props) {
         <Title title={'Links'} />
 
         <Suspense fallback={<LinksSkeleton items={7} />}>
-          <TableLinks short={short}/>
+          <TableLinks short={short} page={page} status={status}/>
         </Suspense>
         
     </section>

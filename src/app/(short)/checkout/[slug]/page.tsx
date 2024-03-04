@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth.config";
-import { getLink } from "@/action";
+import { getLinkBySlug } from "@/action";
 import { CheckoutForm, OrdenConfirm, PlaceOrderButton } from "@/components";
 import { dateFormat } from "@/helpers";
 
@@ -20,7 +20,7 @@ export default async function ({ params }: Props) {
         redirect('/auth/login')
     }
     
-    const { ok: linkOk, links } = await getLink(slug);
+    const { ok: linkOk, links } = await getLinkBySlug(slug);
 
     if (!linkOk) {
         notFound();

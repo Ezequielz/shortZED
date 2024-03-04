@@ -18,7 +18,7 @@ export const ShortForm = () => {
 
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset} = useForm<FormInputs>();
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormInputs>();
     const path = usePathname();
 
 
@@ -33,26 +33,32 @@ export const ShortForm = () => {
 
         // server action
         const resp = await setLink(url, hash, userId);
-        
+        reset()
         if (!resp.ok) {
             setErrorMessage(resp.message)
-            if( resp.shortUrl ) {
+            if (resp.shortUrl) {
                 router.replace(`${path}?short=${resp.shortUrl}`)
-            
+
             }
             return;
         };
-        reset()
+
         router.replace(`${path}?short=${resp.shortUrl}`)
 
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] ">
+        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] mb-6">
 
             <div className='flex flex-col justify-center gap-1'>
                 {/* URL */}
-                <div className='w-3/4 m-auto'>
+                <div className='w-3/4 m-auto relative'>
+                    {errors.url?.type === 'required' && (
+                        <span className="text-red-500 absolute -top-6 left-1">*El url es obligatorio</span>
+                    )}
+                    {errors.url?.type === 'pattern' && (
+                        <span className="text-red-500 absolute -top-6 left-1">*Debe ser un url válido</span>
+                    )}
                     <input
                         type="text"
                         autoFocus
@@ -68,12 +74,7 @@ export const ShortForm = () => {
                         {...register("url", { required: true, pattern: regexURL })}
                     />
 
-                    {errors.url?.type === 'required' && (
-                        <span className="text-red-500">El url es obligatorio</span>
-                    )}
-                    {errors.url?.type === 'pattern' && (
-                        <span className="text-red-500">Debe ser un url válido</span>
-                    )}
+
 
                 </div>
                 {/* HASH y BUTTON */}
@@ -100,7 +101,7 @@ export const ShortForm = () => {
                             disabled={isSubmitting}
                             className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1`}>
 
-                            <span className="z-5">Acortar url</span>
+                            <span className="z-5">{isSubmitting ? 'Acortando...' : 'Acortar url'}</span>
                             <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
 
                             <div
@@ -110,7 +111,10 @@ export const ShortForm = () => {
 
                     </div>
 
-                    <span className="text-red-500 flex items-center ">{errorMessage}</span>
+                </div>
+
+                <div className='relative flex justify-center p-1 mb-1'>
+                    <span className="text-red-500  m-auto items-center absolute">{errorMessage}</span>
                 </div>
 
             </div>

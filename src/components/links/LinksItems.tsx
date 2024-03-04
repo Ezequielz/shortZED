@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { clsx } from 'clsx'
 import { useSnackbar } from 'notistack'
@@ -39,7 +39,8 @@ export const LinksItems = ({ slug, links }: Props) => {
 
 
     const router = useRouter();
-    const path = usePathname();
+    const pathName = usePathname();
+    const searchParams = useSearchParams();
     const { data: session } = useSession();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -75,10 +76,20 @@ export const LinksItems = ({ slug, links }: Props) => {
         enqueueSnackbar('Copiado en el portapapeles', { variant: "success" });
     };
 
+    const createShortUrl = (short: string) => {
+
+        const params = new URLSearchParams(searchParams);
+     
+        params.set('short', short.toString());
+        
+        return `${pathName}?${params.toString()}`;
+
+    }
+
     const handleOpenDialog = (e: React.MouseEvent<HTMLElement>, link: Link) => {
         openDialog();
         changeRefresh();
-        router.replace(`${path}?short=${link.shortUrl}`);
+        router.replace(`${createShortUrl(link.shortUrl)}`);
     };
 
     const handleDeleteUrl = async (e: React.MouseEvent<HTMLElement>, link: Link) => {
@@ -110,7 +121,7 @@ export const LinksItems = ({ slug, links }: Props) => {
                         )
                     }>
                         <td className=" px-6 border-b border-gray-200">
-                            <div className='py-5 group relative'>
+                            <div className='py-3 group relative'>
 
                                 <a href={link.url} target='_blank' rel='noreferrer' className="  text-sm  text-gray-500 w-[320px]">
                                     {link.url.length > 30 ? link.url.slice(0, 30) + '...' : link.url}
@@ -129,7 +140,7 @@ export const LinksItems = ({ slug, links }: Props) => {
                             </div>
                         </td>
 
-                        <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-4 whitespace-nowrap">
+                        <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-3 whitespace-nowrap">
                             <a
                                 className="hover:underline"
                                 href={process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
@@ -140,7 +151,7 @@ export const LinksItems = ({ slug, links }: Props) => {
                             </a>
                         </td>
 
-                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                        <td className="px-6 py-3 whitespace-no-wrap border-b border-gray-200">
                             <span
                                 className={
                                     clsx(
@@ -165,14 +176,14 @@ export const LinksItems = ({ slug, links }: Props) => {
                             {link.limit ?? '∞'}</td>
                         <td
                             onClick={(e) => copyToClipboard(e, link)}
-                            className=" px-8 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
+                            className=" px-8 py-3 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200">
                             <IoCopyOutline size={20} className="cursor-pointer hover:text-violet-400 hover:scale-125" />
                         </td>
                         {
                             session?.user?.id && (
                                 <>
                                     <td
-                                        className="px-6 py-4 text-sm leading-5 text-violet-400 whitespace-no-wrap border-b border-gray-200">
+                                        className="px-6 py-3 text-sm leading-5 text-violet-400 whitespace-no-wrap border-b border-gray-200">
                                         <a href={link.qr} download={link.qr}>
 
                                             <MdOutlineQrCode2 size={20} className="cursor-pointer hover:text-violet-600 hover:scale-125" />
@@ -180,12 +191,12 @@ export const LinksItems = ({ slug, links }: Props) => {
                                     </td>
                                     <td
                                         onClick={(e) => handleOpenDialog(e, link)}
-                                        className="px-10 py-4 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
+                                        className="px-10 py-3 text-sm leading-5 text-blue-400 whitespace-no-wrap border-b border-gray-200">
                                         <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
                                     </td>
                                     <td
                                         onClick={(e) => handleDeleteUrl(e, link)}
-                                        className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
+                                        className="px-12 py-3 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                                         <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                                     </td>
 

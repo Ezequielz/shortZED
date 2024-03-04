@@ -1,4 +1,4 @@
-import { getLink } from "@/action";
+import { getLinkBySlug } from "@/action";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -11,7 +11,7 @@ export default async function ({ params }: Props) {
 
     const { slug } = params;
 
-    const link = await getLink(slug)
+    const link = await getLinkBySlug(slug)
     console.log(link)
     // if (!link.ok) {
     //     notFound()

@@ -9,10 +9,11 @@ import { Adapter } from 'next-auth/adapters';
 
 
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   pages: {
     signIn: '/auth/login',
     newUser: '/auth/register',
-    error: '/auth/login',
+
   },
   adapter: PrismaAdapter(prisma) as Adapter,
   providers: [

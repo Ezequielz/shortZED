@@ -1,8 +1,11 @@
 'use client'
 
+import { usePathname, useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
 import { IoCheckmarkOutline, IoWarningOutline, IoLinkOutline } from 'react-icons/io5';
 import { useLinksStore } from '@/store';
+import Link from 'next/link';
+import { useEffect } from 'react';
 
 
 interface Props {
@@ -14,19 +17,45 @@ export const StatusBoxs = ({ boxsTitle, quantity }: Props) => {
 
     const changeStatus = useLinksStore(state => state.changeStatus);
     const status = useLinksStore(state => state.status);
+    
+    const pathName = usePathname();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        changeStatus(undefined);
+    }, [changeStatus])
+    
+
+    const createStatusUrl = (status: boolean | undefined) => {
+
+        const params = new URLSearchParams(searchParams);
+        params.delete('short');
+        params.set('page', '1');
+        if (status === undefined) {
+            params.delete('status');
+            
+            return `${pathName}?${params.toString()}`;
+        }
+        params.set('status', status.toString());
+        
+        return `${pathName}?${params.toString()}`;
+
+    }
 
     return (
         <section className="flex flex-wrap -mx-6">
             {/* ACTIVE */}
-            <button
+            <Link
+                href={createStatusUrl(true)}
                 onClick={() => changeStatus(true)}
                 className="w-full px-6 sm:w-1/2 xl:w-1/3 "
             >
                 <div className={
                     clsx(
-                        "flex items-center px-5 py-6 bg-white  rounded-md shadow-sm",
+                        "flex items-center px-5 py-4  rounded-md shadow-sm",
                         {
-                            'bg-violet-200': status === true,
+                            'bg-violet-300': status === true ,
+                            'bg-white': status !== true,
                         }
                     )
                 }>
@@ -42,17 +71,19 @@ export const StatusBoxs = ({ boxsTitle, quantity }: Props) => {
                         <div className="text-gray-500">{quantity[0] === 1 ? boxsTitle[0] : `${boxsTitle[0]}s`}</div>
                     </div>
                 </div>
-            </button>
+            </Link>
             {/* INACTIVE  */}
-            <button
+            <Link
+                href={createStatusUrl(false)}
                 onClick={() => changeStatus(false)}
                 className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 sm:mt-0"
             >
                 <div className={
                     clsx(
-                        "flex items-center px-5 py-6 bg-white  rounded-md shadow-sm",
+                        "flex items-center px-5 py-4  rounded-md shadow-sm",
                         {
-                            'bg-violet-200': status === false,
+                            'bg-violet-300': status === false,
+                            'bg-white': status !== false,
                         }
                     )
                 }>
@@ -68,17 +99,19 @@ export const StatusBoxs = ({ boxsTitle, quantity }: Props) => {
                         <div className="text-gray-500">{quantity[1] === 1 ? boxsTitle[1] : `${boxsTitle[1]}s`}</div>
                     </div>
                 </div>
-            </button>
+            </Link>
             {/* TOTAL CREADOS */}
-            <button
+            <Link
+                href={createStatusUrl(undefined)}
                 onClick={() => changeStatus(undefined)}
                 className="w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-0"
             >
                 <div className={
                     clsx(
-                        "flex items-center px-5 py-6 bg-white  rounded-md shadow-sm",
+                        "flex items-center px-5 py-4   rounded-md shadow-sm",
                         {
-                            'bg-violet-200': status === undefined,
+                            'bg-violet-300': status === undefined,
+                            'bg-white': status !== undefined,
                         }
                     )
                 }>
@@ -93,7 +126,7 @@ export const StatusBoxs = ({ boxsTitle, quantity }: Props) => {
                         <div className="text-gray-500">{boxsTitle[2]}</div>
                     </div>
                 </div>
-            </button>
+            </Link>
         </section>
     )
 }

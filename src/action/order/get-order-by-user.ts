@@ -3,7 +3,15 @@ import prisma from '@/lib/prisma';
 import { auth } from '@/auth.config';
 import { sleep } from '@/helpers';
 
-export const getOrderByUser = async (userId: string) => {
+interface Props {
+    page?: number;
+    take?: number;
+};
+
+export const getOrderByUser = async ({
+    page = 1,
+    take = 7,
+}: Props) => {
     // await sleep(3)
     const session = await auth();
 
@@ -17,7 +25,7 @@ export const getOrderByUser = async (userId: string) => {
     try {
         const orders = await prisma.order.findMany({
             where: {
-                userId: userId
+                userId: session.user.id
             },
             include: {
                 user: {
@@ -50,7 +58,7 @@ export const getOrderByUser = async (userId: string) => {
             }
         });
 
-        if (!orders) throw `${userId} no existe`;
+        if (!orders) throw `${session.user.id} no existe`;
 
         return {
             ok: true,

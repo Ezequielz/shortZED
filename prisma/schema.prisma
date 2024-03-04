@@ -124,16 +124,16 @@ model Order {
   updatedAt DateTime @updatedAt
 
   // Relaciones
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  plan   Plan   @relation(fields: [planId], references: [id])
+  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
   planId String
 
-  code   Code?   @relation(fields: [codeId], references: [id])
+  code   Code?   @relation(fields: [codeId], references: [id], onDelete: Cascade)
   codeId String?
 
-  link   Link   @relation(fields: [linkId], references: [id])
+  link   Link   @relation(fields: [linkId], references: [id], onDelete: Cascade)
   linkId String
 
   transactionId String?

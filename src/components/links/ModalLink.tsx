@@ -1,6 +1,6 @@
 
 
-import { getLink } from "@/action"
+import { getLinkBySlug } from "@/action"
 import { Dialog, Pricing, UpdateForm } from ".."
 import { auth } from "@/auth.config"
 import { ModalCloseBtn } from "./ModalCloseBtn"
@@ -13,7 +13,7 @@ interface Props {
 export const ModalLink = async ({ short }: Props) => {
 
     if (!short) return null
-    const { ok, links } = await getLink(short)
+    const { ok, links } = await getLinkBySlug(short)
 
     if (!ok) return null
 
