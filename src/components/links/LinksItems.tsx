@@ -92,14 +92,6 @@ export const LinksItems = ({ slug, links }: Props) => {
         router.replace(`${createShortUrl(link.shortUrl)}`);
     };
 
-    const handleDeleteUrl = async (e: React.MouseEvent<HTMLElement>, link: Link) => {
-        await deleteUrl(link.shortUrl, session?.user?.id!);
-        // window.location.reload();
-        changeRefresh();
-        // router.refresh();
-
-    };
-
    
 
     if (!linksToShow) {
@@ -195,7 +187,7 @@ export const LinksItems = ({ slug, links }: Props) => {
                                         <MdOutlineEditCalendar size={20} className="cursor-pointer hover:text-blue-600 hover:scale-125" />
                                     </td>
                                     <td
-                                        onClick={(e) => handleDeleteUrl(e, link)}
+                                        onClick={() => deleteUrl(link.shortUrl)}
                                         className="px-12 py-3 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                                         <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                                     </td>

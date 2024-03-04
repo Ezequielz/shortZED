@@ -6,29 +6,32 @@ import { currencyFormat } from '@/helpers'
 import { PlanName } from '@prisma/client'
 import { useLinksStore } from '@/store'
 import { useEffect, useState } from 'react'
+import { deleteOrder } from '@/action'
+
+type Order = ({
+    link: {
+        shortUrl: string;
+        limit: number | null;
+        url: string;
+    };
+    plan: {
+        name: PlanName;
+        limit: number | null;
+        price: number;
+    };
+    code: {
+        name: string;
+        discount: number;
+    } | null;
+
+} & {
+    id: string;
+    isPaid: boolean;
+    total: number;
+})
 
 interface Props {
-    orders: ({
-        link: {
-            shortUrl: string;
-            limit: number | null;
-            url: string;
-        };
-        plan: {
-            name: PlanName;
-            limit: number | null;
-            price: number;
-        };
-        code: {
-            name: string;
-            discount: number;
-        } | null;
-
-    } & {
-        id: string;
-        isPaid: boolean;
-        total: number;
-    })[] | undefined
+    orders: Order[] | undefined
 
 }
 
@@ -55,6 +58,7 @@ export const OrdersItems = ({ orders }: Props) => {
         return null;
     };
 
+    
     return (
         <>
             {
@@ -108,7 +112,7 @@ export const OrdersItems = ({ orders }: Props) => {
                             </Link>
                         </td>
                         <td
-                            // onClick={(e) => handleDeleteUrl(e, order)}
+                            onClick={() => deleteOrder(order.id)}
                             className="px-12 py-3 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                             <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                         </td>

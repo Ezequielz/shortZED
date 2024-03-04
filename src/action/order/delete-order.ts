@@ -2,14 +2,13 @@
 
 import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 
 
-interface Props {
-    orderId: string;
-};
 
-export const deleteOrder = async ({ orderId }: Props) => {
+
+export const deleteOrder = async ( orderId: string ) => {
 
     const session = await auth();
     // Verificar session usuario
@@ -29,6 +28,9 @@ export const deleteOrder = async ({ orderId }: Props) => {
                 userId: session.user.id,
             }
         });
+
+        revalidatePath('/')
+        revalidatePath('/orders')
 
 
         return {
