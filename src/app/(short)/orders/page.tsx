@@ -3,7 +3,14 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
 import { OrdersSkeleton, TableOrders, Title } from '@/components';
 
-export default async function () {
+interface Props {
+  searchParams?: { [key: string]: string | undefined }
+}
+
+
+export default async function ({ searchParams }: Props) {
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const status = searchParams?.status ? searchParams?.status : undefined;
 
   const session = await auth();
   if (!session) {
@@ -15,7 +22,7 @@ export default async function () {
     <section>
       <Title title={'Ordenes'} />
       <Suspense fallback={<OrdersSkeleton items={7} />}>
-        <TableOrders />
+        <TableOrders page={page} status={status}/>
       </Suspense>
     </section>
   );

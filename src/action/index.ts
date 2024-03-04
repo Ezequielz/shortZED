@@ -20,7 +20,7 @@ export * from './link/update-link-limit';
 
 export * from './order/delete-order';
 export * from './order/get-order-by-id';
-export * from './order/get-order-by-user';
+export * from './order/get-orders-by-user';
 export * from './order/set-order';
 
 export * from './payments/set-transaction-id';

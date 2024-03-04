@@ -1,63 +1,72 @@
-import { notFound } from "next/navigation";
-import { StatusBoxs } from ".."
+import { notFound, redirect } from "next/navigation";
+import { Pagination, StatusBoxs } from ".."
 import { OrdersItems } from "./OrdersItems"
-import { auth } from "@/auth.config";
-import { getOrderByUser } from "@/action";
+import { getOrdersByUser } from "@/action";
 
-export const TableOrders = async() => {
-    const session = await auth();
-    const { orders } = await getOrderByUser(session!.user!.id! ?? '');
+interface Props {
+    page?: number;
+    status?: string | undefined;
+}
 
+export const TableOrders = async ({ page, status }: Props) => {
+    const isPaid = status ? (status === 'true' ? true : false) : undefined;
+
+    const { orders, totalPages, ordersPaid, ordersNotPaid, ordersTotal } = await getOrdersByUser({ page, isPaid });
+
+    //TODO cambiar el notfound por un componente q diga que el usuario no tiene ordenes
     if (!orders) {
         notFound();
     }
-    const orderStatus = [
-        orders.reduce((acc, order) => acc + (order.isPaid ? 1 : 0), 0),
-        orders.reduce((acc, order) => acc + (!order.isPaid ? 1 : 0), 0),
-        orders.length,
-    ]
+
+    if (orders.length === 0) {
+        redirect(`/?page=1`);
+    }
+
     return (
         <>
             <div className="py-4">
-                <StatusBoxs boxsTitle={['Pagado', 'Pendiente', 'Total']} quantity={[orderStatus[0], orderStatus[1], orderStatus[2]]} />
+                <StatusBoxs boxsTitle={['Pagado', 'Pendiente', 'Total']} quantity={[ordersPaid, ordersNotPaid, ordersTotal]} />
             </div>
-            <table className="min-w-full">
-                <thead>
-                    <tr>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Orden</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Estado</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Link</th>
+            <div className='lg:min-h-[400px]'>
+                <table className="min-w-full">
+                    <thead>
+                        <tr>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Orden</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Estado</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Link</th>
 
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Plan</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Limite final</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Precio total</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Ver orden</th>
-                        <th
-                            className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
-                            Eliminar</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Plan</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Limite final</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Precio total</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Ver orden</th>
+                            <th
+                                className="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+                                Eliminar</th>
 
-                    </tr>
-                </thead>
-                <tbody className="bg-white">
+                        </tr>
+                    </thead>
+                    <tbody className="bg-white">
 
 
-                    <OrdersItems orders={orders}/>
-                </tbody>
-            </table>
+                        <OrdersItems orders={orders} />
+                    </tbody>
+                </table>
+            </div>
+            <Pagination totalPages={totalPages} />
         </>
     )
 }

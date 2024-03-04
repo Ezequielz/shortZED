@@ -72,7 +72,7 @@ export const OrdersItems = ({ orders }: Props) => {
                             {order.id.split('-').at(-1)}
                         </td>
 
-                        <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-4 whitespace-nowrap">
+                        <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-3 whitespace-nowrap">
                             <span
                                 className={
                                     clsx(
@@ -88,7 +88,7 @@ export const OrdersItems = ({ orders }: Props) => {
                             </span>
                         </td>
 
-                        <td className="px-6 py-4 whitespace-no-wrap text-gray-500 border-b border-gray-200">
+                        <td className="px-6 py-3 whitespace-no-wrap text-gray-500 border-b border-gray-200">
                             {process.env.NEXT_PUBLIC_URL_DEV + order.link.shortUrl}
                         </td>
                         <td
@@ -109,7 +109,7 @@ export const OrdersItems = ({ orders }: Props) => {
                         </td>
                         <td
                             // onClick={(e) => handleDeleteUrl(e, order)}
-                            className="px-12 py-4 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
+                            className="px-12 py-3 text-sm leading-5 text-red-400 whitespace-no-wrap border-b border-gray-200">
                             <RiDeleteBin2Line size={20} className="cursor-pointer hover:text-red-600 hover:scale-125" />
                         </td>
 
