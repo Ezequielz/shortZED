@@ -13,7 +13,7 @@ interface Props {
         id: string;
     };
 }
-//TODO terminar order por id page
+
 export default async function ({ params }: Props) {
     const { id } = params
     const session = await auth();
@@ -38,6 +38,7 @@ export default async function ({ params }: Props) {
     if (!okLink || !okPlan) {
         notFound()
     }
+   
     const vencimiento = dateFormat(links![0].expires)
 
     const ordenShow = {

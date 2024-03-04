@@ -60,7 +60,6 @@ interface Props {
                             </tr>
                         </thead>
                         <tbody className="bg-white">
-                            {/* //TODO enviar el single link */}
                             <LinksItems links={links} />
 
                         </tbody>

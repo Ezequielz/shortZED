@@ -9,6 +9,7 @@ interface IUser extends DefaultUser {
    */
   roles?: string;
   isActive? : Boolean;
+  createdAt: Date;
   /**
    * Agregar cualquier otro campo que tu manejas
    */

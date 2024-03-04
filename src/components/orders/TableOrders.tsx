@@ -12,14 +12,17 @@ export const TableOrders = async ({ page, status }: Props) => {
     const isPaid = status ? (status === 'true' ? true : false) : undefined;
 
     const { orders, totalPages, ordersPaid, ordersNotPaid, ordersTotal } = await getOrdersByUser({ page, isPaid });
+  
+    if ( orders && orders.length === 0) {
+        return <div>No posee ordenes</div>
+    }
 
-    //TODO cambiar el notfound por un componente q diga que el usuario no tiene ordenes
     if (!orders) {
-        notFound();
+        notFound()
     }
 
     if (orders.length === 0) {
-        redirect(`/?page=1`);
+        redirect(`/orders?page=1`);
     }
 
     return (

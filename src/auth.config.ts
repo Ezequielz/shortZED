@@ -81,7 +81,6 @@ export const authConfig: NextAuthConfig = {
       return true;
     },
     async jwt({ token, user }) {
-     
       if (user) {
         token.data = user
       }
@@ -89,7 +88,7 @@ export const authConfig: NextAuthConfig = {
       return token
     },
     async session({ session, token, user }) {
-    
+      
       session.user = token.data as any;
       return session;
     },

@@ -2,6 +2,7 @@
 
 export function dateFormat(fechaInicial: Date): string {
     const fechaFinal = new Date(fechaInicial);
+    console.log(fechaFinal)
     fechaFinal.setDate(fechaInicial.getDate() );
 
     // Formatea la fecha y devuelve el resultado

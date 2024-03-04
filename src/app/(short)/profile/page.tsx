@@ -13,16 +13,16 @@ export default async function ProfilePage() {
 
   if (!session) {
     // redirect('/auth/login?returnTo=/perfil');
-    redirect('/');
+    redirect('/auth/login');
   };
 
-  const { id, password, ...rest } = session.user as User;
+  
 
 
   return (
     <>
       <Title title={'Perfil'} />
-      <Profile user={rest} />
+      <Profile  />
     </>
   );
 }

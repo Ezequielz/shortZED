@@ -22,7 +22,10 @@ export const TableLinks = async ({ row, short, page, status }: Props) => {
 
     const { links, totalPages, currentPage, linksActive, linksInactive, linksTotal } = await getUserLinks({page, isActive});
 
-    //TODO cambiar el notfound por un componente q diga que el usuario no tiene links
+    if ( links && links.length === 0) {
+       return <div>No posee links guardados</div>
+    }
+   
     if (!links) {
         notFound();
     }
