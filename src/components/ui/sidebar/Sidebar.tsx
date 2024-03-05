@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPersonOutline, IoSearchOutline, IoLinkOutline } from 'react-icons/io5';
+import { MdDashboardCustomize } from "react-icons/md";
 import { logout } from '@/action';
 import { useUIStore } from '@/store';
+import { Title } from '../title/Title';
 
 
 
@@ -14,13 +16,13 @@ export const Sidebar = () => {
 
     const { data: session } = useSession();
     const isAuthenticated = !!session?.user
-    // const isAdmin = (session?.user?.roles === 'admin')
+    const isAdmin = (session?.user?.roles === 'admin')
 
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
     const closeMenu = useUIStore(state => state.closeSideMenu);
 
     return (
-        <div>
+        <aside >
 
             {/* Background black */}
             {
@@ -48,7 +50,7 @@ export const Sidebar = () => {
             <nav
                 className={
                     clsx(
-                        "fixed p-5 right-0 top-0 w-[500px] h-screen text-slate-100 bg-neutral-800 z-20 shadow-2xl transform transition-all duration-300",
+                        "fixed p-5 right-0 top-0 w-[300px] h-screen text-slate-100  bg-neutral-800 z-20 shadow-2xl transform transition-all duration-300",
                         {
                             "translate-x-full": !isSideMenuOpen
                         }
@@ -81,7 +83,7 @@ export const Sidebar = () => {
                             <Link
                                 href="/profile"
                                 onClick={() => closeMenu()}
-                                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                                className="flex items-center mt-6 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
                             >
                                 <IoPersonOutline size={30} />
                                 <span className="ml-3 text-xl">Perfil</span>
@@ -90,7 +92,7 @@ export const Sidebar = () => {
                             <Link
                                 href="/links"
                                 onClick={() => closeMenu()}
-                                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                                className="flex items-center mt-6 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
                             >
                                 <IoLinkOutline size={30} />
                                 <span className="ml-3 text-xl">Links</span>
@@ -99,19 +101,39 @@ export const Sidebar = () => {
                             <Link
                                 href="/orders"
                                 onClick={() => closeMenu()}
-                                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                                className="flex items-center mt-6 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
                             >
                                 <IoLinkOutline size={30} />
                                 <span className="ml-3 text-xl">Ordenes</span>
                             </Link>
 
                             <button
-                                className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                                className="flex w-full items-center mt-6 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
                                 onClick={() => logout()}
                             >
                                 <IoLogOutOutline size={30} />
                                 <span className="ml-3 text-xl">Salir</span>
                             </button>
+
+                            {
+                                isAdmin && (
+                                    <>
+                                        <hr className='my-2' />
+                                        <Title title={'Admin'} />
+                                        <Link
+                                            href="/admin/dashboard"
+                                            onClick={() => closeMenu()}
+                                            className="flex items-center mt-3 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
+                                        >
+                                            <MdDashboardCustomize size={30}/>
+                                            
+                                            <span className="ml-3 text-xl">Dashboard</span>
+                                        </Link>
+        
+                                    </>
+
+                                )
+                            }
                         </>
 
                     )
@@ -122,7 +144,7 @@ export const Sidebar = () => {
                         <Link
                             href="/auth/login"
                             onClick={() => closeMenu()}
-                            className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                            className="flex items-center mt-6 p-2 hover:bg-gray-100 hover:text-neutral-900 rounded transition-all"
                         >
                             <IoLogInOutline size={30} />
                             <span className="ml-3 text-xl">Ingresar</span>
@@ -132,6 +154,6 @@ export const Sidebar = () => {
                 }
 
             </nav>
-        </div>
+        </aside>
     );
 };

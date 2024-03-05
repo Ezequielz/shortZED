@@ -1,6 +1,12 @@
 
 
 
+export * from './admin/AdminAside';
+export * from './admin/AdminMenuList';
+export * from './admin/user/UserAdd';
+export * from './admin/user/UserSearch';
+export * from './admin/user/UsersInfo';
+
 export * from './auth/login/login-form/LoginForm';
 export * from './auth/register/register-form/RegisterForm';
 
@@ -50,6 +56,9 @@ export * from './ui/title/Title';
 export * from './ui/top-menu/LoginButton';
 export * from './ui/top-menu/MenuButton';
 export * from './ui/top-menu/TopMenu';
+
+export * from './users/TableUsers';
+export * from './users/UsersItems';
 
 
 

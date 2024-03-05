@@ -16,7 +16,7 @@ interface Props {
 }
 
 
-export const getAllLinks = async ({
+export const getAllOrders = async ({
     page = 1,
     take = 7,
     order,
@@ -38,7 +38,7 @@ export const getAllLinks = async ({
     if (page < 1) page = 1;
     try {
 
-        const links = await prisma.link.findMany({
+        const orders = await prisma.order.findMany({
             take,
             skip: (page - 1) * take,
             orderBy: {
@@ -53,30 +53,31 @@ export const getAllLinks = async ({
 
                     }
                 }
+
             }
         })
 
-        const totalLinkCount = await prisma.link.count()
-        const totalLinkActive = await prisma.link.count({
+        const totalOrderCount = await prisma.order.count()
+        const totalOrdersPaid = await prisma.order.count({
             where: {
-                isActive: true
+                isPaid: true
             }
         })
-        const totalLinkInactive = await prisma.link.count({
+        const totalOrdersNotPaid = await prisma.order.count({
             where: {
-                isActive: false
+                isPaid: false
             }
         })
-        const totalPages = Math.ceil(totalLinkCount / take)
+        const totalPages = Math.ceil(totalOrderCount / take)
 
         return {
             ok: true,
             currentPage: page,
             totalPages,
-            totalLinkCount,
-            totalLinkActive,
-            totalLinkInactive,
-            links: links,
+            totalOrderCount,
+            totalOrdersPaid,
+            totalOrdersNotPaid,
+            orders: orders
         }
 
     } catch (error) {

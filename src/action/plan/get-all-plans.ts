@@ -8,9 +8,14 @@ export const getAllPlans = async () => {
     try {
        const plans = await prisma.plan.findMany()
 
+
+       const totalPlansCount = await prisma.plan.count()
+  
+
         return {
             ok: true,
-            plans: plans
+            plans: plans,
+            totalPlansCount
         }
     } catch (error: any) {
         console.log(error)
