@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
-import { LinksSkeleton, TableLinks, Title } from '@/components';
+import {  LinksSkeleton, TableLinks, Title, UserLinks } from '@/components';
 import { Suspense } from 'react';
 
 interface Props {
@@ -24,7 +24,7 @@ export default async function LinksPage({ searchParams }: Props) {
         <Title title={'Links'} />
 
         <Suspense fallback={<LinksSkeleton items={7} />}>
-          <TableLinks short={short} page={page} status={status}/>
+          <UserLinks short={short} page={page} status={status}/>
         </Suspense>
         
     </section>

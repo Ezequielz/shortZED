@@ -1,24 +1,40 @@
 'use client'
 
-import { deleteOrder } from "@/action"
+import { deleteOrder, getOrderById } from "@/action"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IoCloseOutline } from "react-icons/io5"
 
 interface Props {
-    orderId: string
+    id: string
 }
 
-export const DeleteOrderButton = ({ orderId }: Props) => {
+export const DeleteOrderButton = ({ id }: Props) => {
 
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(true)
+    const [orderId, setOrderId] = useState('')
     const router = useRouter();
 
+    useEffect(() => {
+        const getOrderId = async() => {
+           return await getOrderById(id)
+        }
+        getOrderId().then(order => {
+            if( {order} && !order.order?.isPaid){
+                setOrderId(order.order?.id ?? '' )
+            }
+            setIsLoading(false)
+        })
+      
+    }, [id])
+    // TODO implementar esqueleto boton eliminar orden
+    if (isLoading) return null
+   
     if (!orderId) return null
 
-
     const handleDelete = async () => {
-        const resp = await deleteOrder({orderId})
+        const resp = await deleteOrder(orderId)
         if (!resp.ok) {
             setErrorMessage(resp.message)
         }

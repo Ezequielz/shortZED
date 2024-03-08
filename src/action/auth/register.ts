@@ -1,9 +1,10 @@
 'use server'
 import prisma from '@/lib/prisma';
 import bcryptjs from 'bcryptjs';
+import { revalidatePath } from 'next/cache';
 
-export const registerUser = async( name:string, email:string, password:string ) => {
-
+export const registerUser = async( name:string, email:string, password:string, image?: string | null) => {
+    console.log('sdfg')
 
     try {
         const user = await prisma.user.create({
@@ -11,13 +12,19 @@ export const registerUser = async( name:string, email:string, password:string ) 
                 name: name,
                 email: email.toLowerCase(),
                 password: bcryptjs.hashSync( password ),
+                image: image,
             },
             select: {
                 id: true,
                 name: true,
-                email: true
+                email: true,
+                image: true,
             }
-        })
+        });
+
+        revalidatePath('/');
+        revalidatePath('/admin');
+        revalidatePath('/admin/users');
 
         return {
             ok: true,

@@ -1,14 +1,11 @@
 'use server'
 
+import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { Role } from '@prisma/client';
 
-
-
-
-
-export const deleteOrder = async ( orderId: string ) => {
+export const deleteOrder = async (orderId: string) => {
 
     const session = await auth();
     // Verificar session usuario
@@ -22,15 +19,24 @@ export const deleteOrder = async ( orderId: string ) => {
 
     try {
 
-        await prisma.order.delete({
-            where: {
-                id: orderId,
-                userId: session.user.id,
-            }
-        });
+        if (session.user.roles !== Role.admin) {
+            await prisma.link.delete({
+                where: {
+                    id: orderId,
+                    userId: session?.user?.id
+                }
+            })
+        } else {
+            await prisma.order.delete({
+                where: {
+                    id: orderId,
+                }
+            });
+        };
 
-        revalidatePath('/')
-        revalidatePath('/orders')
+        revalidatePath('/');
+        revalidatePath('/orders');
+        revalidatePath('/admin/orders');
 
 
         return {

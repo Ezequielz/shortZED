@@ -4,7 +4,7 @@ import { sleep } from '@/helpers';
 import prisma from '@/lib/prisma';
 
 export const getLinkBySlug = async( slug: string, userId?: string ) => {
-    // await sleep(2)
+    // await sleep(4)
     try {
 
         if (!slug) throw new Error('No hay slug');

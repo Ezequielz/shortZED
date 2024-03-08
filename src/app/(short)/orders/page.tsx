@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
-import { OrdersSkeleton, TableOrders, Title } from '@/components';
+import { OrdersSkeleton, TableOrders, Title, UserOrders } from '@/components';
 
 interface Props {
   searchParams?: { [key: string]: string | undefined }
@@ -22,7 +22,7 @@ export default async function ({ searchParams }: Props) {
     <section>
       <Title title={'Ordenes'} />
       <Suspense fallback={<OrdersSkeleton items={7} />}>
-        <TableOrders page={page} status={status}/>
+        <UserOrders page={page} status={status}/>
       </Suspense>
     </section>
   );

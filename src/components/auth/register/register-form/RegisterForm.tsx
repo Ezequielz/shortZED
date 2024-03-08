@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react';
-import Link from "next/link"
-import { SubmitHandler, useForm } from "react-hook-form";
-import clsx from "clsx";
+import Link from 'next/link';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import clsx from 'clsx';
 
 import { login, providerLogin, registerUser } from '@/action';
 import { SignInOptions } from 'next-auth/react';
@@ -22,8 +22,8 @@ const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i
 export const RegisterForm = () => {
 
     const [errorMessage, setErrorMessage] = useState('');
-    const searchParams = useSearchParams()
-    const error = searchParams.get('error')
+    const searchParams = useSearchParams();
+    const error = searchParams.get('error');
     const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>();
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {

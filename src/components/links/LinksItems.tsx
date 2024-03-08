@@ -139,7 +139,7 @@ export const LinksItems = ({ slug, links }: Props) => {
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                {process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
+                                /{link.shortUrl}
                             </a>
                         </td>
 
