@@ -14,8 +14,6 @@ export const ModalLink = async ({ short, children }: Props) => {
 
     if (!short) return null;
 
-
-
     return (
 
         <Dialog >

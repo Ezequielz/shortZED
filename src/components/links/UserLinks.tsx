@@ -37,6 +37,7 @@ export const UserLinks = async ({ row, short, page, status }: Props) => {
 
     return (
         <>
+        {/* TODO implementar modal */}
             <Suspense fallback={<div>Cargando modal...</div>}>
                 <ModalLink short={short} >
                     <ModalOptionsLinksByUser short={short} />

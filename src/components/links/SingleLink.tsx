@@ -1,21 +1,28 @@
 
-import { ModalLink } from '..';
+import { ModalLink, ModalOptionsLinksByUser } from '..';
 import { auth } from '@/auth.config';
 import { LinksItems } from './LinksItems';
 import { getLinkBySlug } from '@/action';
+import { Suspense } from 'react';
 
 interface Props {
     short: string;
 }
-;export const SingleLink = async ({ short }: Props) => {
+; export const SingleLink = async ({ short }: Props) => {
 
     const session = await auth();
 
-    const {ok, links} = await getLinkBySlug(short);
+    const { ok, links } = await getLinkBySlug(short);
 
     return (
         <section className="flex flex-col">
-            <ModalLink short={short} />
+            {/* TODO implementar esqueleton modal y ademas si no esta logueado no mostrar */}
+            <Suspense fallback={<div>Cargando modal...</div>}>
+
+                <ModalLink short={short} >
+                    <ModalOptionsLinksByUser short={short} />
+                </ModalLink>
+            </Suspense>
             <div className="py-2 -my-2  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <div
                     className="inline-block min-w-full align-middle border-b border-gray-200 shadow sm:rounded-lg">

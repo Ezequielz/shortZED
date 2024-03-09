@@ -6,7 +6,11 @@ export * from './auth/register';
 
 export * from './admin/link/get-all-links';
 export * from './admin/link/update-link-by-admin';
+
 export * from './admin/order/get-all-orders';
+
+export * from './admin/plan/update-plan-by-admin';
+
 export * from './admin/user/get-all-users';
 export * from './admin/user/set-user-role';
 export * from './admin/user/set-user-status';
@@ -36,7 +40,7 @@ export * from './payments/paypal-check-payments';
 
 export * from './plan/get-all-plans';
 export * from './plan/get-plan-by-id';
-export * from './plan/get-plan';
+export * from './plan/get-plan-by-name';
 
 export * from './user/get-user-by-id';
 

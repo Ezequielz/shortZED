@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, Plan, PlanName } from '@prisma/client';
-import { getAllPlans, getCode, getPlan } from '@/action';
+import { getAllPlans, getCode, getPlanByName } from '@/action';
 import clsx from 'clsx';
 import { useCheckoutStore } from '@/store';
 import { currencyFormat, dateFormat } from '@/helpers';
@@ -50,7 +50,7 @@ export const CheckoutForm = ({ link }: Props) => {
         }
 
         const getPlanDB = async () => {
-            return await getPlan(planName);
+            return await getPlanByName(planName);
         };
 
 

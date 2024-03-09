@@ -136,7 +136,7 @@ export const Dashboard = async() => {
             </Link>
 
             <Link
-                href={'/admin/plain'}
+                href={'/admin/plans'}
                 className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md hover:bg-gradient-to-tr hover:from-rose-600 hover:to-rose-400 hover:text-white"
             >
                 <div className="bg-clip-border mx-4 rounded-xl overflow-hidden bg-gradient-to-tr from-rose-600 to-rose-400 text-white shadow-blue-500/40 shadow-lg absolute -mt-4 grid h-16 w-16 place-items-center">

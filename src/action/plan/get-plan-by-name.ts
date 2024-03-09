@@ -3,7 +3,7 @@
 import prisma from '@/lib/prisma';
 import { PlanName } from '@prisma/client';
 
-export const getPlan = async ( name: PlanName ) => {
+export const getPlanByName = async ( name: PlanName ) => {
 
     try {
        const plan = await prisma.plan.findFirst({

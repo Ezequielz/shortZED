@@ -6,7 +6,11 @@ import prisma from '@/lib/prisma';
 export const getAllPlans = async () => {
 
     try {
-       const plans = await prisma.plan.findMany()
+       const plans = await prisma.plan.findMany({
+        orderBy: {
+            price: 'asc'
+        }
+       })
 
 
        const totalPlansCount = await prisma.plan.count()
