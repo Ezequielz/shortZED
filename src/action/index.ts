@@ -4,6 +4,8 @@ export * from './auth/login';
 export * from './auth/logout'; 
 export * from './auth/register';
 
+export * from './admin/code/get-all-codes'; 
+
 export * from './admin/link/get-all-links';
 export * from './admin/link/update-link-by-admin';
 
@@ -17,7 +19,6 @@ export * from './admin/user/set-user-status';
 
 export * from './code/get-code'; 
 export * from './code/get-code-by-id'; 
-export * from './code/get-all-codes'; 
 
 export * from './link/delete-link';
 export * from './link/get-link-by-id';

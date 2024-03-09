@@ -4,6 +4,9 @@
 export * from './admin/AdminAside';
 export * from './admin/AdminMenuList';
 
+export * from './admin/codes/Codes';
+export * from './admin/codes/TableCodes';
+
 export * from './admin/dashboard/Dashboard';
 
 export * from './admin/links/Links';
@@ -19,6 +22,8 @@ export * from './admin/plans/modal/ModalPlan';
 export * from './admin/plans/modal/ModalPlanInfo';
 export * from './admin/plans/modal/ModalOptionsAdminPlans';
 export * from './admin/plans/PlanItems';
+
+
 
 export * from './admin/user/UserAdd';
 export * from './admin/user/UserAddForm';

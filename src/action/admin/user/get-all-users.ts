@@ -18,7 +18,7 @@ export const getAllUsers = async ({
     take = 7,
     search = ''
 }: Props) => {
-    // await sleep(2);
+    // await sleep(8);
 
     const session = await auth();
 

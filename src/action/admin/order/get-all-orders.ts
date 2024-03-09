@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from '@/auth.config';
+import { sleep } from '@/helpers';
 import prisma from '@/lib/prisma';
 import { Role } from '@prisma/client';
 
@@ -22,7 +23,7 @@ export const getAllOrders = async ({
     search = '',
 
 }: Props) => {
-
+// await sleep(5);
     const session = await auth();
 
     if (session?.user?.roles !== Role.admin) {
