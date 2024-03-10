@@ -3,10 +3,25 @@
 import { addMonthDate } from '@/helpers';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { z } from 'zod';
 
 
 
 export const updateLinkLimit = async (id: string, limitUpdate: number | null) => {
+    
+    const schemaLinkLimit = z.object({
+        id: z.string().uuid(),
+        limitUpdate: z.number().or(z.literal(null))
+    }).safeParse({ id, limitUpdate });
+
+    if (!schemaLinkLimit.success) {
+        console.log(schemaLinkLimit.error.issues[0].message);
+        return {
+            ok: false,
+            message: schemaLinkLimit.error.issues[0].message
+        };
+    };
+
     if (!id) {
         return {
             ok: false,
@@ -42,16 +57,16 @@ export const updateLinkLimit = async (id: string, limitUpdate: number | null) =>
             expiresCreate = new Date(urlExists.expires)
         }
 
-        let newExpires = addMonthDate( expiresCreate , 1)
-      
+        let newExpires = addMonthDate(expiresCreate, 1)
+
         if (!urlExists.limit) {
             const res = await prisma.link.update({
-                
+
                 where: {
                     id: urlExists.id
                 },
                 data: {
-                    limit:  null,
+                    limit: null,
                     updatedAt: new Date(Date.now()),
                     expires: newExpires
                 }
@@ -63,7 +78,7 @@ export const updateLinkLimit = async (id: string, limitUpdate: number | null) =>
         };
 
 
-       const res = await prisma.link.update({
+        const res = await prisma.link.update({
             where: {
                 id: urlExists.id
             },

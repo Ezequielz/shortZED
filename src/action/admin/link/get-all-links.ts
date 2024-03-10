@@ -26,7 +26,7 @@ export const getAllLinks = async ({
     user,
     search = ''
 }: Props) => {
-    // await sleep(2)
+    // await sleep(10)
     const session = await auth();
 
     if (session?.user?.roles !== Role.admin) {

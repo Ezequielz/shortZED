@@ -4,11 +4,12 @@ import { TableCodes } from './TableCodes';
 
 
 interface Props {
-    codeName?: string;
+    page?: number;
+    codeName?: string
 }
 
-export const Codes = async ({ codeName }: Props) => {
-    const { codes } = await getAllCodes({});
+export const Codes = async ({ page, codeName }: Props) => {
+    const { codes } = await getAllCodes({page, codeName});
 
     if (!codes) {
         return (<div>No hay códigos</div>);

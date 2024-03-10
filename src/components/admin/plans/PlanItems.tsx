@@ -3,6 +3,7 @@ import { MdOutlineEditCalendar } from 'react-icons/md';
 import { Plan } from '@prisma/client';
 import { useUIStore } from '@/store';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { currencyFormat } from '@/helpers';
 
 interface Props {
     plans: Plan[];
@@ -41,7 +42,7 @@ export const PlanItems = ({ plans }: Props) => {
                         </td>
 
                         <td className="px-6 py-2.5 whitespace-no-wrap text-gray-500 border-b border-gray-200">
-                            {plan.price}
+                            {plan.price ? currencyFormat(plan.price) : 'Gratis'}
                         </td>
 
                         <td className="px-6 py-2.5 whitespace-no-wrap text-gray-500 border-b border-gray-200">

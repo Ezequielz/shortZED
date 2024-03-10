@@ -1,12 +1,28 @@
 'use server'
 
+import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
+import { z } from 'zod';
 
 
-
-export const updateLinkHash = async (url: string, userId: string, hash: string) => {
-
+export const updateLinkHash = async (url: string, hash: string) => {
+    const session = await auth();
+    const userId = session?.user?.id;
+  
     // await sleep(2);
+    const schemaLinkHash = z.object({
+        url: z.string().url({ message: 'Debe ser un url válido' }),
+        hash: z.string().min(3).max(10).regex(/^[a-zA-Z0-9]+$/g, { message: 'El hash solo puede contener letras y numeros' })
+    }).safeParse({ url, hash });
+
+    if (!schemaLinkHash.success) {
+        console.log(schemaLinkHash.error.issues[0].message);
+        return {
+            ok: false,
+            message: schemaLinkHash.error.issues[0].message
+        };
+    };
+
     if (!hash) {
         return {
             ok: false,

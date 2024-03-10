@@ -1,12 +1,11 @@
 'use client'
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
-import clsx from 'clsx';
-import { IoIosArrowForward } from "react-icons/io";
-
-
 import { usePathname, useRouter } from 'next/navigation';
+import { enqueueSnackbar } from 'notistack';
+import clsx from 'clsx';
+import { IoIosArrowForward } from 'react-icons/io';
+
 import { setLink } from '@/action';
 
 interface FormInputs {
@@ -21,10 +20,6 @@ export const ShortForm = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<FormInputs>();
     const path = usePathname();
 
-
-    const session = useSession();
-    const userId = session.data?.user?.id;
-
     const regexURL = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
@@ -32,7 +27,7 @@ export const ShortForm = () => {
         const { url, hash } = data;
 
         // server action
-        const resp = await setLink(url, hash, userId);
+        const resp = await setLink(url, hash);
         reset()
         if (!resp.ok) {
             setErrorMessage(resp.message)
@@ -40,10 +35,11 @@ export const ShortForm = () => {
                 router.replace(`${path}?short=${resp.shortUrl}`)
 
             }
+            enqueueSnackbar('Hubo un error al acortar el link', { variant: "error" });
             return;
         };
-
-        router.replace(`${path}?short=${resp.shortUrl}`)
+        enqueueSnackbar('Link acortado correctamente', { variant: "success" });
+        router.replace(`${path}?short=${resp.shortUrl}`);
 
     };
 
@@ -78,7 +74,7 @@ export const ShortForm = () => {
 
                 </div>
                 {/* HASH y BUTTON */}
-                <div className='w-3/4  m-auto flex gap-2 justify-center'>
+                <div className='w-3/4  m-auto flex gap-2 justify-center '>
                     {/* HASH */}
                     <input
                         type="text"
@@ -92,8 +88,9 @@ export const ShortForm = () => {
                                 }
                             )
                         }
-                        {...register("hash")}
+                        {...register("hash", { minLength: 3 })}
                     />
+
                     {/* BUTTON */}
                     <div className="flex justify-center flex-col">
 
@@ -110,6 +107,12 @@ export const ShortForm = () => {
                         </button>
 
                     </div>
+
+                </div>
+                <div className='relative flex justify-center'>
+                    {errors.hash?.type === 'minLength' && (
+                        <span className="text-red-500 absolute ">*Debe tener al menos 3 caracteres</span>
+                    )}
 
                 </div>
 

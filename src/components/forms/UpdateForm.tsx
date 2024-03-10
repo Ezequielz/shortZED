@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
 import clsx from 'clsx';
 import { IoIosArrowForward } from "react-icons/io";
 
@@ -12,12 +11,12 @@ import { useLinksStore } from '@/store';
 import { updateLinkHash } from '@/action';
 
 interface FormInputs {
-    hash: string
+    hash: string;
 };
 
 interface Props {
-    url: string
-}
+    url: string;
+};
 
 export const UpdateForm = ({ url }: Props) => {
 
@@ -27,36 +26,30 @@ export const UpdateForm = ({ url }: Props) => {
     const path = usePathname();
     const changeRefresh = useLinksStore(state => state.changeRefresh);
 
-    const session = useSession();
-    const userId = session.data?.user?.id;
-
-    if (!userId) return null
-
-
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
         setErrorMessage('');
         const { hash } = data;
 
         // server action
-        const resp = await updateLinkHash(url, userId, hash);
-        
+        const resp = await updateLinkHash(url, hash);
+
         if (!resp.ok) {
             setErrorMessage(resp.message)
             if (resp.shortUrl) {
-                router.replace(`${path}?short=${resp.shortUrl}`)
+                router.replace(`${path}?short=${resp.shortUrl}`);
 
-            }
-     
+            };
+
             return;
         };
 
 
         if (isSubmitSuccessful) {
-            reset()
-            router.replace(`${path}?short=${resp.shortUrl}`)
-            changeRefresh()
-            enqueueSnackbar('Hash actualizado', { variant: "success" })
-        }
+            reset();
+            router.replace(`${path}?short=${resp.shortUrl}`);
+            changeRefresh();
+            enqueueSnackbar('Hash actualizado', { variant: "success" });
+        };
 
     };
 
@@ -81,8 +74,9 @@ export const UpdateForm = ({ url }: Props) => {
                                 }
                             )
                         }
-                        {...register("hash")}
+                        {...register("hash", { required: true, minLength: 3, maxLength: 10 })}
                     />
+
                     {/* BUTTON */}
                     <div className="flex justify-center flex-col">
 
@@ -106,7 +100,7 @@ export const UpdateForm = ({ url }: Props) => {
                             }>
                                 <span className="z-40 animate-pulse">Actualizando...</span>
                             </span>
-                            
+
                             <span className={
                                 clsx({
                                     'hidden': isSubmitting,
@@ -121,7 +115,7 @@ export const UpdateForm = ({ url }: Props) => {
                                     'hidden': isSubmitting,
                                 })
                             }>
-                                
+
                                 <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
 
                                 <div
@@ -132,6 +126,18 @@ export const UpdateForm = ({ url }: Props) => {
 
                     </div>
 
+                </div>
+                <div className='relative'>
+
+                    {errors.hash?.type === 'required' && (
+                        <span className="absolute top-0 bg-red-500 text-sm py-0.5 px-2 text-white rounded-lg">*Debe introducir un hash</span>
+                    )}
+                    {errors.hash?.type === 'minLength' && (
+                        <span className="absolute top-0 bg-red-500 text-sm py-0.5 px-2 text-white rounded-lg">*Minimo 3 caracteres</span>
+                    )}
+                    {errors.hash?.type === 'maxLength' && (
+                        <span className="absolute top-0 bg-red-500 text-sm py-0.5 px-2 text-white rounded-lg">*Máximo 10 caracteres</span>
+                    )}
                 </div>
                 <span className="text-red-500 flex items-center ">{errorMessage}</span>
 

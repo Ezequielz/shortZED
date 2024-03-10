@@ -1,5 +1,6 @@
 import { auth } from "@/auth.config";
 import { AdminAside } from "@/components";
+import { Role } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 
@@ -13,7 +14,7 @@ export default async function ShortLayout({ children }: {
     if (!session) {
         redirect('/auth/login')
     }
-    if (session.user?.roles !== 'admin' ) {
+    if (session.user?.roles !== Role.admin ) {
         redirect('/')
     }
 

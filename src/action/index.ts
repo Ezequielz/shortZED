@@ -5,6 +5,9 @@ export * from './auth/logout';
 export * from './auth/register';
 
 export * from './admin/code/get-all-codes'; 
+export * from './admin/code/set-code'; 
+export * from './admin/code/set-code-status'; 
+
 
 export * from './admin/link/get-all-links';
 export * from './admin/link/update-link-by-admin';

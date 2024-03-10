@@ -4,10 +4,11 @@ import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
 import { PlanName, Role } from '@prisma/client';
+import { z } from 'zod';
 
 interface Data {
     price: number;
-    limit: number | null
+    limit: number | null;
 };
 
 
@@ -21,6 +22,19 @@ export const updatePlanByAdmin = async (updatePlan: Data, planName: PlanName ) =
             message: 'No tienes permisos para realizar esta acción'
         };
     };
+
+    const schemaPlan = z.object({
+        price: z.number().positive().optional(),
+        limit: z.number().positive().optional().nullable(),
+    }).safeParse({ updatePlan });
+
+    if (!schemaPlan.success) {
+        console.log(schemaPlan.error.issues[0].message);
+         return {
+            ok: false,
+            message: 'Los valores no son aceptables'
+        };
+     };
 
     try {
 

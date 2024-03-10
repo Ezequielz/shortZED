@@ -2,7 +2,7 @@ import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth.config";
 import { getLinkBySlug } from "@/action";
-import { CheckoutForm, OrdenConfirm, PlaceOrderButton } from "@/components";
+import { CheckoutForm, OrdenConfirm } from "@/components";
 import { dateFormat } from "@/helpers";
 
 

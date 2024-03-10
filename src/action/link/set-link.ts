@@ -1,13 +1,37 @@
 'use server'
 
+import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import QRCode from 'qrcode';
+import { z } from 'zod';
 
 
-export const setLink = async (url: string, hash?: string, userId?: string) => {
-
+export const setLink = async (url: string, hash?: string) => {
+    const session = await auth();
+    const userId = session?.user?.id
     try {
+
+        const schemaLink = z.object({
+            url: z
+                .string()
+                .url(),
+            hash: z
+                .string()
+                .min(3)
+                .max(10)
+                .regex(/^[a-zA-Z0-9]+$/g, { message: 'El hash solo puede contener letras y numeros' })
+                .or(z.literal(''))
+        }).safeParse({ url, hash });
+
+        if (!schemaLink.success) {
+            console.log(schemaLink.error.issues[0].message);
+            return {
+                ok: false,
+                message: schemaLink.error.issues[0].message
+            };
+        };
+
 
         // Buscar si existe el url en la base de datos
         const urlExists = await prisma.link.findFirst({
@@ -42,12 +66,12 @@ export const setLink = async (url: string, hash?: string, userId?: string) => {
         const shortUrl = hash ? hash : Math.random().toString(36).substring(2, 5);
 
         // si no viene userId y existe el url, devolver el url cambiando el short
-        if (!userId && urlExists ) {
-           
+        if (!userId && urlExists) {
+
             await prisma.link.update({
                 where: {
                     id: urlExists.id,
-                    
+
                 },
                 data: {
                     shortUrl: shortUrl,
@@ -61,10 +85,10 @@ export const setLink = async (url: string, hash?: string, userId?: string) => {
             }
         }
 
-      
+
         // si viene userId y existe el url, agreagar el usuario al url si no existe el usuario
-        if (userId && urlExists ) {
-           
+        if (userId && urlExists) {
+
             await prisma.link.update({
                 where: {
                     id: urlExists.id
@@ -83,7 +107,7 @@ export const setLink = async (url: string, hash?: string, userId?: string) => {
             }
         };
 
-      
+
 
         //  verificar que la url es válida
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -94,10 +118,10 @@ export const setLink = async (url: string, hash?: string, userId?: string) => {
             }
         }
 
-    
+
 
         // si no existe el url, crear el url y agregar el usuario si viene userId
-        if (!urlExists ) {
+        if (!urlExists) {
 
             const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL_DEV + shortUrl);
 
@@ -123,7 +147,7 @@ export const setLink = async (url: string, hash?: string, userId?: string) => {
                 });
                 revalidatePath('/')
             } else {
-             
+
                 await prisma.link.create({
                     data: {
                         url: url,

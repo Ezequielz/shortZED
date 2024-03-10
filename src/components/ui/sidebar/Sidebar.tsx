@@ -8,6 +8,7 @@ import { MdDashboardCustomize } from "react-icons/md";
 import { logout } from '@/action';
 import { useUIStore } from '@/store';
 import { Title } from '../title/Title';
+import { Role } from '@prisma/client';
 
 
 
@@ -16,7 +17,7 @@ export const Sidebar = () => {
 
     const { data: session } = useSession();
     const isAuthenticated = !!session?.user
-    const isAdmin = (session?.user?.roles === 'admin')
+    const isAdmin = (session?.user?.roles === Role.admin)
 
     const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
     const closeMenu = useUIStore(state => state.closeSideMenu);

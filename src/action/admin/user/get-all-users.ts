@@ -52,12 +52,12 @@ export const getAllUsers = async ({
             }),
             prisma.user.count({
                 where: {
-                    roles: 'admin'
+                    roles: Role.admin
                 }
             }),
             prisma.user.count({
                 where: {
-                    roles: 'user'
+                    roles: Role.user
                 }
             }),
             prisma.user.count({

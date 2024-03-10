@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Role } from '@prisma/client';
 import { IoIosArrowDown } from 'react-icons/io'
 import { setUserRole } from '@/action';
+import { enqueueSnackbar } from 'notistack';
 
 interface Props {
     userId: string;
@@ -15,8 +16,11 @@ export const RolesSelect = ({ userId, role }: Props) => {
 
     const updateUserRole = async (value: Role) => {
 
-        await setUserRole(userId, value);
+        const { ok, user } = await setUserRole(userId, value);
 
+        if (!ok) return enqueueSnackbar('Hubo un error al actualizar el rol', { variant: "error" });
+
+        enqueueSnackbar(`El ${role} ${user?.name} ahora es ${value}`, { variant: "success" })
         router.refresh();
 
     };

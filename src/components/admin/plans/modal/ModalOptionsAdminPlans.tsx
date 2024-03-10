@@ -42,7 +42,7 @@ export const ModalOptionsAdminPlans = ({ planName }: Props) => {
     useEffect(() => {
 
         if (plan) {
-            setValue('price', plan.price);
+            setValue('price', plan.price ? plan.price : 0);
             setValue('limit', plan.limit ? plan.limit : 0);
 
         };
@@ -67,6 +67,7 @@ export const ModalOptionsAdminPlans = ({ planName }: Props) => {
         if (!ok) {
             enqueueSnackbar(message, { variant: "error" });
             setErrorMessage(message);
+            return;
         };
 
         enqueueSnackbar(`Plan ${planName} actualizado`, { variant: "success" });
@@ -91,11 +92,13 @@ export const ModalOptionsAdminPlans = ({ planName }: Props) => {
                     <input
                         type="number"
                         className='p-2 rounded-md'
+                        min={0}
                         {...register('price', { required: true, min: 0 })}
                     />
                     <input
                         type="number"
                         className='p-2 rounded-md'
+                        min={0}
                         {...register('limit', { required: true, min: 0 })}
                     />
                     {errors.limit?.type === 'required' && (
@@ -106,7 +109,7 @@ export const ModalOptionsAdminPlans = ({ planName }: Props) => {
                     )}
                     <span className="text-red-500">{errorMessage}</span>
 
-                    <span className="text-amber-500">0 = límite infinitos</span>
+                    <span className="text-amber-500">0 = Plan gratuito / límite infinitos</span>
                 </div>
 
             </div>

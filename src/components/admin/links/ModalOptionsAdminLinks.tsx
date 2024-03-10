@@ -30,17 +30,16 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
     useEffect(() => {
         const getLink = async () => {
             const { links } = await getLinkBySlug(short);
-
-            const link = links![0];
-            return link;
-
+            if (!links) return;
+            return links![0];
         };
 
         getLink().then(res => {
+            if (!res) return;
 
             const { url, shortUrl, isActive, limit, expires, ...rest } = res;
 
-            const [dia, mes, año] = dateFormat(expires).split('/');
+            const [dia, mes, año] = dateFormat(expires as Date).split('/');
 
             const newExpires = `${año}-${mes}-${dia}`; // 20/04/2024 a 2024-04-20
 
@@ -71,7 +70,7 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
         setErrorMessage('');
         const { url, shortUrl, isActive, limit, expires } = data;
 
-        const {ok, message } = await updateLinkByAdmin({
+        const { ok, message } = await updateLinkByAdmin({
             url,
             shortUrl,
             isActive: typeof (isActive) === 'string' && isActive === 'true' ? true : false,
@@ -79,7 +78,7 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
             expires: new Date(expires!)
         }, short);
 
-        
+
         if (ok) {
             enqueueSnackbar('link actualizado', { variant: "success" })
         } else {
@@ -91,6 +90,7 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
 
     };
 
+    //TODO implementar skeleton loading en el modal de options admin para editar link
     if (isLoading) return <div>Loading...</div>;
 
     return (
@@ -98,7 +98,6 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
             <input
                 type="text"
                 className='p-2 rounded-md w-full'
-                // placeholder={initialState.url || 'url'}
                 {...register('url', { required: true })}
             />
             <div className='flex flex-row gap-2 items-center justify-center'>
@@ -107,21 +106,18 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
                     <input
                         type="text"
                         className='p-2 rounded-md'
-                        // placeholder={initialState!.shortUrl || 'short url'}
-
                         {...register('shortUrl', { required: true })}
                     />
                     <input
                         type="number"
                         className='p-2 rounded-md'
-                        // placeholder={initialState!.limit?.toString() || 'limite de uso'}
                         {...register('limit', { required: true })}
                     />
 
                 </div>
                 <div className='flex flex-col gap-2 text-neutral-900'>
                     <select
-                    className='p-2 rounded-md'
+                        className='p-2 rounded-md'
                         {...register('isActive', { required: true })}
                     >
                         <option value={'true'} selected={link?.isActive} >Activo</option>
@@ -131,9 +127,6 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
                     <input
                         type="date"
                         className='p-2 rounded-md'
-                        // value={link!.expires! as string}
-                        // value='2024-03-19'
-                        // placeholder={dateFormat(initialState!.expires!) || 'fecha de expiración'}
                         {...register('expires', { required: true })}
                     />
 

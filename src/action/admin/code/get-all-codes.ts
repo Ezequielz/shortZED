@@ -1,31 +1,25 @@
 'use server'
 
 import { auth } from '@/auth.config';
+import { sleep } from '@/helpers';
 import prisma from '@/lib/prisma';
-
-enum Order {
-    asc = 'asc',
-    desc = 'desc'
-}
+import { Role } from '@prisma/client';
 
 interface Props {
     page?: number;
     take?: number;
-    order?: Order
-    user?: string
+    codeName?: string;
 }
-
 
 export const getAllCodes = async ({
     page = 1,
     take = 7,
-    order,
-    user
+    codeName = ''
 }: Props) => {
-
+    // await sleep(2)
     const session = await auth();
 
-    if (session?.user?.roles !== 'admin') {
+    if (session?.user?.roles !== Role.admin) {
         return {
             ok: false,
             message: 'No tiene los permisos necesarios'
@@ -33,27 +27,46 @@ export const getAllCodes = async ({
     }
 
     if (isNaN(page) || isNaN(take)) {
-        throw new Error('La página y el tamaño deben ser números')
+        throw new Error('La página y el tamaño deben ser números');
     }
     if (page < 1) page = 1;
     try {
 
-        const codes = await prisma.code.findMany({
-            take,
-            skip: (page - 1) * take,
-        })
+        const [codes, totalCodesCount, totalCodesActive, totalCodesInactive] = await Promise.all([
+            prisma.code.findMany({
+                take,
+                skip: (page - 1) * take,
+                where: {
+                    OR: [
+                        { name: { contains: codeName } },
+                        { discount: { equals: +codeName } },
 
-        const totalCodesCount = await prisma.code.count()
-        const totalCodesActive = await prisma.code.count({
-            where: {
-                isActive: true
-            }
-        })
-        const totalCodesInactive = await prisma.code.count({
-            where: {
-                isActive: false
-            }
-        })
+                    ]
+                },
+                orderBy: {
+                    discount: 'asc'
+                }
+            }),
+            prisma.code.count({
+                where: {
+                    OR: [
+                        { name: { contains: codeName } },
+                    ]
+                },
+            }),
+            prisma.code.count({
+                where: {
+                    isActive: true
+                }
+            }),
+            prisma.code.count({
+                where: {
+                    isActive: false
+                }
+            })
+
+        ]);
+
         const totalPages = Math.ceil(totalCodesCount / take)
 
         return {

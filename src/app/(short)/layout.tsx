@@ -13,7 +13,7 @@ export default function ShortLayout({ children }: {
         <TopMenu />
       </Suspense>
 
-      <section className="flex-1 overflow-x-hidden overflow-y-hidden m-auto max-w-[1200px]">
+      <section className="flex-1 overflow-x-hidden overflow-y-hidden m-auto max-w-[1200px] ">
         {children}
 
       </section>
