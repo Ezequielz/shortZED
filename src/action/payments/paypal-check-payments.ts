@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import prisma from '@/lib/prisma';
 import { PaypalOrderStatusResponse } from '@/interfaces';
+import { auth } from '@/auth.config';
+import { Role } from '@prisma/client';
 
 
 export const paypalCheckPayment = async (paypalTransactionId: string) => {
@@ -49,9 +51,9 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
                 paidAt: new Date()
             }
         });
-    
+
         // revalidar un path
-        revalidatePath(`/orders/$${ orderId }`)
+        revalidatePath(`/orders/$${orderId}`)
 
 
         return {
@@ -66,6 +68,74 @@ export const paypalCheckPayment = async (paypalTransactionId: string) => {
         }
     }
 };
+
+export const paypalPayment = async (orderId: string) => {
+
+    const session = await auth();
+    if (session?.user?.roles !== Role.admin) {
+        return {
+            ok: false,
+            message: 'No tienes permisos para realizar esta acción'
+        }
+    }
+
+    const orderExist = await prisma.order.findFirst({
+        where: {
+            OR: [
+                {
+                    id: orderId,
+                },
+                {
+                    id: {
+                        endsWith: orderId,
+                    },
+                },
+            ],
+        },
+        select: {
+            id: true,
+            transactionId: true
+        }
+    });
+
+
+    if (!orderExist) {
+        return {
+            ok: false,
+            message: 'No existe la orden'
+        }
+    };
+
+    if (!orderExist.transactionId) {
+        return {
+            ok: false,
+            message: 'No hay transacciones efectuadas de esta orden'
+        }
+    }
+
+    const authToken = await getPaypalBearerToken();
+
+    if (!authToken) {
+        return {
+            ok: false,
+            message: 'No se pudo obtener token de verificación'
+        };
+    };
+
+
+    const resp = await verifyPaypalPayment(orderExist.transactionId, authToken);
+    if (!resp) {
+        return {
+            ok: false,
+            message: 'Error al verificar el pago'
+        };
+    };
+
+    return {
+        ok: true,
+        resp
+    };
+}
 
 
 

@@ -18,8 +18,8 @@ export * from './admin/links/LinksInfo';
 export * from './admin/links/LinksSearch';
 export * from './admin/links/ModalOptionsAdminLinks';
 
-export * from './admin/orders/Orders';
-export * from './admin/orders/OrdersInfo';
+
+export * from './admin/payment/Paypal';
 
 export * from './admin/plans/Plans';
 export * from './admin/plans/modal/ModalPlan';
@@ -27,7 +27,8 @@ export * from './admin/plans/modal/ModalPlanInfo';
 export * from './admin/plans/modal/ModalOptionsAdminPlans';
 export * from './admin/plans/PlanItems';
 
-
+export * from './admin/orders/Orders';
+export * from './admin/orders/OrdersInfo';
 
 export * from './admin/user/UserAdd';
 export * from './admin/user/UserAddForm';

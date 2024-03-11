@@ -2,6 +2,7 @@
 import { ImBarcode } from "react-icons/im"
 import { IoCardOutline, IoLinkOutline, IoPersonOutline } from "react-icons/io5"
 import { MdCurrencyExchange, MdDashboardCustomize } from "react-icons/md"
+import { BsPaypal } from "react-icons/bs";
 import { AdminMenuList } from ".."
 
 // TODO implementar payment response de paypal para checkear con una id de order si esta pago o no
@@ -41,6 +42,12 @@ const menu = [
         icon: <ImBarcode size={30} />,
         label: 'Códigos',
         color: 'bg-gradient-to-tr from-fuchsia-600 to-fuchsia-400 text-white shadow-md shadow-fuchsia-500/20 hover:shadow-lg hover:shadow-fuchsia-500/40 active:opacity-[0.85]' 
+    },
+    {
+        href: '/admin/paypal',
+        icon: <BsPaypal size={30} />,
+        label: 'Paypal',
+        color: 'bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/40 active:opacity-[0.85]' 
     },
 ]
 
