@@ -16,5 +16,13 @@ const config: Config = {
     },
   },
   plugins: [],
+  safelist: [
+    {
+      pattern: /^ml-/
+    },
+    {
+      pattern: /^overflow-y-auto/
+    }
+  ]
 };
 export default config;

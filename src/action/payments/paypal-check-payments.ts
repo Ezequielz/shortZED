@@ -92,9 +92,28 @@ export const paypalPayment = async (orderId: string) => {
                 },
             ],
         },
+
         select: {
             id: true,
-            transactionId: true
+            transactionId: true,
+            total: true,
+            link: {
+                select: {
+                    url: true
+                }
+            },
+            user: {
+                select: {
+                    name: true,
+                    email: true
+                }
+            },
+            plan: {
+                select: {
+                    name: true
+                }
+            }
+
         }
     });
 
@@ -130,10 +149,11 @@ export const paypalPayment = async (orderId: string) => {
             message: 'Error al verificar el pago'
         };
     };
-
+ 
     return {
         ok: true,
-        resp
+        resp,
+        orderExist
     };
 }
 

@@ -5,13 +5,13 @@ import { Providers } from "@/components";
 import { inter } from "@/components/config/fonts";
 
 
-
 export const metadata: Metadata = {
   title: {
     template: '%s - ShortZED',
     default: 'Acortador de URL - Short ZED',
   },
   description: "Acorta, personaliza y comparte URL cortas.",
+  
 };
 
 export default function RootLayout({

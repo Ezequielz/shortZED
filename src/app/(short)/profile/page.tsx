@@ -2,8 +2,24 @@
 
 import { redirect } from 'next/navigation';
 import { Profile, Title } from '@/components';
-import { User } from '@prisma/client';
 import { auth } from '@/auth.config';
+import { Metadata } from 'next';
+
+export async function generateMetadata(
+): Promise<Metadata> {
+
+  const session = await auth();
+
+  return {
+    title:'Peril',
+    description: `Perfil de ${session?.user?.name}`,
+    openGraph: {
+      title: `Perfil de ${session?.user?.name}`,
+      description: `Perfil de ${session?.user?.name}`,
+      images: [`${session?.user?.image}`]
+    },
+  }
+}
 
 export default async function ProfilePage() {
 
@@ -16,13 +32,14 @@ export default async function ProfilePage() {
     redirect('/auth/login');
   };
 
-  
+
+
 
 
   return (
     <>
       <Title title={'Perfil'} />
-      <Profile  />
+      <Profile />
     </>
   );
 }

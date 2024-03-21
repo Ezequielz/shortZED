@@ -2,17 +2,20 @@ import { Search, Title } from '@/components';
 
 
 
-export default async function PaymentLayout({children}: {
+export default async function PaymentLayout({ children }: {
     children: React.ReactNode;
 }) {
 
     // TODO mejorar interfaz de checkeo de paypal
     return (
-        <div className="ml-32 h-[calc(100vh-120px)] mt-2 ">
+        <div className="ml-32 mt-2 ">
             <Title title={"Checkeo de Paypal"} />
 
-            <Search paramsName="payment" label="en paypal" bg="bg-emerald-600" />
-            {children}
+            <div className="flex flex-col items-center justify-between bg-gradient-to-tr from-emerald-600 to-emerald-400 rounded-lg m-2 p-4">
+                <Search paramsName="payment" label="en paypal" bg="bg-emerald-600" />
+
+            </div>
+                {children}
         </div>
     );
 }

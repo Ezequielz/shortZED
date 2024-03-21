@@ -20,6 +20,7 @@ export * from './admin/links/ModalOptionsAdminLinks';
 
 
 export * from './admin/payment/Paypal';
+export * from './admin/payment/OrderPaypalDetails';
 
 export * from './admin/plans/Plans';
 export * from './admin/plans/modal/ModalPlan';
@@ -68,6 +69,7 @@ export * from './orders/OrderCheckout';
 
 export * from './payment/Pricing';
 export * from './payment/paypal/PaypalButton';
+
 
 export * from './providers/Providers';
 

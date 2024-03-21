@@ -1,9 +1,9 @@
-import { StatusLinksSeleton, TableSkeleton } from ".."
+import { StatusLinksSeleton, TableSkeleton } from "..";
 
 interface Props {
-  items: number
+  items: number;
 
-}
+};
 
 export const LinksSkeleton = async ({ items = 5 }: Props) => {
   // const itemsArray = Array.from({ length: items }, (_, i) => i + 1)
