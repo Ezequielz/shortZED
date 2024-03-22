@@ -135,7 +135,8 @@ export const LinksItems = ({ slug, links }: Props) => {
                         <td className=" text-sm text-gray-900 border-b border-gray-200 font-light px-6 py-3 whitespace-nowrap">
                             <a
                                 className="hover:underline"
-                                href={process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
+                                // href={process.env.NEXT_PUBLIC_URL_DEV + link.shortUrl}
+                                href={link.shortUrl}
                                 target="_blank"
                                 rel="noreferrer"
                             >
