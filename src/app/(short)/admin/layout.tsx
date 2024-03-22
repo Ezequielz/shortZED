@@ -1,10 +1,14 @@
 import { auth } from "@/auth.config";
 import { AdminAside } from "@/components";
 import { Role } from "@prisma/client";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 
-
+export const metadata: Metadata = {
+    title: 'Administracion',
+    description: "Administracion de usuarios, links y ordenes",
+  };
 export default async function ShortLayout({ children }: {
     children: React.ReactNode;
 }) {

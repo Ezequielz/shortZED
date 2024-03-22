@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getLinkBySlug } from '@/action';
+import { Metadata } from 'next';
 
 
 interface Props {
@@ -9,6 +10,10 @@ interface Props {
         slug: string
     }
 }
+
+export const metadata: Metadata = {
+    title: 'Link inactivo',
+  };
 
 export default async function ({ params }: Props) {
 

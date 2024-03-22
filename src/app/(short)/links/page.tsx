@@ -2,9 +2,20 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
 import {  LinksSkeleton, TableLinks, Title, UserLinks } from '@/components';
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 
 interface Props {
   searchParams?: { [key: string]: string | undefined }
+}
+
+export async function generateMetadata(
+): Promise<Metadata> {
+
+  const session = await auth();
+  return {
+      title: `Links`,
+      description: `Links del usuario ${session?.user?.name}`,
+  }
 }
 
 export default async function LinksPage({ searchParams }: Props) {

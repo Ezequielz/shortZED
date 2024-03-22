@@ -3,12 +3,23 @@ import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
 import { DeleteOrderButton, OrderCheckout, Title } from '@/components';
+import { Metadata } from 'next';
 
 
 interface Props {
     params: {
         id: string;
     };
+}
+export async function generateMetadata(
+    { params }: Props,
+): Promise<Metadata> {
+
+    const session = await auth();
+    return {
+        title: `Orden ${params.id}`,
+        description: `Ordenes del usuario ${session?.user?.name}`,
+    }
 }
 
 export default async function ({ params }: Props) {

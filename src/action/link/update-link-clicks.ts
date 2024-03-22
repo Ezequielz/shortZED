@@ -20,6 +20,14 @@ export const updateLinkClicks = async (hash: string) => {
         }
     }
 
+    if (urlExists.limit && urlExists.limit <= urlExists.clicks) {
+        
+        return {
+            ok: false,
+            message: 'No puedes actualizar mas clicks'
+        }
+    }
+
     try {
         if (!urlExists.limit) {
             return {

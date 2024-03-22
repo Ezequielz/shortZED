@@ -4,6 +4,7 @@ import { auth } from "@/auth.config";
 import { getLinkBySlug } from "@/action";
 import { CheckoutForm, OrdenConfirm } from "@/components";
 import { dateFormat } from "@/helpers";
+import { Metadata } from "next";
 
 
 interface Props {
@@ -11,6 +12,11 @@ interface Props {
         slug: string;
     };
 }
+
+export const metadata: Metadata = {
+    title: 'Checkout',
+    description: "Compra clicks para tu short",
+  };
 
 export default async function ({ params }: Props) {
     const { slug } = params;
