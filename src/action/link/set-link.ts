@@ -123,7 +123,7 @@ export const setLink = async (url: string, hash?: string) => {
         // si no existe el url, crear el url y agregar el usuario si viene userId
         if (!urlExists) {
 
-            const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL_DEV + shortUrl);
+            const qr = await QRCode.toDataURL(process.env.NEXT_PUBLIC_URL + shortUrl);
 
             // const freePlan = await prisma.plan.findFirst({
             //     where: {

@@ -5,7 +5,7 @@ import { MdCurrencyExchange, MdDashboardCustomize } from "react-icons/md"
 import { BsPaypal } from "react-icons/bs";
 import { AdminMenuList } from ".."
 
-// TODO implementar payment response de paypal para checkear con una id de order si esta pago o no
+
 const menu = [
     {
         href: '/admin/dashboard',

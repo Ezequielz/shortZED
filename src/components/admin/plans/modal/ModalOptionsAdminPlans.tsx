@@ -5,6 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 import { PlanName } from '@prisma/client';
 import { getPlanByName, updatePlanByAdmin } from '@/action';
 import { useUIStore } from '@/store';
+import { ModalPlansSkeleton } from '@/components';
 
 interface Props {
     planName: PlanName;
@@ -75,8 +76,11 @@ export const ModalOptionsAdminPlans = ({ planName }: Props) => {
         
     };
 
-    // TODO implementar esqueleton cargando admin planes
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+            <ModalPlansSkeleton />
+        )
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="text-neutral-900 p-4 m-2 max-w-[1200px] mb-6 flex flex-col gap-2 items-center justify-center">

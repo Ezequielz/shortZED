@@ -15,7 +15,7 @@ export const ModalLinkInfo = async ({ short }: Props) => {
 
     const object = {
         Url: url,
-        Hash: process.env.NEXT_PUBLIC_URL_DEV + shortUrl,
+        Hash: process.env.NEXT_PUBLIC_URL + shortUrl,
         Clicks: clicks,
         Limite: !limit ? '∞' : (limit > 10 ? limit : limit + ' Gratis'),
 

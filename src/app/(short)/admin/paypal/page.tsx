@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Paypal } from '@/components';
+import { Paypal, PaypalPaymentDetailSkeleton } from '@/components';
 
 interface Props {
     searchParams?: { [key: string]: string | string[] | undefined };
@@ -8,7 +8,7 @@ interface Props {
 export default function ({ searchParams }: Props) {
     const payment = searchParams?.payment as string;
     
-    // TODO mejorar interfaz ingreso de orden id para ver en paypal
+    
     if (!payment) {
         return (
             
@@ -16,11 +16,11 @@ export default function ({ searchParams }: Props) {
         );
     };
     return (
-        // TODO implementar skeleton cargando resultados de paypal
         <div className='h-[calc(100vh-260px)]'>
 
-            <Suspense fallback={<div>Cargando detalles paypal...</div>} >
+            <Suspense fallback={<PaypalPaymentDetailSkeleton />} >
                 <Paypal orderId={payment}/>
+                
             </Suspense>
         </div>
     );

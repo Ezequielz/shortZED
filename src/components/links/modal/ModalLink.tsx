@@ -1,7 +1,7 @@
 
 
 import { Suspense } from 'react';
-import { Dialog, ModalLinkInfo } from '../..';
+import { Dialog, ModalLinkInfo, ModalLinkUserSkeleton } from '../..';
 import { ModalCloseBtn } from './ModalCloseBtn';
 
 interface Props {
@@ -20,8 +20,7 @@ export const ModalLink = async ({ short, children }: Props) => {
             <div className="flex flex-col justify-center items-center p-2 rounded-lg">
                 <h3 className="text-2xl font-bold">Editar Link</h3>
                 <ModalCloseBtn />
-                {/* TODO implementar skeleton modal */}
-                <Suspense fallback={ <div>Cargando modal...</div> } >
+                <Suspense fallback={ <ModalLinkUserSkeleton />} >
                     <ModalLinkInfo short={short} />
 
                     {children}

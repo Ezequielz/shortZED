@@ -80,7 +80,7 @@ export const CheckoutForm = ({ link }: Props) => {
     if (isLoading) {
         return <div>Loading...</div>;
     };
-   
+
     const plansFiltered = plans?.filter(p => p.name !== planName && p.name !== 'free')
     if (!link.limit) return <p>El link tiene clicks ilimitados hasta el: {dateFormat(link.expires)}, solo puede activar el pack super para externder el uso 1 mes</p>
     return (
@@ -166,7 +166,8 @@ export const CheckoutForm = ({ link }: Props) => {
                                             <div className="px-2">
                                                 <button
                                                     disabled={isSubmitting}
-                                                    className={`${isSubmitting && 'btn-disabled'} block w-full max-w-xs mx-auto border border-transparent bg-gray-400 hover:bg-gray-500 focus:bg-gray-500 text-white rounded-md px-5 py-2 font-semibold`}
+                                                    className={`${isSubmitting && 'btn-disabled'} 
+                                                     bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center p-2 rounded-lg text-white justify-center hover:bg-violet-500`}
                                                 >
                                                     Aplicar
                                                 </button>
@@ -175,8 +176,17 @@ export const CheckoutForm = ({ link }: Props) => {
 
                                     ) : (
                                         <div className='flex flex-col'>
-                                            <div onClick={() => setErrorMessage('')} className='cursor-pointer'>Reintentar</div>
+                                            {/* <div onClick={() => setErrorMessage('')} className='cursor-pointer'>Reintentar</div> */}
                                             <span className="text-red-500 flex justify-end ">{errorMessage}</span>
+                                            <button
+                                                onClick={() => setErrorMessage('')}
+                                                disabled={isSubmitting}
+                                                className={`${isSubmitting && 'btn-disabled'} 
+                                                     bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center p-2 rounded-lg text-white justify-center hover:bg-violet-500`}
+                                            >
+                                                Probar otro código
+                                            </button>
+                                           
                                         </div>
                                     )
                                 }

@@ -70,7 +70,7 @@ export default async function ({ params }: Props) {
                                             <p className="-mt-4 text-gray-400 font-light text-xs">Vencimiento: {vencimiento}</p>
 
                                             <p className="-mb-4 text-gray-400">Link corto</p>
-                                            <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL_DEV}{link.shortUrl} </h6>
+                                            <h6 className="font-semibold uppercase "> {process.env.NEXT_PUBLIC_URL}{link.shortUrl} </h6>
 
                                             <p className="-mb-4 text-gray-400">Link original</p>
 

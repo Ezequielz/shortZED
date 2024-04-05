@@ -1,4 +1,4 @@
-import { Links, LinksInfo, Search, Title } from "@/components";
+import { LinkSkeleton, Links, LinksInfo, Search, Title } from "@/components";
 import { Suspense } from "react";
 
 interface Props {
@@ -15,14 +15,14 @@ export default async function ({ searchParams }: Props) {
     <div className="ml-32 h-[calc(100vh-120px)] mt-2">
       <Title title={"Administracion de Links"} />
 
-      {/* TODO implementar skeleton links */}
-      <Suspense fallback={<div>Cargando links...</div>}>
+      <Suspense fallback={<LinkSkeleton />}>
         <div className="flex gap-2">
           <LinksInfo >
             <Search bg="bg-green-800" label="Links" paramsName="adminsearch" />
           </LinksInfo>
 
         </div>
+        
         <Links page={page} search={search} short={short} />
       </Suspense>
     </div>

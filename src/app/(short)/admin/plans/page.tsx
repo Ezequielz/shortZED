@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Plans, Title } from '@/components';
+import { PlanSkeleton, Plans, Title } from '@/components';
 import { PlanName } from '@prisma/client';
 
 
@@ -14,8 +14,9 @@ export default function ({ searchParams }: Props) {
     <div className="ml-32 h-[calc(100vh-120px)] mt-2">
       <Title title={"Administracion de Planes"} />
 
-      {/* TODO implementar skeleton planes */}
-      <Suspense fallback={<div>Cargando planes...</div>}>
+
+      <Suspense fallback={<PlanSkeleton />}>
+
         <Plans plan={plan} />
       </Suspense>
     </div>

@@ -1,7 +1,7 @@
 import { dateFormat, currencyFormat } from "@/helpers"
 import clsx from "clsx"
 import Link from "next/link"
-import { OrderStatus, PaypalButton } from ".."
+import { OrderStatus, PaypalButton, PaypalDemoCredentials } from ".."
 import { getOrderById, getLinkById, getPlanById, getCodeById, getUserById } from "@/action"
 import { PlanName } from "@prisma/client"
 import { notFound } from "next/navigation"
@@ -31,7 +31,7 @@ export const OrderCheckout = async({id} : {id: string}) => {
     const vencimiento = dateFormat(links![0].expires)
 
     const ordenShow = {
-        link_corto: `${process.env.NEXT_PUBLIC_URL_DEV + links![0].shortUrl}`,
+        link_corto: `${process.env.NEXT_PUBLIC_URL + links![0].shortUrl}`,
         link_original: links![0].url,
         limite_actual: links![0].limit,
         clicks_usados: links![0].clicks ? links![0].clicks : '0',
@@ -117,7 +117,7 @@ export const OrderCheckout = async({id} : {id: string}) => {
                                     <p>El valor total de {currencyFormat(order!.total)}</p>
 
                                 </div>
-
+                                <PaypalDemoCredentials />
                                 <PaypalButton orderId={order!.id} amount={order!.total} limitUpdate={plan!.limit} linkId={order!.linkId} />
                             </>
                         )

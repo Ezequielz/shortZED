@@ -33,7 +33,7 @@ export const Paypal = async ({ orderId }: Props) => {
         Email: orderPaypal?.payment_source ? (orderPaypal?.payment_source?.paypal.email_address) : '-',
     }
 
-    //TODO Crear interfaz de vista del resultado de paypal
+  
     return (
         <div className='grid grid-cols-2 p-2'>
 

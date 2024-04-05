@@ -83,7 +83,7 @@ export const OrdenConfirm = () => {
                     <span className=" font-semibold">Link</span>
                 </div>
                 <div className="flex-grow pl-3">
-                    <span> {process.env.NEXT_PUBLIC_URL_DEV! + slug} </span>
+                    <span> {process.env.NEXT_PUBLIC_URL! + slug} </span>
                 </div>
             </div>
             <div className="flex w-fit m-auto justify-center flex-col">

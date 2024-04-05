@@ -12,17 +12,19 @@ export const getCode = async ( name: string ) => {
             }
         });
 
-        if(!codeDB) return { ok: false, message: 'No se encontro codigo' };
+        if(!codeDB) return { ok: false, message: 'No se encontro código' };
+
+        if (!codeDB.isActive) return { ok: false, message: 'Código inactivo' };
 
         const {id, ...rest } = codeDB;
 
         return {
             ok: true,
             code: rest,
-            message: 'codigo correcto'
+            message: 'Código correcto'
         };
     } catch (error: any) {
         console.log(error);
-        return { ok: false, message: error.message ?? 'No se encontro codigo' };
+        return { ok: false, message: error.message ?? 'No se encontro código' };
     }
 }

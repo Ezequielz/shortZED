@@ -28,7 +28,7 @@ export const DeleteOrderButton = ({ id }: Props) => {
         })
       
     }, [id])
-    // TODO implementar esqueleto boton eliminar orden
+
     if (isLoading) return null
    
     if (!orderId) return null

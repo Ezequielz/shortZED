@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Search, Title, UserAdd, Users, UsersInfo } from '@/components';
+import { Search, Title, UserAdd, UserSkeleton, Users, UsersInfo } from '@/components';
 
 interface Props {
   searchParams?: { [key: string]: string | undefined };
@@ -12,8 +12,8 @@ export default async function ({ searchParams }: Props) {
   return (
     <div className="ml-32 h-[calc(100vh-120px)] mt-2">
       <Title title={"Administracion de usuarios"} />
-      {/* TODO implementar skeleton usuarios */}
-      <Suspense fallback={ <div>Cargando usuarios...</div> }>
+      <Suspense fallback={ <UserSkeleton /> }>
+       
         <div className="flex gap-2">
           <UserAdd />
 

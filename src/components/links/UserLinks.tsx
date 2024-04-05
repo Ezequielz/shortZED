@@ -23,21 +23,13 @@ export const UserLinks = async ({ row, short, page, status }: Props) => {
 
     const { links, totalPages, currentPage, linksActive, linksInactive, linksTotal } = await getUserLinks({ page, isActive });
 
-    // if ( links && links.length === 0) {
-    //    return <div>No posee links guardados</div>
-    // }
 
     if (!links) {
         notFound();
-    }
-
-    // if (links.length === 0) {
-    //     redirect(`/?page=1`)
-    // }
+    };
 
     return (
         <>
-        {/* TODO implementar modal */}
             <Suspense fallback={<div>Cargando modal...</div>}>
                 <ModalLink short={short} >
                     <ModalOptionsLinksByUser short={short} />

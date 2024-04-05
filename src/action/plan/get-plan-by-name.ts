@@ -1,10 +1,11 @@
 'use server'
 
+import { sleep } from '@/helpers';
 import prisma from '@/lib/prisma';
 import { PlanName } from '@prisma/client';
 
 export const getPlanByName = async ( name: PlanName ) => {
-
+// sleep(3)
     try {
        const plan = await prisma.plan.findFirst({
             where: {

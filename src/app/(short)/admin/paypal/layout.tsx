@@ -6,7 +6,6 @@ export default async function PaymentLayout({ children }: {
     children: React.ReactNode;
 }) {
 
-    // TODO mejorar interfaz de checkeo de paypal
     return (
         <div className="ml-32 mt-2 ">
             <Title title={"Checkeo de Paypal"} />

@@ -5,6 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 import { getLinkBySlug, updateLinkByAdmin } from '@/action';
 import { dateFormat } from '@/helpers';
 import { useUIStore } from '@/store';
+import { ModalLinkSkeleton } from '@/components';
 
 interface Props {
     short: string;
@@ -21,7 +22,6 @@ interface FormInputs {
 
 export const ModalOptionsAdminLinks = ({ short }: Props) => {
 
-    const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [link, setLink] = useState<FormInputs>();
     const closeDialog = useUIStore(state => state.closeDialog)
@@ -67,7 +67,6 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
 
 
     const onSubmit: SubmitHandler<FormInputs> = async (data) => {
-        setErrorMessage('');
         const { url, shortUrl, isActive, limit, expires } = data;
 
         const { ok, message } = await updateLinkByAdmin({
@@ -90,8 +89,12 @@ export const ModalOptionsAdminLinks = ({ short }: Props) => {
 
     };
 
-    //TODO implementar skeleton loading en el modal de options admin para editar link
-    if (isLoading) return <div>Loading...</div>;
+ 
+    if (isLoading){ 
+        return (
+            <ModalLinkSkeleton />
+        )
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="text-neutral-900 p-4 m-2 max-w-[1200px] mb-6 flex flex-col gap-2 items-center justify-center">

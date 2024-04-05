@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Codes = async ({ page, codeName }: Props) => {
-    const { codes } = await getAllCodes({page, codeName});
+    const { codes } = await getAllCodes({ page, codeName });
 
     if (!codes) {
         return (<div>No hay códigos</div>);
@@ -26,12 +26,11 @@ export const Codes = async ({ page, codeName }: Props) => {
     };
 
     return (
-        <>
-        {/* TODO implementar creacion de codigos */}
-            <div className="lg:min-h-[355px]">
-                <TableCodes codes={codes} />
-            </div>
-        </>
+
+        <div className="lg:min-h-[355px]">
+            <TableCodes codes={codes} />
+        </div>
+
     )
 }
 

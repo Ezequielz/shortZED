@@ -2,7 +2,7 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth.config';
-import { DeleteOrderButton, OrderCheckout, Title } from '@/components';
+import { Alert, DeleteOrderButton, OrderCheckout, OrderCheckoutSkeleton, Title } from '@/components';
 import { Metadata } from 'next';
 
 
@@ -35,19 +35,17 @@ export default async function ({ params }: Props) {
 
         <div className="min-w-screen h-fit mb-3 ">
             {/* TITULO */}
+            <Alert />
             <div className="px-5">
-
                 <div className="mb-2 flex justify-between items-center">
                     <Title title='Orden' />
-
+                    
                     <DeleteOrderButton id={id} />
 
                 </div>
 
             </div>
-            {/* TODO implementar esqueleton orden checkout id */}
-            <Suspense fallback={<div>Cargando orden...</div>}>
-
+            <Suspense fallback={<OrderCheckoutSkeleton />}>
                 <OrderCheckout id={id} />
             </Suspense>
 

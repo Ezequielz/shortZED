@@ -31,7 +31,7 @@ export default async function ({ params }: Props) {
             <div className="mt-10 w-1/2 flex flex-col">
 
                 <h2 className="text-5xl font-bold text-red-600">Link inactivo</h2>
-                <span className="text-red-300">{process.env.NEXT_PUBLIC_URL_DEV}{link.links![0].shortUrl}</span>
+                <span className="text-red-300">{process.env.NEXT_PUBLIC_URL}{link.links![0].shortUrl}</span>
                 <div className="my-3">
 
                     <p>Active el link desde el
