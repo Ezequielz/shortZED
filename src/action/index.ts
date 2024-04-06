@@ -23,6 +23,10 @@ export * from './admin/user/set-user-status';
 export * from './code/get-code'; 
 export * from './code/get-code-by-id'; 
 
+export * from './images/folder';
+export * from './images/upload-images';
+export * from './images/delete-image';
+
 export * from './link/delete-link';
 export * from './link/get-link-by-id';
 export * from './link/get-link-by-slug';
@@ -47,7 +51,8 @@ export * from './plan/get-plan-by-id';
 export * from './plan/get-plan-by-name';
 
 export * from './user/get-user-by-id';
-export * from './user/upload-image';
+export * from './user/set-image';
+
 
 
 

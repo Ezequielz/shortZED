@@ -1,10 +1,11 @@
 'use server'
 import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
-import { v2 as cloudinary } from 'cloudinary';
-cloudinary.config(process.env.CLOUDINARY_URL ?? '');
+import { uploadImages } from '../images/upload-images';
+import { deleteImage } from '../images/delete-image';
 
-export const uploadImage = async (formData: FormData) => {
+
+export const setImage = async (formData: FormData) => {
 
     const session = await auth();
     if (!session) return { ok: false, message: 'Debe estar logeado para cambiar la imagen' }
@@ -15,26 +16,10 @@ export const uploadImage = async (formData: FormData) => {
 
     try {
 
-
-        const uploadPromises = images.map(async (image) => {
-
-            try {
-                const buffer = await image.arrayBuffer();
-                const base64Image = Buffer.from(buffer).toString('base64');
-                // subir imagen a cloudinary                                                // carpeta
-                return cloudinary.uploader.upload(`data:image/png;base64,${base64Image}`, { folder: 'short-zed', name: 'asdsad' })
-                    .then(r => r.secure_url);
-            } catch (error) {
-                console.log(error);
-                return null;
-            }
-
-        })
-
-        const uploadedImages = await Promise.all(uploadPromises);
-
+        const uploadedImages = await uploadImages(images)
+        if (!uploadedImages) return { ok: false, message: 'No se pudo subir la imagen' }
      
-        // eliminar imagenes antiguas en cloudinary
+        //  buscar imagen antigua en la BD
         const userImageOld = await prisma.user.findUnique({
             where: {
                 id: session.user?.id
@@ -43,11 +28,11 @@ export const uploadImage = async (formData: FormData) => {
                 image: true
             }
         })
-
+        // eliminar imagenes antiguas en cloudinary 
         if (userImageOld) {
             const cloudImageID = userImageOld?.image?.split('/').pop()?.split('.')[0]
             
-            cloudinary.uploader.destroy(`short-zed/${cloudImageID}`)
+            deleteImage(cloudImageID!)
         }
       
         // Actualizar imagen en la BD

@@ -1,6 +1,6 @@
 'use client'
 
-import { uploadImage } from "@/action";
+import { setImage } from "@/action";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -23,7 +23,9 @@ export const AddImage = () => {
       }
     }
     // Server action
-    const resp = await uploadImage(formData);
+    const {ok} = await setImage(formData);
+
+    if (!ok) return;
 
     window.location.replace('/profile');
 
@@ -39,8 +41,10 @@ export const AddImage = () => {
         accept="image/png, image/jpeg, image/avif"
         {...register('images', { required: true })}
       />
-      <button className="bg-violet-500 p-2 rounded-lg">
-        guardar
+      <button 
+      disabled={isSubmitting}
+      className="bg-violet-500 p-2 rounded-lg">
+        {isSubmitting ? 'Guardando imagen...' : 'Guardar'}
       </button>
 
     </form>
