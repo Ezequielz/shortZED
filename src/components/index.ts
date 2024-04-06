@@ -74,6 +74,7 @@ export * from './payment/paypal/PaypalDemoCredentials';
 
 export * from './providers/Providers';
 
+export * from './profile/AddImage';
 export * from './profile/Profile';
 
 export * from './qr/QRCodeView';

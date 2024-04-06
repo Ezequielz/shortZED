@@ -3,8 +3,10 @@ import { auth } from '@/auth.config';
 import clsx from 'clsx';
 import { IoAccessibilityOutline } from 'react-icons/io5';
 import { dateFormat } from '@/helpers';
-import { getOrdersByUser, getUserLinks } from '@/action';
+import { getOrdersByUser, getUserById, getUserLinks } from '@/action';
 import Link from 'next/link';
+import { FaRegEdit } from "react-icons/fa";
+import { AddImage } from './AddImage';
 
 export const Profile = async () => {
 
@@ -12,6 +14,7 @@ export const Profile = async () => {
     if (!session?.user?.createdAt) {
         return null
     }
+    const {user} = await getUserById(session.user.id!)
 
     const { totalCount: totalLinks, linksActive, linksInactive } = await getUserLinks({})
     const { totalCount: totalOrders, ordersPaid, ordersNotPaid } = await getOrdersByUser({})
@@ -23,13 +26,16 @@ export const Profile = async () => {
                 <div className="md:flex no-wrap md:-mx-2 ">
                     <div className="w-full md:w-3/12 md:mx-2">
                         <div className="bg-white p-3 border-t-4 border-violet-600 rounded-xl">
-                            <div className="image overflow-hidden">
+                            <div className="flex flex-col items-center gap-1 justify-center relative">
                                 <Image
-                                    src={session?.user?.image!}
+                                    src={user?.image ?? '/imgs/default-avatar.jpg'}
                                     alt="image profile"
                                     width={200}
                                     height={200}
+                                    className='object-cover'
                                 />
+                                <AddImage />       
+                                {/* <FaRegEdit size={30} className='absolute right-0 text-blue-500 cursor-pointer' /> */}
                             </div>
                             <h2 className="text-gray-900 font-bold text-xl leading-8 my-1 capitalize">{session?.user?.name}</h2>
 

@@ -47,6 +47,7 @@ export * from './plan/get-plan-by-id';
 export * from './plan/get-plan-by-name';
 
 export * from './user/get-user-by-id';
+export * from './user/upload-image';
 
 
 
