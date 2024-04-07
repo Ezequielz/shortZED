@@ -89,6 +89,7 @@ export * from './skeletons/admin/ModalLinkSkeleton';
 export * from './skeletons/admin/ModalPlanInfoSkeleton';
 export * from './skeletons/admin/ModalPlansSkeleton';
 
+export * from './skeletons/AvatarProfileSkeleton';
 export * from './skeletons/LinksSkeleton';
 export * from './skeletons/OrderCheckoutSkeleton';
 export * from './skeletons/OrdersSkeleton';

@@ -11,9 +11,36 @@ interface Props {
     }
 }
 
-export const metadata: Metadata = {
-    title: 'Link inactivo',
-  };
+
+
+export async function generateMetadata(
+    { params }: Props,
+): Promise<Metadata> {
+
+    const { slug } = params;
+   
+    return {
+        title: 'Link inactivo',
+        description: 'Renueva el link para eguir usando el url corto',
+        keywords: 'link inactivo, url corto, url, corto, link, inactivo, reclamo',
+        openGraph: {
+            title: 'Link inactivo',
+            description: 'Renueva el link para eguir usando el url corto',
+            type: 'website',
+            locale: 'es_ES',
+            siteName: 'Shortzed',
+            url: `${process.env.NEXT_PUBLIC_URL}/${slug}`,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/zapataezequiel/image/upload/v1712514048/shortzed_fuhgei.webp',
+                    width: 800,
+                    height: 600,
+                    alt: 'Link inactivo',
+                },
+            ],
+        },
+    }
+}
 
 export default async function ({ params }: Props) {
 

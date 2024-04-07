@@ -34,7 +34,7 @@ export const UserOrders = async ({ row, short, page, status }: Props) => {
             </div>
             {
                 orders && orders.length === 0 ? (
-                    <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron ordenes {!status ? 'Activos' : 'Inactivos'} </div>
+                    <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron ordenes { status ? (status === 'true' ? 'Pagadas' : 'Pendientes') : ''}</div>
                 ) : (
                     <>
                         <div className='lg:min-h-[400px]'>
