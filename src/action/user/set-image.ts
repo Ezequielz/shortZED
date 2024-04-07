@@ -3,6 +3,7 @@ import { auth } from '@/auth.config';
 import prisma from '@/lib/prisma';
 import { uploadImages } from '../images/upload-images';
 import { deleteImage } from '../images/delete-image';
+import { revalidatePath } from 'next/cache';
 
 
 export const setImage = async (formData: FormData) => {
@@ -16,7 +17,8 @@ export const setImage = async (formData: FormData) => {
 
     try {
 
-        const uploadedImages = await uploadImages(images)
+        const uploadedImages = await uploadImages(images);
+       
         if (!uploadedImages) return { ok: false, message: 'No se pudo subir la imagen' }
      
         //  buscar imagen antigua en la BD
@@ -44,6 +46,8 @@ export const setImage = async (formData: FormData) => {
                 image: uploadedImages[0]
             }
         })
+
+        revalidatePath('/profile')
 
         return {
             ok: true,
