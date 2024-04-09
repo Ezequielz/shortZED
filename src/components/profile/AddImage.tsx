@@ -3,6 +3,7 @@
 import { setImage } from "@/action";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaRegEdit } from "react-icons/fa";
 
 type FormInputs = {
   images: File[]
@@ -33,7 +34,7 @@ export const AddImage = () => {
 
         saveImageToCloud()
           .then(res => {
-           console.log(res)
+            console.log(res)
             setLoading(false)
           })
           // .then(res => window.location.replace('/profile'))
@@ -50,13 +51,18 @@ export const AddImage = () => {
   return (
     <form
       // onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col">
+      className="flex flex-col absolute top-1 right-1 hover:scale-105">
       <input
         type="file"
-        className="p-2 border rounded-md bg-neutral-800 w-full"
+        id="fileInput"
+        className="p-2 border rounded-md bg-neutral-800 w-full hidden"
         accept="image/png, image/jpeg, image/avif"
         {...register('images', { required: true })}
       />
+      <label htmlFor="fileInput">
+        <FaRegEdit size={30} className="text-blue-500 cursor-pointer bg-slate-100 rounded-full p-1"/>
+      </label>
+
       {/* <button
         disabled={isSubmitting}
         className="bg-violet-500 p-2 rounded-lg">

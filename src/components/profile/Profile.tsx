@@ -6,6 +6,7 @@ import { getOrdersByUser, getUserById, getUserLinks } from '@/action';
 import Link from 'next/link';
 import { UserImage } from './UserImage';
 import { Suspense } from 'react';
+import { AvatarProfileSkeleton } from '../skeletons/AvatarProfileSkeleton';
 
 export const Profile = async () => {
 
@@ -24,9 +25,8 @@ export const Profile = async () => {
                 <div className="md:flex no-wrap md:-mx-2 ">
                     <div className="w-full md:w-3/12 md:mx-2">
                         <div className="bg-white p-3 border-t-4 border-violet-600 rounded-xl">
-                            <Suspense fallback={ <p className='text-neutral-900'>ESTOOOO</p> } >
+                            <Suspense fallback={ <AvatarProfileSkeleton />} >
                                 <UserImage />
-
                             </Suspense>
 
                             <h2 className="text-gray-900 font-bold text-xl leading-8 my-1 capitalize">{session?.user?.name}</h2>

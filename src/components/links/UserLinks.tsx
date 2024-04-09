@@ -40,7 +40,7 @@ export const UserLinks = async ({ row, short, page, status }: Props) => {
             </div>
             {
                 links && links.length === 0 ? (
-                    <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron links {!status ? 'Activos' : 'Inactivos'} </div>
+                    <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron links { status ? (status === 'true' ? 'Activos' : 'Inactivos') : ''} </div>
                 ) : (
                     <>
                         <div className='lg:min-h-[400px]'>
