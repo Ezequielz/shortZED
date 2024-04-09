@@ -2,7 +2,6 @@
 
 import { getUserById } from "@/action";
 import { TopMenuButtonSkeleton } from "@/components";
-import { inter } from "@/components/config/fonts";
 import { useUIStore } from "@/store";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
