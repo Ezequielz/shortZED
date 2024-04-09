@@ -58,6 +58,8 @@ export * from './links/TableLinks';
 export * from './links/UserLinks';
 export * from './links/ViewLink';
 
+export * from './main/Main';
+
 
 
 export * from './orders/OrderStatus';

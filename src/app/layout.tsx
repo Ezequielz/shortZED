@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { Providers } from "@/components";
-import { inter } from "@/components/config/fonts";
+import { textFont } from "@/components/config/fonts";
 
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} bg-neutral-900 text-slate-100 `}>
+      <body className={`${textFont.className} bg-neutral-900 text-slate-100 `}>
         <Providers>
           {children}
 

@@ -1,6 +1,6 @@
-import { Inter, Montserrat_Alternates,  Aclonica } from 'next/font/google';
+import { Montserrat_Alternates,  Aclonica , Roboto, Abel } from 'next/font/google';
 
-export const inter = Inter({ subsets: ['latin'] });
+
 
 
 export const logoFont = Aclonica({ 
@@ -10,4 +10,12 @@ export const logoFont = Aclonica({
 export const titleFont = Montserrat_Alternates({ 
   subsets: ['latin'],
   weight: ['400','800'],
+});
+export const textFont = Roboto({ 
+  subsets: ['latin'],
+  weight: ['400'],
+});
+export const subtitleFont = Abel({ 
+  subsets: ['latin'],
+  weight: ['400'],
 });

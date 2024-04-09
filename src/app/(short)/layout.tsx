@@ -1,4 +1,4 @@
-import { Footer, ShortForm, Sidebar, TopMenu, TopMenuButtonSkeleton } from '@/components';
+import { Footer, Sidebar, TopMenu, TopMenuButtonSkeleton } from '@/components';
 import { Suspense } from 'react';
 
 export default function ShortLayout({ children }: {
@@ -8,16 +8,16 @@ export default function ShortLayout({ children }: {
     <main className="min-h-screen">
       <Sidebar />
 
-      <Suspense fallback={ <TopMenuButtonSkeleton/> }>
+      <Suspense fallback={<TopMenuButtonSkeleton />}>
 
         <TopMenu />
       </Suspense>
+  
 
       <section className="flex-1 overflow-x-hidden overflow-y-hidden m-auto max-w-[1200px] ">
         {children}
 
       </section>
-
 
       <Footer />
     </main>

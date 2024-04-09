@@ -44,21 +44,23 @@ export const ShortForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] mb-6">
+        <form onSubmit={handleSubmit(onSubmit)} className=" max-w-[1200px] mb-6 z-20">
 
-            <div className='flex flex-col justify-center gap-1'>
+            <div className='flex flex-col justify-start gap-1'>
                 {/* URL */}
-                <div className='w-3/4 m-auto relative'>
+                <div className='w-full relative'>
                     {errors.url?.type === 'required' && (
                         <span className="text-red-500 absolute -top-6 left-1">*El url es obligatorio</span>
                     )}
                     {errors.url?.type === 'pattern' && (
                         <span className="text-red-500 absolute -top-6 left-1">*Debe ser un url válido</span>
                     )}
+                    <label htmlFor="url">Inserte enlace</label>
                     <input
                         type="text"
+                        id='url'
                         autoFocus
-                        placeholder="Inerte URL que quiera acortar ej: https://mipaginaweb.com/prod?q=asfasdfdfsdf"
+                        placeholder="ej: https://mipaginaweb.com/prod/detail?q=pantalon-jean-azul-simple&t=40..etc"
                         className={
                             clsx(
                                 "w-full p-2 border rounded-md bg-gray-200 text-slate-800",
@@ -74,39 +76,45 @@ export const ShortForm = () => {
 
                 </div>
                 {/* HASH y BUTTON */}
-                <div className='w-3/4  m-auto flex gap-2 justify-center '>
+                <div className='w-3/4   flex gap-2 '>
                     {/* HASH */}
-                    <input
-                        type="text"
-                        autoFocus
-                        placeholder="hash personalizado"
-                        className={
-                            clsx(
-                                "mt-2 p-2 border rounded-md bg-gray-200 text-slate-800",
-                                {
-                                    'border-red-500': errors.url,
-                                }
-                            )
-                        }
-                        {...register("hash", { minLength: 3 })}
-                    />
+                    <div className='flex flex-col'>
 
-                    {/* BUTTON */}
-                    <div className="flex justify-center flex-col">
-
-                        <button
-                            disabled={isSubmitting}
-                            className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1`}>
-
-                            <span className="z-5">{isSubmitting ? 'Acortando...' : 'Acortar url'}</span>
-                            <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
-
-                            <div
-                                className="absolute inset-0 h-[200%] w-[200%] rotate-45 translate-x-[-70%] transition-all group-hover:scale-100 bg-white/30 group-hover:translate-x-[50%] z-20 duration-1000">
-                            </div>
-                        </button>
-
+                        <label htmlFor="hash">Inserte hash personalizado</label>
+                        <input
+                            type="text"
+                            id='hash'
+                            autoFocus
+                            placeholder="ej: jean"
+                            className={
+                                clsx(
+                                    " p-2 border rounded-md bg-gray-200 text-slate-800",
+                                    {
+                                        'border-red-500': errors.url,
+                                    }
+                                )
+                            }
+                            {...register("hash", { minLength: 3 })}
+                        />
                     </div>
+
+
+
+                </div>
+                {/* BUTTON */}
+                <div className="flex justify-center flex-col">
+
+                    <button
+                        disabled={isSubmitting}
+                        className={`${isSubmitting && 'btn-disabled'} inline-flex mt-2 group relative overflow-hidden bg-violet-600 focus:ring-4 focus:ring-blue-300  items-center pl-7 pr-5 py-2.5 rounded-lg text-white justify-center gap-1 w-fit`}>
+
+                        <span className="z-5">{isSubmitting ? 'Acortando...' : 'Acortar url'}</span>
+                        <IoIosArrowForward size={20} className='transition-all duration-300 group-hover:translate-x-1' />
+
+                        <div
+                            className="absolute inset-0 h-[200%] w-[200%] rotate-45 translate-x-[-70%] transition-all group-hover:scale-100 bg-white/30 group-hover:translate-x-[50%] z-20 duration-1000">
+                        </div>
+                    </button>
 
                 </div>
                 <div className='relative flex justify-center'>
