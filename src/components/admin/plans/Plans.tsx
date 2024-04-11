@@ -31,7 +31,7 @@ export const Plans = async ({ plan }: Props) => {
                     <ModalOptionsAdminPlans planName={plan} />
                 </ModalPlan>
             </Suspense>
-            <div className="lg:min-h-[355px]">
+            <div className="lg:min-h-[355px]  overflow-x-auto">
                 <TablePlans plans={plans} />
             </div>
         </>

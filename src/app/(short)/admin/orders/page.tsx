@@ -12,7 +12,7 @@ export default async function ({ searchParams }: Props) {
   const short = searchParams?.short as string;
 
   return (
-    <div className="ml-32 h-[calc(100vh-120px)] mt-2">
+    <div className="p-5 xl:ml-32 md:h-[calc(100vh-120px)] mt-2">
       <Title title={"Administracion de Ordenes"} />
       <Suspense fallback={<OrderSkeleton />}>
 

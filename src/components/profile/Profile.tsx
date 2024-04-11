@@ -59,7 +59,7 @@ export const Profile = async () => {
                         <div className="my-4"></div>
 
                     </div>
-                    <div className="w-full md:w-9/12 mx-2 h-64">
+                    <div className="w-full md:w-9/12 md:mx-2 md:h-64">
                         <div className="bg-white p-3 shadow-sm rounded-xl">
                             <div className="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
                                 <IoAccessibilityOutline size={30} className='text-violet-600' />
@@ -67,13 +67,13 @@ export const Profile = async () => {
                             </div>
                             <div className="text-gray-700">
                                 <div className="grid md:grid-cols-2 text-sm">
-                                    <div className="grid grid-cols-2">
-                                        <div className="px-4 py-2 font-semibold">Nombre:</div>
-                                        <div className="px-4 py-2 capitalize">{session.user.name}</div>
+                                    <div className="grid grid-cols-3 ">
+                                        <div className="px-4 py-2 font-semibold col-span-1">Nombre:</div>
+                                        <div className="px-4 py-2 capitalize col-span-2">{session.user.name}</div>
                                     </div>
-                                    <div className="grid grid-cols-2">
-                                        <div className="px-4 py-2 font-semibold">Email:</div>
-                                        <div className="px-4 py-2">{session.user.email}</div>
+                                    <div className="grid grid-cols-3 ">
+                                        <div className="px-4 py-2 col-span-1 font-semibold">Email:</div>
+                                        <div className="px-4 py-2 col-span-2">{session.user.email}</div>
                                     </div>
 
                                 </div>

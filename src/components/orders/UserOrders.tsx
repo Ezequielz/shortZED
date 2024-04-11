@@ -37,7 +37,7 @@ export const UserOrders = async ({ row, short, page, status }: Props) => {
                     <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron ordenes { status ? (status === 'true' ? 'Pagadas' : 'Pendientes') : ''}</div>
                 ) : (
                     <>
-                        <div className='lg:min-h-[400px]'>
+                        <div className='lg:min-h-[400px] overflow-x-auto'>
 
                             <TableOrders orders={orders} />
                         </div>

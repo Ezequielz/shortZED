@@ -35,13 +35,13 @@ export const Paypal = async ({ orderId }: Props) => {
 
   
     return (
-        <div className='grid grid-cols-2 p-2'>
+        <div className='md:flex  p-2'>
 
-            <div className='bg-neutral-800 p-4 rounded-lg z-20'>
+            <div className='bg-neutral-800 p-4 rounded-lg z-20 md:3/5'>
                 <h2 className='font-bold flex justify-center'>Resumen</h2>
-                <div className='flex flex-row gap-2 '>
+                <div className='flex flex-col md:flex-row gap-2 '>
 
-                    <div className='flex flex-col text-sm p-2 w-3/5'>
+                    <div className='flex flex-col text-sm p-2 md:w-3/5'>
                         <h3 className='font-semibold bg-white text-emerald-600'>
                             Orden
                         </h3>
@@ -67,7 +67,7 @@ export const Paypal = async ({ orderId }: Props) => {
 
                     </div>
 
-                    <div className='flex flex-col p-2 w-2/5'>
+                    <div className='flex flex-col p-2 md:w-2/5'>
                         <h4 className='font-semibold bg-white text-emerald-600'>Repuesta de paypal</h4>
                         {
                             Object.entries(PaypalResponse).map(([key, value]) => (
@@ -81,9 +81,9 @@ export const Paypal = async ({ orderId }: Props) => {
                     </div>
                 </div>
             </div>
-            <div className=' px-5'>
+            <div className=' px-5 md:2/5'>
                 <h2 className='font-bold flex justify-center '>Repuesta de Paypal</h2>
-                <div className="fixed w-full max-h-96 overflow-y-auto z-10 ">
+                <div className="md:fixed w-full md:max-h-96 overflow-y-auto z-10 ">
 
                     <OrderPaypalDetails orderPaypal={orderPaypal} />
                 </div>

@@ -43,7 +43,7 @@ export const UserLinks = async ({ row, short, page, status }: Props) => {
                     <div className='text-center text-2xl lg:min-h-[450px]'>No se encontraron links { status ? (status === 'true' ? 'Activos' : 'Inactivos') : ''} </div>
                 ) : (
                     <>
-                        <div className='lg:min-h-[400px]'>
+                        <div className='lg:min-h-[400px] overflow-x-auto'>
 
                             <TableLinks links={links} />
                         </div>

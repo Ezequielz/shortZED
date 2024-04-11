@@ -9,12 +9,12 @@ export default function ({ searchParams }: Props) {
   // const page = searchParams?.page ? parseInt(searchParams.page) : 1;
   const code = searchParams?.code;
   return (
-    <div className="ml-32 h-[calc(100vh-120px)] mt-2">
+    <div className="p-5 xl:ml-32 md:h-[calc(100vh-120px)]  mt-2">
       <Title title={"Administracion de Códigos"} />
 
       <Suspense fallback={<CodesSkeleton />}>
         
-        <div className="flex gap-2">
+        <div className="flex flex-col md:flex-row md:gap-2">
           <CodesAdd />
           <CodesInfo>
             <Search label="Código" bg="bg-fuchsia-800 " paramsName="code" />

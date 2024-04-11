@@ -29,7 +29,7 @@ export default async function ({ searchParams }: Props) {
 
 
   return (
-    <section>
+    <section className='p-5'>
       <Title title={'Ordenes'} />
       <Suspense fallback={<OrdersSkeleton items={7} />}>
         <UserOrders page={page} status={status} />

@@ -27,7 +27,7 @@ export const Codes = async ({ page, codeName }: Props) => {
 
     return (
 
-        <div className="lg:min-h-[355px]">
+        <div className="lg:min-h-[355px] overflow-x-auto">
             <TableCodes codes={codes} />
         </div>
 

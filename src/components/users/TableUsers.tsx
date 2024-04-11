@@ -26,7 +26,7 @@ export const TableUsers = async ({ users }: Props) => {
     }
 
     return (
-        <table className="min-w-full ">
+        <table className="min-w-full  ">
             <thead>
                 <tr>
                     <th

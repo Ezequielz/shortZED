@@ -30,7 +30,7 @@ export default async function LinksPage({ searchParams }: Props) {
 
   return (
 
-    <section>
+    <section className='p-5'>
 
         <Title title={'Links'} />
 

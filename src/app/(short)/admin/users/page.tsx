@@ -10,11 +10,11 @@ export default async function ({ searchParams }: Props) {
   const page = searchParams?.page ? parseInt(searchParams.page) : 1;
   const search = searchParams?.admsearch;
   return (
-    <div className="ml-32 h-[calc(100vh-120px)] mt-2">
+    <div className="p-5 xl:ml-32 md:h-[calc(100vh-120px)] mt-2 ">
       <Title title={"Administracion de usuarios"} />
       <Suspense fallback={ <UserSkeleton /> }>
        
-        <div className="flex gap-2">
+        <div className="md:flex gap-2">
           <UserAdd />
 
           <UsersInfo>

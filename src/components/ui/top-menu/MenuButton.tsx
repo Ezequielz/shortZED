@@ -2,7 +2,6 @@
 
 import { getUserById } from "@/action";
 import { TopMenuButtonSkeleton } from "@/components";
-import { inter } from "@/components/config/fonts";
 import { useUIStore } from "@/store";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -38,11 +37,11 @@ export const MenuButton = ( {children}: Props) => {
     }, [session])
 
 
-    if (isLoadingSession) return (
+    if (isLoadingSession || !session || !session.user) return (
         <TopMenuButtonSkeleton />
     );
 
-    if (!session || !session.user) return null;
+    // if (!session || !session.user) return null;
 
 
 

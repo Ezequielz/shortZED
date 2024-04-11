@@ -27,7 +27,7 @@ export const Users = async ({ page, search }: Props) => {
 
     return (
         <>
-            <div className="lg:min-h-[355px]">
+            <div className="lg:min-h-[355px] overflow-x-auto">
                <TableUsers users={users} />
 
             </div>

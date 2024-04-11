@@ -5,6 +5,8 @@ import { PanelSkeleton } from "@/components";
 import { ImBarcode } from "react-icons/im";
 import { IoCardOutline, IoLinkOutline, IoPersonOutline } from "react-icons/io5";
 import { MdCurrencyExchange } from "react-icons/md";
+import { PanelPayment } from "./panels/PanelPayment";
+import { BsPaypal } from "react-icons/bs";
 
 const panels = [
     {
@@ -41,7 +43,15 @@ const panels = [
         icon: <ImBarcode size={30} />,
         bgColor: 'bg-gradient-to-tr from-fuchsia-600 to-fuchsia-400 shadow-fuchsia-500/40',
         hover: ' hover:bg-gradient-to-tr hover:from-fuchsia-600 hover:to-fuchsia-400 hover:text-white'
+    },
+    {
+        label: "Payment",
+        component: <PanelPayment />,
+        icon: <BsPaypal size={30} />,
+        bgColor: 'bg-gradient-to-tr from-emerald-600 to-emerald-400 shadow-emerald-500/40',
+        hover: ' hover:bg-gradient-to-tr hover:from-emerald-600 hover:to-emerald-400 hover:text-white'
     }
+
 ]
 
 

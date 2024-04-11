@@ -7,7 +7,7 @@ export default async function PaymentLayout({ children }: {
 }) {
 
     return (
-        <div className="ml-32 mt-2 ">
+        <div className="p-5 xl:ml-32 md:h-[calc(100vh-120px)] mt-2">
             <Title title={"Checkeo de Paypal"} />
 
             <div className="flex flex-col items-center justify-between bg-gradient-to-tr from-emerald-600 to-emerald-400 rounded-lg m-2 p-4">

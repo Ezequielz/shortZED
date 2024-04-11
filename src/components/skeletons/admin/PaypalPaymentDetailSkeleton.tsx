@@ -17,9 +17,9 @@ export const PaypalPaymentDetailSkeleton = () => {
     Email: '',
   }
   return (
-    <div className='grid grid-cols-2 p-2'>
+    <div className='flex flex-col md:flex-row p-2'>
 
-      <div className='bg-neutral-800 p-4 rounded-lg z-20'>
+      <div className='bg-neutral-800 p-4 rounded-lg z-20 md:w-3/5'>
         <h2 className='font-bold flex justify-center'>Resumen</h2>
         <div className='flex flex-row gap-2 '>
 
@@ -65,7 +65,7 @@ export const PaypalPaymentDetailSkeleton = () => {
         </div>
       </div>
 
-      <div className=' px-5'>
+      <div className=' px-5 md:2/5'>
         <h2 className='font-bold flex justify-center '>Repuesta de Paypal</h2>
 
         <div className="w-full mt-4">

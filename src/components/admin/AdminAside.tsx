@@ -55,12 +55,12 @@ export const AdminAside = () => {
 
 
     return (
-        <aside className="bg-neutral-800/50 -translate-x-80 fixed inset-0 mt-16 z-0 h-full w-72  transition-transform duration-300 xl:translate-x-0">
+        <aside className="bg-neutral-800/50 hidden fixed inset-0 mt-16 z-0 h-full xl:block  xl:w-44 2xl:w-72 ">
             <div className="m-4">
-                <ul className="mb-4 flex flex-col gap-1">
+                <ul className="mb-4 flex flex-col justify-start items-start gap-1">
                     {
                         menu.map(({ label, href, icon, color }) => (
-                            <li  key={label}>
+                            <li  key={label} className=" w-full">
                                 <AdminMenuList label={label} href={href} icon={icon} color={color} />
                             </li>
                         ))

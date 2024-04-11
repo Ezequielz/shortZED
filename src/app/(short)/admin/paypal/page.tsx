@@ -12,11 +12,11 @@ export default function ({ searchParams }: Props) {
     if (!payment) {
         return (
             
-            <div className='h-[calc(100vh-260px)] flex justify-center'>Ingrese un Nº de orden para verificar el pago en paypal</div>
+            <div className='p-5 md:h-[calc(100vh-260px)] flex justify-center'>Ingrese un Nº de orden para verificar el pago en paypal</div>
         );
     };
     return (
-        <div className='h-[calc(100vh-260px)]'>
+        <div className='md:h-[calc(100vh-260px)]'>
 
             <Suspense fallback={<PaypalPaymentDetailSkeleton />} >
                 <Paypal orderId={payment}/>

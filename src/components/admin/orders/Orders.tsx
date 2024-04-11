@@ -35,7 +35,7 @@ export const Orders = async ({ page, search, short }: Props) => {
                 </ModalLink>
 
             </Suspense> */}
-            <div className="lg:min-h-[355px]">
+            <div className="lg:min-h-[355px]  overflow-x-auto">
                 {/* <TableLinks links={orders} /> */}
                 <TableOrders orders={orders}/>
             </div>

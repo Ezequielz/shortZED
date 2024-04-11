@@ -11,7 +11,7 @@ interface Props {
 export default function ({ searchParams }: Props) {
   const plan = searchParams?.plan as PlanName;
   return (
-    <div className="ml-32 h-[calc(100vh-120px)] mt-2">
+    <div className="p-5 xl:ml-32 md:h-[calc(100vh-120px)] mt-2">
       <Title title={"Administracion de Planes"} />
 
 
