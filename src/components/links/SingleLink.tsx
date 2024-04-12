@@ -15,7 +15,7 @@ interface Props {
     const { ok, links } = await getLinkBySlug(short);
 
     return (
-        <section className="flex flex-col">
+        <section className="flex flex-col p-5">
 
 
             <ModalLink short={short} >
@@ -23,10 +23,10 @@ interface Props {
                 <ModalOptionsLinksByUser short={short} />
             </ModalLink>
 
-            <div className="py-2 -my-2  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+            <div className="py-2 -my-2  sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 overflow-x-auto">
                 <div
-                    className="inline-block min-w-full align-middle border-b border-gray-200 shadow sm:rounded-lg">
-                    <table className="min-w-full">
+                    className="inline-block min-w-full align-middle border-b border-gray-200 shadow sm:rounded-lg ">
+                    <table className="min-w-full ">
                         <thead>
                             <tr>
                                 <th
